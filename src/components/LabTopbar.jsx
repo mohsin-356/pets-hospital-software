@@ -10,18 +10,18 @@ export default function LabTopbar({ onToggle }){
   const labUser = auth?.name || auth?.username || 'Lab User'
 
   return (
-    <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-slate-200">
+    <header className="sticky top-0 z-30 bg-[hsl(var(--pm-surface))]/80 backdrop-blur border-b border-[hsl(var(--pm-border))]">
       <div className="px-3 md:px-5 py-2">
-        <div className="h-12 w-full rounded-full border border-emerald-100 bg-emerald-50/60 shadow-sm flex items-center justify-between px-2">
+        <div className="h-12 w-full rounded-full border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-surface))] shadow-sm flex items-center justify-between px-2">
           <div className="flex items-center gap-2">
             <Link
               to="/"
-              className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-white text-slate-600 hover:text-slate-800 border border-slate-200 cursor-pointer"
+              className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-[hsl(var(--pm-surface))] text-[hsl(var(--pm-text-muted))] hover:text-[hsl(var(--pm-text))] border border-[hsl(var(--pm-border))] cursor-pointer"
               aria-label="Back to modules"
             >
               <FiArrowLeft className="h-5 w-5" />
             </Link>
-            <button onClick={onToggle} className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-white text-slate-600 hover:text-slate-800 border border-slate-200 cursor-pointer" aria-label="Toggle sidebar">
+            <button onClick={onToggle} className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-[hsl(var(--pm-surface))] text-[hsl(var(--pm-text-muted))] hover:text-[hsl(var(--pm-text))] border border-[hsl(var(--pm-border))] cursor-pointer" aria-label="Toggle sidebar">
               <FiMenu className="h-5 w-5" />
             </button>
             <div className="hidden sm:block h-6 w-px bg-slate-200/70" />
@@ -31,7 +31,7 @@ export default function LabTopbar({ onToggle }){
               )}
               <div className="text-sm md:text-base font-semibold tracking-wide text-slate-800 truncate">
                 {settings.companyName || 'Pets Hospital'}
-                <span className="ml-2 text-xs font-medium text-emerald-700 align-middle">Laboratory • {labUser}</span>
+                <span className="ml-2 text-xs font-medium text-[hsl(var(--pm-primary))] align-middle">Laboratory • {labUser}</span>
               </div>
             </div>
           </div>

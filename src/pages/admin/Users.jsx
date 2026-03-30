@@ -1,14 +1,16 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { FiEye, FiEyeOff, FiAlertTriangle } from 'react-icons/fi'
 import { usersAPI } from '../../services/api'
+import { useAccessRoles } from '../../context/AccessRoleContext'
 
 const ROLES = ['Reception', 'Pharmacy', 'Lab', 'Doctor', 'Shop', 'Admin']
 
 export default function Users(){
+  const { roles } = useAccessRoles()
   const [users, setUsers] = useState([])
   const [q, setQ] = useState('')
   const [role, setRole] = useState('')
-  const [form, setForm] = useState({ id: null, name: '', email: '', role: 'Reception', username: '', password: '' })
+  const [form, setForm] = useState({ id: null, name: '', email: '', role: 'Reception', username: '', password: '', accessRoleId: '' })
   const [showDialog, setShowDialog] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
@@ -48,7 +50,7 @@ export default function Users(){
   ), [users, q, role])
 
   const reset = () => {
-    setForm({ id: null, name: '', email: '', role: 'Reception', username: '', password: '' })
+    setForm({ id: null, name: '', email: '', role: 'Reception', username: '', password: '', accessRoleId: '' })
     setShowDialog(false)
   }
 
@@ -64,7 +66,8 @@ export default function Users(){
       email: user.email || '',
       role: user.role || 'Reception',
       username: user.username || '',
-      password: user.password || '' // Show existing password
+      password: user.password || '', // Show existing password
+      accessRoleId: user.accessRoleId?._id || user.accessRoleId || ''
     })
     setShowDialog(true)
   }
@@ -84,7 +87,8 @@ export default function Users(){
           name: form.name,
           email: form.email,
           role: form.role.toLowerCase(),
-          password: form.password
+          password: form.password,
+          accessRoleId: form.accessRoleId || null
         })
       } else {
         // Create new user
@@ -98,6 +102,7 @@ export default function Users(){
           name: form.name,
           email: form.email,
           role: form.role.toLowerCase(),
+          accessRoleId: form.accessRoleId || null,
           isActive: true
         })
       }
@@ -216,6 +221,7 @@ export default function Users(){
                   <th className="py-3 px-4 font-semibold">Name</th>
                   <th className="py-3 px-4 font-semibold">Email</th>
                   <th className="py-3 px-4 font-semibold">Role</th>
+                  <th className="py-3 px-4 font-semibold">Access Role</th>
                   <th className="py-3 px-4 font-semibold">Username</th>
                   <th className="py-3 px-4 font-semibold">Actions</th>
                 </tr>
@@ -235,6 +241,9 @@ export default function Users(){
                           'bg-pink-100 text-pink-800'}`}>
                         {u.role}
                       </span>
+                    </td>
+                    <td className="py-3 px-4 text-slate-600">
+                      {u.accessRoleId?.name || ''}
                     </td>
                     <td className="py-3 px-4 text-slate-600">{u.username}</td>
                     <td className="py-3 px-4 flex gap-2">
@@ -384,6 +393,27 @@ export default function Users(){
                     required
                   >
                     {ROLES.map(r=> <option key={r} value={r}>{r}</option>)}
+                  </select>
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-indigo-700 mb-1">Access Role</label>
+                <div className="relative">
+                  <select
+                    className="w-full h-11 pl-3 pr-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-500 outline-none transition-all appearance-none bg-white"
+                    value={form.accessRoleId || ''}
+                    onChange={e=>setForm(s=>({...s, accessRoleId:e.target.value}))}
+                  >
+                    <option value="">Full Access (no role)</option>
+                    {(roles || []).map(r => (
+                      <option key={r._id} value={r._id}>{r.name}</option>
+                    ))}
                   </select>
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

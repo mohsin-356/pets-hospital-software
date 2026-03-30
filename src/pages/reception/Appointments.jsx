@@ -5,7 +5,7 @@ import { appointmentsAPI, petsAPI } from '../../services/api'
 import DateRangePicker from '../../components/DateRangePicker'
 
 export default function ReceptionAppointments(){
-  const [form, setForm] = useState({ petId:'', petName:'', ownerName:'', contact:'', petType:'', gender:'', age:'', doctor:'', date:'', time:'', purpose:'', status:'Scheduled' })
+  const [form, setForm] = useState({ petId:'', petName:'', ownerName:'', contact:'', petType:'', gender:'', age:'', doctor:'', date:'', time:'', purpose:'', status:'Scheduled', nextVisitDiscountPercent:'' })
   const [query, setQuery] = useState('')
   const [showAll, setShowAll] = useState(false)
   const { addActivity } = useActivity()
@@ -180,6 +180,7 @@ export default function ReceptionAppointments(){
         purpose: form.purpose || '',
         reason: form.purpose || '',
         status: form.status || 'Scheduled',
+        nextVisitDiscountPercent: form.nextVisitDiscountPercent,
         notes: '',
         createdBy: 'Reception'
       }
@@ -205,7 +206,7 @@ export default function ReceptionAppointments(){
       }
       
       setShowAll(true)
-      setForm({ petId:'', petName:'', ownerName:'', contact:'', petType:'', gender:'', age:'', doctor:'', date:'', time:'', purpose:'', status:'Scheduled' })
+      setForm({ petId:'', petName:'', ownerName:'', contact:'', petType:'', gender:'', age:'', doctor:'', date:'', time:'', purpose:'', status:'Scheduled', nextVisitDiscountPercent:'' })
       setEditMode(false)
       setEditingId(null)
       
@@ -232,7 +233,8 @@ export default function ReceptionAppointments(){
       date: appointment.date || '',
       time: appointment.time || '',
       purpose: appointment.purpose || appointment.reason || '',
-      status: appointment.status || 'Scheduled'
+      status: appointment.status || 'Scheduled',
+      nextVisitDiscountPercent: appointment.nextVisitDiscountPercent ?? ''
     })
     setEditMode(true)
     setEditingId(appointment.id || appointment._id)
@@ -240,7 +242,7 @@ export default function ReceptionAppointments(){
   }
 
   const handleCancelEdit = () => {
-    setForm({ petId:'', petName:'', ownerName:'', contact:'', petType:'', gender:'', age:'', doctor:'', date:'', time:'', purpose:'', status:'Scheduled' })
+    setForm({ petId:'', petName:'', ownerName:'', contact:'', petType:'', gender:'', age:'', doctor:'', date:'', time:'', purpose:'', status:'Scheduled', nextVisitDiscountPercent:'' })
     setEditMode(false)
     setEditingId(null)
   }
@@ -352,26 +354,26 @@ export default function ReceptionAppointments(){
     <div className="space-y-8">
       {/* Professional Header */}
       <div className="text-center">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-4xl font-bold text-[hsl(var(--pm-primary))] mb-2">
           Appointments
         </h1>
         <p className="text-slate-600 text-lg">Schedule and manage pet appointments with ease</p>
         <div className="mt-4 flex items-center justify-center gap-2 text-sm text-slate-500">
-          <FiHeart className="w-4 h-4 text-red-500" />
+          <FiHeart className="w-4 h-4 text-[hsl(var(--pm-primary))]" />
           <span>Scheduling care for every pet's health journey</span>
-          <FiStar className="w-4 h-4 text-yellow-500" />
+          <FiStar className="w-4 h-4 text-[hsl(var(--pm-primary))]" />
         </div>
       </div>
 
       {/* Date Range Picker */}
-      <div className="rounded-2xl bg-gradient-to-br from-white via-sky-50 to-blue-50 shadow-xl ring-1 ring-sky-200 border border-sky-100 p-6">
+      <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-sky-500 to-blue-600 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiCalendar className="w-6 h-6 text-white" />
             </div>
             <div>
-              <div className="text-sm font-semibold text-sky-600">Filter by Date</div>
+              <div className="text-sm font-semibold text-[hsl(var(--pm-primary))]">Filter by Date</div>
               <div className="text-lg font-bold text-slate-800">
                 {dateRange.fromDate === dateRange.toDate
                   ? new Date(dateRange.fromDate).toLocaleDateString()
@@ -379,6 +381,7 @@ export default function ReceptionAppointments(){
               </div>
             </div>
           </div>
+
           <DateRangePicker 
             onDateChange={(dr)=>setDateRange(dr)}
             defaultFromDate={dateRange.fromDate}
@@ -397,7 +400,7 @@ export default function ReceptionAppointments(){
 
       {/* Loading Indicator */}
       {loading && (
-        <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg flex items-center">
+        <div className="bg-[hsl(var(--pm-primary-soft))] border border-[hsl(var(--pm-border))] text-[hsl(var(--pm-primary))] px-4 py-3 rounded-lg flex items-center">
           <svg className="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -407,9 +410,9 @@ export default function ReceptionAppointments(){
       )}
 
       {/* Enhanced Appointment Scheduling Card */}
-      <div className="rounded-3xl bg-gradient-to-br from-white via-sky-50 to-blue-50 shadow-2xl ring-1 ring-sky-200 border border-sky-100 p-8">
+      <div className="rounded-3xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-8">
         <div className="mb-6 flex items-center gap-4">
-          <div className="w-16 h-16 bg-gradient-to-br from-sky-500 to-blue-600 rounded-2xl flex items-center justify-center">
+          <div className="w-16 h-16 bg-[hsl(var(--pm-primary))] rounded-2xl flex items-center justify-center">
             <FiCalendar className="w-8 h-8 text-white" />
           </div>
           <div className="flex-1">
@@ -417,46 +420,46 @@ export default function ReceptionAppointments(){
             <div className="text-slate-600">Book appointments with doctors and veterinarians</div>
           </div>
           <div className="text-right">
-            <div className="text-3xl font-bold text-sky-600">{filtered.length}</div>
+            <div className="text-3xl font-bold text-[hsl(var(--pm-primary))]">{filtered.length}</div>
             <div className="text-sm text-slate-600">Total Appointments</div>
           </div>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           <div className="bg-white/60 rounded-2xl p-4 text-center">
-            <div className="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center mx-auto mb-3">
-              <FiUser className="w-6 h-6 text-sky-600" />
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary-soft))] rounded-xl flex items-center justify-center mx-auto mb-3">
+              <FiUser className="w-6 h-6 text-[hsl(var(--pm-primary))]" />
             </div>
             <div className="font-semibold text-slate-800">Pet & Owner</div>
             <div className="text-sm text-slate-600">Patient information</div>
           </div>
           <div className="bg-white/60 rounded-2xl p-4 text-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-3">
-              <FiCalendar className="w-6 h-6 text-blue-600" />
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary-soft))] rounded-xl flex items-center justify-center mx-auto mb-3">
+              <FiCalendar className="w-6 h-6 text-[hsl(var(--pm-primary))]" />
             </div>
             <div className="font-semibold text-slate-800">Date & Time</div>
             <div className="text-sm text-slate-600">Schedule appointment</div>
           </div>
           <div className="bg-white/60 rounded-2xl p-4 text-center">
-            <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mx-auto mb-3">
-              <FiActivity className="w-6 h-6 text-indigo-600" />
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary-soft))] rounded-xl flex items-center justify-center mx-auto mb-3">
+              <FiActivity className="w-6 h-6 text-[hsl(var(--pm-primary))]" />
             </div>
             <div className="font-semibold text-slate-800">Doctor</div>
             <div className="text-sm text-slate-600">Assign veterinarian</div>
           </div>
           <div className="bg-white/60 rounded-2xl p-4 text-center">
-            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-3">
-              <FiCheckCircle className="w-6 h-6 text-green-600" />
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary-soft))] rounded-xl flex items-center justify-center mx-auto mb-3">
+              <FiCheckCircle className="w-6 h-6 text-[hsl(var(--pm-primary))]" />
             </div>
             <div className="font-semibold text-slate-800">Status</div>
             <div className="text-sm text-slate-600">Track progress</div>
           </div>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200">
+          <div className="bg-[hsl(var(--pm-primary-soft))] rounded-2xl p-6 ring-1 ring-[hsl(var(--pm-border))]">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-[hsl(var(--pm-primary))] rounded-lg flex items-center justify-center">
                 <FiUser className="w-4 h-4 text-white" />
               </div>
               <div className="font-semibold text-slate-800">Pet ID & Auto-Fill</div>
@@ -466,14 +469,15 @@ export default function ReceptionAppointments(){
               value={form.petId} 
               onChange={handleChange} 
               placeholder="Enter Pet ID (e.g., PET-1234567890123) to auto-fill information" 
-              className="h-14 px-6 rounded-xl border-2 border-slate-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 bg-white font-mono text-lg w-full shadow-sm transition-all duration-200" 
+              className="h-14 px-6 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white font-mono text-lg w-full shadow-sm transition-all duration-200" 
             />
+
             <div className="text-sm text-slate-600 mt-2 flex items-center gap-2">
               <FiInfo className="w-4 h-4 text-slate-500" />
               <span>Enter existing Pet ID to auto-fill information, or fill pet details below to auto-generate new ID</span>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">Pet Name *</label>
@@ -482,7 +486,7 @@ export default function ReceptionAppointments(){
                 value={form.petName} 
                 onChange={handleChange} 
                 placeholder="Pet Name" 
-                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 bg-white shadow-sm transition-all duration-200 w-full" 
+                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white shadow-sm transition-all duration-200 w-full" 
                 required 
               />
             </div>
@@ -493,7 +497,7 @@ export default function ReceptionAppointments(){
                 value={form.ownerName} 
                 onChange={handleChange} 
                 placeholder="Owner Name" 
-                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 bg-white shadow-sm transition-all duration-200 w-full" 
+                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white shadow-sm transition-all duration-200 w-full" 
                 required 
               />
             </div>
@@ -504,7 +508,7 @@ export default function ReceptionAppointments(){
                 value={form.contact} 
                 onChange={handleChange} 
                 placeholder="Contact Number" 
-                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 bg-white shadow-sm transition-all duration-200 w-full" 
+                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white shadow-sm transition-all duration-200 w-full" 
               />
             </div>
             <div>
@@ -513,7 +517,7 @@ export default function ReceptionAppointments(){
                 name="petType" 
                 value={form.petType} 
                 onChange={handleChange} 
-                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 bg-white shadow-sm transition-all duration-200 w-full"
+                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white shadow-sm transition-all duration-200 w-full"
                 required
               >
                 <option value="">Select Species</option>
@@ -531,7 +535,7 @@ export default function ReceptionAppointments(){
                 name="gender" 
                 value={form.gender} 
                 onChange={handleChange} 
-                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 bg-white shadow-sm transition-all duration-200 w-full"
+                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white shadow-sm transition-all duration-200 w-full"
               >
                 <option value="">Select Gender</option>
                 <option>Male</option>
@@ -545,7 +549,7 @@ export default function ReceptionAppointments(){
                 value={form.age} 
                 onChange={handleChange} 
                 placeholder="Age (e.g., 2 years, 6 months)" 
-                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 bg-white shadow-sm transition-all duration-200 w-full" 
+                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white shadow-sm transition-all duration-200 w-full" 
               />
             </div>
             <div>
@@ -555,7 +559,7 @@ export default function ReceptionAppointments(){
                 value={form.doctor} 
                 onChange={handleChange} 
                 placeholder="Doctor/Vet" 
-                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 bg-white shadow-sm transition-all duration-200 w-full" 
+                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white shadow-sm transition-all duration-200 w-full" 
               />
             </div>
             <div>
@@ -565,7 +569,7 @@ export default function ReceptionAppointments(){
                 name="date" 
                 value={form.date} 
                 onChange={handleChange} 
-                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 bg-white shadow-sm transition-all duration-200 w-full" 
+                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white shadow-sm transition-all duration-200 w-full" 
                 required
               />
             </div>
@@ -576,12 +580,12 @@ export default function ReceptionAppointments(){
                 name="time" 
                 value={form.time} 
                 onChange={handleChange} 
-                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 bg-white shadow-sm transition-all duration-200 w-full" 
+                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white shadow-sm transition-all duration-200 w-full" 
                 required
               />
             </div>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">Purpose / Complaint</label>
             <textarea
@@ -590,8 +594,28 @@ export default function ReceptionAppointments(){
               onChange={handleChange}
               placeholder="e.g., Vomiting since morning, vaccination due, follow-up, post-op check, skin allergy, diarrhea, lethargy, etc."
               rows={3}
-              className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 bg-white shadow-sm transition-all duration-200"
+              className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white shadow-sm transition-all duration-200"
             />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Next Visit Discount %</label>
+              <input
+                type="number"
+                name="nextVisitDiscountPercent"
+                value={form.nextVisitDiscountPercent}
+                onChange={handleChange}
+                placeholder="e.g., 10"
+                min="0"
+                max="100"
+                step="1"
+                className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white shadow-sm transition-all duration-200 w-full"
+              />
+              <div className="text-xs text-slate-500 mt-2">
+                This percentage will be saved for this pet and applied on the next appointment.
+              </div>
+            </div>
           </div>
 
           <div className="flex justify-center gap-4">
@@ -604,7 +628,7 @@ export default function ReceptionAppointments(){
                 Cancel
               </button>
             )}
-            <button className="px-12 h-16 rounded-2xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 text-white font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex items-center gap-3">
+            <button className="px-12 h-16 rounded-2xl bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white font-bold text-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-3">
               <FiCalendar className="w-6 h-6" />
               {editMode ? 'Update Appointment' : 'Schedule Appointment'}
             </button>
@@ -613,9 +637,9 @@ export default function ReceptionAppointments(){
       </div>
 
       {/* Enhanced Appointments List */}
-      <div className="rounded-3xl bg-gradient-to-br from-white via-slate-50 to-gray-50 shadow-2xl ring-1 ring-slate-200 border border-slate-100 p-8">
+      <div className="rounded-3xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-8">
         <div className="mb-6 flex items-center gap-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-slate-500 to-gray-600 rounded-2xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-2xl flex items-center justify-center">
             <FiActivity className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
@@ -626,7 +650,7 @@ export default function ReceptionAppointments(){
             <button
               type="button"
               onClick={() => setShowAll(v => !v)}
-              className={`px-4 h-12 rounded-xl border-2 shadow-sm transition-all duration-200 ${showAll ? 'bg-sky-600 border-sky-600 text-white' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}`}
+              className={`px-4 h-12 rounded-xl border-2 shadow-sm transition-all duration-200 ${showAll ? 'bg-[hsl(var(--pm-primary))] border-[hsl(var(--pm-primary))] text-white' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}`}
             >
               {showAll ? 'All (On)' : 'All'}
             </button>
@@ -636,7 +660,7 @@ export default function ReceptionAppointments(){
                   type="date"
                   value={singleDate}
                   onChange={e => setSingleDate(e.target.value)}
-                  className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 bg-white shadow-sm transition-all duration-200"
+                  className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white shadow-sm transition-all duration-200"
                   title="Filter by date"
                 />
                 <button
@@ -649,7 +673,7 @@ export default function ReceptionAppointments(){
                 <button
                   type="button"
                   onClick={() => { const { from, to } = lastNDays(10); setDateRange({ fromDate: from, toDate: to }); setSingleDate(''); setShowAll(false); }}
-                  className="px-3 h-12 rounded-xl border-2 border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 shadow-sm"
+                  className="px-3 h-12 rounded-xl border-2 border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-soft))] shadow-sm"
                 >
                   Last 10 days
                 </button>
@@ -661,12 +685,12 @@ export default function ReceptionAppointments(){
                 value={query} 
                 onChange={e=>setQuery(e.target.value)} 
                 placeholder="Search appointments..." 
-                className="h-12 pl-10 pr-4 rounded-xl border-2 border-slate-200 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 bg-white shadow-sm transition-all duration-200 w-64" 
+                className="h-12 pl-10 pr-4 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 bg-white shadow-sm transition-all duration-200 w-64" 
               />
             </div>
             <button 
               onClick={exportCSV} 
-              className="px-6 h-12 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
+              className="px-6 h-12 rounded-xl bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd"/>
@@ -678,176 +702,196 @@ export default function ReceptionAppointments(){
         <div className="grid gap-6 mt-6">
           {filtered.map(r => (
             <div key={r.id} className="group">
-              <div className="rounded-3xl border-2 border-slate-200 bg-gradient-to-br from-white via-slate-50 to-sky-50 hover:from-sky-50 hover:to-blue-50 hover:border-sky-300 transition-all duration-300 shadow-lg hover:shadow-2xl p-6 group-hover:-translate-y-1">
-              <div className="flex items-start justify-between gap-6">
-                <div className="flex items-start gap-4 flex-1">
-                  {/* Appointment Avatar */}
-                  <div className="w-16 h-16 bg-gradient-to-br from-sky-400 to-blue-500 rounded-2xl flex items-center justify-center shrink-0">
-                    <FiCalendar className="w-8 h-8 text-white" />
-                  </div>
-                  
-                  {/* Appointment Information */}
-                  <div className="flex-1 min-w-0">
-                    {/* Pet ID Badge */}
-                    {r.petId && (
-                      <div className="flex items-center gap-3 mb-3">
-                        <button 
-                          title="Click to copy Pet ID" 
-                          onClick={()=>{ 
-                            navigator.clipboard?.writeText(r.petId); 
-                            // Show copied feedback
-                            const btn = event.target;
-                            const original = btn.textContent;
-                            btn.textContent = 'Copied!';
-                            btn.className = btn.className.replace('bg-sky-100', 'bg-green-100').replace('text-sky-700', 'text-green-700');
-                            setTimeout(() => {
-                              btn.textContent = original;
-                              btn.className = btn.className.replace('bg-green-100', 'bg-sky-100').replace('text-green-700', 'text-sky-700');
-                            }, 1200);
-                          }} 
-                          className="px-3 py-2 text-sm font-mono bg-sky-100 text-sky-700 hover:bg-sky-200 rounded-xl border border-sky-200 cursor-pointer transition-all duration-200 flex items-center gap-2 shadow-sm"
-                        >
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/>
-                            <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"/>
-                          </svg>
-                          {r.petId}
-                        </button>
-                        <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-lg">Click ID to copy</span>
-                      </div>
-                    )}
-                    
-                    {/* Appointment Details */}
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-2xl font-bold text-slate-900">{r.petName}</h3>
-                        <span className="text-slate-400">•</span>
-                        <span className="text-lg font-semibold text-sky-600">{r.ownerName}</span>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-                        {(r.petType || r.type) && (
-                          <div className="flex items-center gap-1">
-                            <span className="font-semibold text-slate-700">Species:</span>
-                            <span className="bg-slate-100 px-2 py-1 rounded-lg">{r.petType || r.type}</span>
-                          </div>
-                        )}
-                        {r.gender && (
-                          <div className="flex items-center gap-1">
-                            <span className="font-semibold text-slate-700">Gender:</span>
-                            <span className="bg-slate-100 px-2 py-1 rounded-lg">{r.gender}</span>
-                          </div>
-                        )}
-                        {r.age && (
-                          <div className="flex items-center gap-1">
-                            <span className="font-semibold text-slate-700">Age:</span>
-                            <span className="bg-slate-100 px-2 py-1 rounded-lg">{r.age}</span>
-                          </div>
-                        )}
-                        <div className="flex items-center gap-1">
-                          <span className="font-semibold text-slate-700">Doctor:</span>
-                          <span className="bg-blue-100 px-2 py-1 rounded-lg text-blue-700">{r.doctor || 'Not assigned'}</span>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-4 text-sm">
-                        <div className="flex items-center gap-2">
-                          <FiCalendar className="w-4 h-4 text-slate-500" />
-                          <span className="font-semibold text-slate-700">Date:</span>
-                          <span className="bg-slate-100 px-3 py-1 rounded-lg font-mono">{r.date}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <FiClock className="w-4 h-4 text-slate-500" />
-                          <span className="font-semibold text-slate-700">Time:</span>
-                          <span className="bg-slate-100 px-3 py-1 rounded-lg font-mono">{r.time || 'Not set'}</span>
-                        </div>
-                      </div>
+              <div className="rounded-3xl border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-surface))] hover:bg-[hsl(var(--pm-primary-soft))] transition-colors duration-200 shadow-sm p-6">
+                <div className="flex items-start justify-between gap-6">
+                  <div className="flex items-start gap-4 flex-1">
+                    {/* Appointment Avatar */}
+                    <div className="w-16 h-16 bg-[hsl(var(--pm-primary))] rounded-2xl flex items-center justify-center shrink-0">
+                      <FiCalendar className="w-8 h-8 text-white" />
+                    </div>
 
-                      {(r.purpose || r.reason) && (
-                        <div className="mt-3 text-sm flex items-start gap-2">
-                          <FiInfo className="w-4 h-4 text-slate-500 mt-0.5" />
-                          <div>
-                            <span className="font-semibold text-slate-700">Purpose/Complaint:</span>{' '}
-                            <span className="bg-slate-50 border border-slate-200 px-2 py-1 rounded-lg inline-block break-words max-w-full">
-                              {r.purpose || r.reason}
-                            </span>
-                          </div>
+                    {/* Appointment Information */}
+                    <div className="flex-1 min-w-0">
+                      {/* Pet ID Badge */}
+                      {r.petId && (
+                        <div className="flex items-center gap-3 mb-3">
+                          <button 
+                            title="Click to copy Pet ID" 
+                            onClick={(e)=>{ 
+                              navigator.clipboard?.writeText(r.petId); 
+                              // Show copied feedback
+                              const btn = e.currentTarget;
+                              const original = btn.textContent;
+                              btn.textContent = 'Copied!';
+                              btn.className = btn.className.replace('bg-[hsl(var(--pm-primary-soft))]', 'bg-[hsl(var(--pm-primary))]').replace('text-[hsl(var(--pm-primary))]', 'text-white');
+                              setTimeout(() => {
+                                btn.textContent = original;
+                                btn.className = btn.className.replace('bg-[hsl(var(--pm-primary))]', 'bg-[hsl(var(--pm-primary-soft))]').replace('text-white', 'text-[hsl(var(--pm-primary))]');
+                              }, 1200);
+                            }} 
+                            className="px-3 py-2 text-sm font-mono bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-soft))] rounded-xl border border-[hsl(var(--pm-border))] cursor-pointer transition-all duration-200 flex items-center gap-2 shadow-sm"
+                          >
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/>
+                              <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"/>
+                            </svg>
+                            {r.petId}
+                          </button>
+                          <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-lg">Click ID to copy</span>
                         </div>
                       )}
+                      
+                      {/* Appointment Details */}
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-2xl font-bold text-slate-900">{r.petName}</h3>
+                          <span className="text-slate-400">•</span>
+                          <span className="text-lg font-semibold text-[hsl(var(--pm-primary))]">{r.ownerName}</span>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                          {(r.petType || r.type) && (
+                            <div className="flex items-center gap-1">
+                              <span className="font-semibold text-slate-700">Species:</span>
+                              <span className="bg-slate-100 px-2 py-1 rounded-lg">{r.petType || r.type}</span>
+                            </div>
+                          )}
+                          {r.gender && (
+                            <div className="flex items-center gap-1">
+                              <span className="font-semibold text-slate-700">Gender:</span>
+                              <span className="bg-slate-100 px-2 py-1 rounded-lg">{r.gender}</span>
+                            </div>
+                          )}
+                          {r.age && (
+                            <div className="flex items-center gap-1">
+                              <span className="font-semibold text-slate-700">Age:</span>
+                              <span className="bg-slate-100 px-2 py-1 rounded-lg">{r.age}</span>
+                            </div>
+                          )}
+                          <div className="flex items-center gap-1">
+                            <span className="font-semibold text-slate-700">Doctor:</span>
+                            <span className="bg-[hsl(var(--pm-primary-soft))] px-2 py-1 rounded-lg text-[hsl(var(--pm-primary))]">{r.doctor || 'Not assigned'}</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 text-sm">
+                          <div className="flex items-center gap-2">
+                            <FiCalendar className="w-4 h-4 text-slate-500" />
+                            <span className="font-semibold text-slate-700">Date:</span>
+                            <span className="bg-slate-100 px-3 py-1 rounded-lg font-mono">{r.date}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <FiClock className="w-4 h-4 text-slate-500" />
+                            <span className="font-semibold text-slate-700">Time:</span>
+                            <span className="bg-slate-100 px-3 py-1 rounded-lg font-mono">{r.time || 'Not set'}</span>
+                          </div>
+                        </div>
+
+                        {(r.petVisitNumber || r.appliedDiscountPercent || r.nextVisitDiscountPercent) && (
+                          <div className="flex flex-wrap items-center gap-2 text-xs">
+                            {r.petVisitNumber && (
+                              <span className="px-2 py-1 rounded-lg bg-slate-100 text-slate-700 border border-slate-200">
+                                Visit #{r.petVisitNumber}
+                              </span>
+                            )}
+                            {Number(r.appliedDiscountPercent || 0) > 0 && (
+                              <span className="px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                Applied Discount: {Number(r.appliedDiscountPercent || 0)}%
+                              </span>
+                            )}
+                            {r.nextVisitDiscountPercent != null && String(r.nextVisitDiscountPercent) !== '' && (
+                              <span className="px-2 py-1 rounded-lg bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] border border-[hsl(var(--pm-border))]">
+                                Next Visit Discount: {Number(r.nextVisitDiscountPercent || 0)}%
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        {(r.purpose || r.reason) && (
+                          <div className="mt-3 text-sm flex items-start gap-2">
+                            <FiInfo className="w-4 h-4 text-slate-500 mt-0.5" />
+                            <div>
+                              <span className="font-semibold text-slate-700">Purpose/Complaint:</span>{' '}
+                              <span className="bg-slate-50 border border-slate-200 px-2 py-1 rounded-lg inline-block break-words max-w-full">
+                                {r.purpose || r.reason}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Status Badge & Action Buttons */}
+                  <div className="flex flex-col gap-3 shrink-0 items-end">
+                    <div className={`px-6 py-3 rounded-2xl font-bold text-sm flex items-center gap-2 border shadow-sm ${
+                      r.status==='Completed'?'bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] border-[hsl(var(--pm-border))]':
+                      r.status==='Cancelled'?'bg-red-50 text-red-700 border-red-200':
+                      r.status==='No Show'?'bg-slate-50 text-slate-700 border-slate-200':
+                      r.status==='In Progress'?'bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] border-[hsl(var(--pm-border))]':
+                      r.status==='Confirmed'?'bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] border-[hsl(var(--pm-border))]':
+                      'bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] border-[hsl(var(--pm-border))]'
+                    }`}>
+                      {r.status === 'Completed' ? (
+                        <>
+                          <FiCheckCircle className="w-4 h-4" />
+                          <span>Completed</span>
+                        </>
+                      ) : r.status === 'Cancelled' ? (
+                        <>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                          <span>Cancelled</span>
+                        </>
+                      ) : r.status === 'No Show' ? (
+                        <>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                          </svg>
+                          <span>No Show</span>
+                        </>
+                      ) : r.status === 'In Progress' ? (
+                        <>
+                          <FiActivity className="w-4 h-4" />
+                          <span>In Progress</span>
+                        </>
+                      ) : r.status === 'Confirmed' ? (
+                        <>
+                          <FiCheckCircle className="w-4 h-4" />
+                          <span>Confirmed</span>
+                        </>
+                      ) : (
+                        <>
+                          <FiCalendar className="w-4 h-4" />
+                          <span>{r.status}</span>
+                        </>
+                      )}
+                    </div>
+
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleEdit(r)}
+                        className="px-6 py-3 rounded-xl bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => { setDeleteId(r.id || r._id); setDeleteConfirm(true); }}
+                        className="px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Delete
+                      </button>
                     </div>
                   </div>
                 </div>
-                
-                {/* Status Badge & Action Buttons */}
-                <div className="flex flex-col gap-3 shrink-0 items-end">
-                  <div className={`px-6 py-3 rounded-2xl font-bold text-sm flex items-center gap-2 shadow-lg ${
-                    r.status==='Completed'?'bg-gradient-to-r from-emerald-500 to-green-500 text-white':
-                    r.status==='Cancelled'?'bg-gradient-to-r from-red-500 to-pink-500 text-white':
-                    r.status==='No Show'?'bg-gradient-to-r from-gray-500 to-slate-500 text-white':
-                    r.status==='In Progress'?'bg-gradient-to-r from-blue-500 to-indigo-500 text-white':
-                    r.status==='Confirmed'?'bg-gradient-to-r from-green-500 to-emerald-500 text-white':
-                    'bg-gradient-to-r from-amber-500 to-orange-500 text-white'
-                  }`}>
-                    {r.status === 'Completed' ? (
-                      <>
-                        <FiCheckCircle className="w-4 h-4" />
-                        <span>Completed</span>
-                      </>
-                    ) : r.status === 'Cancelled' ? (
-                      <>
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        <span>Cancelled</span>
-                      </>
-                    ) : r.status === 'No Show' ? (
-                      <>
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                        </svg>
-                        <span>No Show</span>
-                      </>
-                    ) : r.status === 'In Progress' ? (
-                      <>
-                        <FiActivity className="w-4 h-4" />
-                        <span>In Progress</span>
-                      </>
-                    ) : r.status === 'Confirmed' ? (
-                      <>
-                        <FiCheckCircle className="w-4 h-4" />
-                        <span>Confirmed</span>
-                      </>
-                    ) : (
-                      <>
-                        <FiCalendar className="w-4 h-4" />
-                        <span>{r.status}</span>
-                      </>
-                    )}
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleEdit(r)}
-                      className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => { setDeleteId(r.id || r._id); setDeleteConfirm(true); }}
-                      className="px-6 py-3 rounded-xl bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                      Delete
-                    </button>
-                  </div>
-                </div>
               </div>
-            </div>
             </div>
           ))}
           {filtered.length===0 && (
@@ -883,7 +927,7 @@ export default function ReceptionAppointments(){
                 </button>
                 <button
                   onClick={confirmDeleteAppointment}
-                  className="flex-1 px-6 py-3 rounded-xl bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                  className="flex-1 px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200"
                 >
                   Delete
                 </button>

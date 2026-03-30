@@ -23,16 +23,16 @@ const TYPE_TO_SPECIES = {
 }
 
 const BREEDS = {
-  Dog: ['German Shepherd','Labrador Retriever','Rottweiler','Golden Retriever','Poodle','Bulldog','Siberian Husky','Pug','Beagle'],
-  Cat: ['Persian','Siamese','Maine Coon','Bengal','British Shorthair','Ragdoll','Sphynx'],
-  Chicken: ['Rhode Island Red','Leghorn','Silkie','Plymouth Rock'],
-  Rabbit: ['Netherland Dwarf','Lionhead','Rex'],
-  Parrot: ['African Grey','Budgerigar','Macaw','Cockatiel'],
-  Pigeon: ['Homing Pigeon','King Pigeon'],
-  Horse: ['Arabian','Thoroughbred','Quarter Horse'],
-  Cow: ['Holstein Friesian','Jersey','Sahiwal'],
-  Sheep: ['Merino','Dorper'],
-  Goat: ['Boer','Beetal','Kamori']
+  Dog: ['German Shepherd', 'Labrador Retriever', 'Rottweiler', 'Golden Retriever', 'Poodle', 'Bulldog', 'Siberian Husky', 'Pug', 'Beagle'],
+  Cat: ['Persian', 'Siamese', 'Maine Coon', 'Bengal', 'British Shorthair', 'Ragdoll', 'Sphynx'],
+  Chicken: ['Rhode Island Red', 'Leghorn', 'Silkie', 'Plymouth Rock'],
+  Rabbit: ['Netherland Dwarf', 'Lionhead', 'Rex'],
+  Parrot: ['African Grey', 'Budgerigar', 'Macaw', 'Cockatiel'],
+  Pigeon: ['Homing Pigeon', 'King Pigeon'],
+  Horse: ['Arabian', 'Thoroughbred', 'Quarter Horse'],
+  Cow: ['Holstein Friesian', 'Jersey', 'Sahiwal'],
+  Sheep: ['Merino', 'Dorper'],
+  Goat: ['Boer', 'Beetal', 'Kamori']
 }
 
 const getBreedOptionsForType = (type, custom = {}) => {
@@ -44,11 +44,11 @@ const getBreedOptionsForType = (type, custom = {}) => {
 
 // Helper to compute next due date based on shot stage
 const calcNextDue = (dateStr, stage) => {
-  if(!dateStr || !stage) return ''
+  if (!dateStr || !stage) return ''
   const dt = new Date(dateStr)
-  const days = ['1st','2nd','3rd'].includes(stage) ? 21 : 365
+  const days = ['1st', '2nd', '3rd'].includes(stage) ? 21 : 365
   dt.setDate(dt.getDate() + days)
-  return dt.toISOString().slice(0,10)
+  return dt.toISOString().slice(0, 10)
 }
 
 const calcDewormingNext = (dateStr, daysVal) => {
@@ -58,18 +58,18 @@ const calcDewormingNext = (dateStr, daysVal) => {
     const d = Number(daysVal || 90)
     const add = Number.isFinite(d) ? d : 90
     dt.setDate(dt.getDate() + add)
-    return dt.toISOString().slice(0,10)
+    return dt.toISOString().slice(0, 10)
   } catch { return '' }
 }
 
 const toISODate = (value) => {
   if (!value) return ''
   if (typeof value === 'string') {
-    if (value.length >= 10) return value.slice(0,10)
-    try { return new Date(value).toISOString().slice(0,10) } catch { return '' }
+    if (value.length >= 10) return value.slice(0, 10)
+    try { return new Date(value).toISOString().slice(0, 10) } catch { return '' }
   }
   try {
-    return new Date(value).toISOString().slice(0,10)
+    return new Date(value).toISOString().slice(0, 10)
   } catch {
     return ''
   }
@@ -97,8 +97,8 @@ const calcAgeParts = (dobStr, refDate = new Date()) => {
     const dob = new Date(dobStr)
     const t = new Date(refDate)
     if (isNaN(dob.getTime())) return null
-    t.setHours(0,0,0,0)
-    dob.setHours(0,0,0,0)
+    t.setHours(0, 0, 0, 0)
+    dob.setHours(0, 0, 0, 0)
     let y = t.getFullYear() - dob.getFullYear()
     let m = t.getMonth() - dob.getMonth()
     let d = t.getDate() - dob.getDate()
@@ -129,8 +129,8 @@ const ageFromDOB = (dobStr) => {
 
 const dobFromAgeText = (text, refDate = new Date()) => {
   if (!text) return ''
-  const s = String(text).toLowerCase().replace(/\//g,' ')
-  let y=0,m=0,d=0
+  const s = String(text).toLowerCase().replace(/\//g, ' ')
+  let y = 0, m = 0, d = 0
   const re = /(\d+)\s*(years?|year|y|months?|month|m|weeks?|week|w|days?|day|d)/g
   let match
   while ((match = re.exec(s))) {
@@ -141,27 +141,27 @@ const dobFromAgeText = (text, refDate = new Date()) => {
     else if (u === 'w') d += n * 7
     else if (u === 'd') d += n
   }
-  if (y===0 && m===0 && d===0) {
+  if (y === 0 && m === 0 && d === 0) {
     const parts = s.split(/\s+/).filter(Boolean)
-    if (parts.length === 3 && parts.every(p=>/^\d+$/.test(p))) {
-      y = parseInt(parts[0],10); m = parseInt(parts[1],10); d = parseInt(parts[2],10)
+    if (parts.length === 3 && parts.every(p => /^\d+$/.test(p))) {
+      y = parseInt(parts[0], 10); m = parseInt(parts[1], 10); d = parseInt(parts[2], 10)
     }
   }
   const ref = new Date(refDate)
-  ref.setHours(0,0,0,0)
+  ref.setHours(0, 0, 0, 0)
   const dob = new Date(ref)
   dob.setFullYear(dob.getFullYear() - y)
   dob.setMonth(dob.getMonth() - m)
   dob.setDate(dob.getDate() - d)
-  return dob.toISOString().slice(0,10)
+  return dob.toISOString().slice(0, 10)
 }
 
 // Helper to generate a Client ID
 const makeClientId = () => `CL-${Date.now()}`
 
-export default function ReceptionPets(){
+export default function ReceptionPets() {
   const receptionAuth = useMemo(() => {
-    try { return JSON.parse(localStorage.getItem('reception_auth')||'{}') } catch { return {} }
+    try { return JSON.parse(localStorage.getItem('reception_auth') || '{}') } catch { return {} }
   }, [])
   const { settings, save: saveSettings } = useSettings()
   const hospital = useMemo(() => ({
@@ -217,7 +217,7 @@ export default function ReceptionPets(){
     deworming: { name: 'Deworming', dateGiven: '', nextDue: '', vet: '', days: 90 },
     complaint: { visitType: 'Emergency', chiefComplaint: '' },
     clinic: {
-      dateOfRegistration: new Date().toISOString().slice(0,10),
+      dateOfRegistration: new Date().toISOString().slice(0, 10),
       registeredBy: receptionAuth?.username || 'Reception',
       consultingVet: '',
       recordEntered: 'Yes',
@@ -247,8 +247,8 @@ export default function ReceptionPets(){
   const [payError, setPayError] = useState('')
   const [paymentSummary, setPaymentSummary] = useState({ due: 0, totalBilled: 0, totalReceived: 0, totalPending: 0, lastPayment: null, consultant: { paidBefore: false, amount: 0, date: '' }, modules: {}, pets: [], entries: [] })
   const [dateRange, setDateRange] = useState({
-    fromDate: new Date().toISOString().slice(0,10),
-    toDate: new Date().toISOString().slice(0,10)
+    fromDate: new Date().toISOString().slice(0, 10),
+    toDate: new Date().toISOString().slice(0, 10)
   })
   const [showAll, setShowAll] = useState(false)
   const [taxonomy, setTaxonomy] = useState([])
@@ -261,29 +261,29 @@ export default function ReceptionPets(){
     error: ''
   })
   const [customBreeds, setCustomBreeds] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('custom_breeds')||'{}') } catch { return {} }
+    try { return JSON.parse(localStorage.getItem('custom_breeds') || '{}') } catch { return {} }
   })
   const [breedDialog, setBreedDialog] = useState({ open: false, typeName: '', breedName: '', error: '' })
   const [vaccineItems, setVaccineItems] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('vaccine_items')||'["Rabies","DHPP/L • FVRCP","Others"]') } catch { return ['Rabies','DHPP/L • FVRCP','Others'] }
+    try { return JSON.parse(localStorage.getItem('vaccine_items') || '["Rabies","DHPP/L • FVRCP","Others"]') } catch { return ['Rabies', 'DHPP/L • FVRCP', 'Others'] }
   })
   const [dewormItems, setDewormItems] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('deworm_items')||'["Albendazole","Mebendazole","Pyrantel Pamoate","Fenbendazole","Ivermectin","Deworming"]') } catch { return ['Albendazole','Mebendazole','Pyrantel Pamoate','Fenbendazole','Ivermectin','Deworming'] }
+    try { return JSON.parse(localStorage.getItem('deworm_items') || '["Albendazole","Mebendazole","Pyrantel Pamoate","Fenbendazole","Ivermectin","Deworming"]') } catch { return ['Albendazole', 'Mebendazole', 'Pyrantel Pamoate', 'Fenbendazole', 'Ivermectin', 'Deworming'] }
   })
   const [openVaccIndex, setOpenVaccIndex] = useState(-1)
   const [openDeworm, setOpenDeworm] = useState(false)
-  const [quickAdd, setQuickAdd] = useState({ open:false, type:'', value:'', targetIndex:-1 })
-  const [manageVaccines, setManageVaccines] = useState({ open:false, items:[], newItem:'', error:'' })
-  const [manageDeworm, setManageDeworm] = useState({ open:false, items:[], newItem:'', error:'' })
+  const [quickAdd, setQuickAdd] = useState({ open: false, type: '', value: '', targetIndex: -1 })
+  const [manageVaccines, setManageVaccines] = useState({ open: false, items: [], newItem: '', error: '' })
+  const [manageDeworm, setManageDeworm] = useState({ open: false, items: [], newItem: '', error: '' })
   const [dismissedAlerts, setDismissedAlerts] = useState(() => {
-    try { return new Set(JSON.parse(localStorage.getItem('dismissed_alerts')||'[]')) } catch { return new Set() }
+    try { return new Set(JSON.parse(localStorage.getItem('dismissed_alerts') || '[]')) } catch { return new Set() }
   })
-  const persistDismissed = (setObj) => { try { localStorage.setItem('dismissed_alerts', JSON.stringify(Array.from(setObj))) } catch {} }
+  const persistDismissed = (setObj) => { try { localStorage.setItem('dismissed_alerts', JSON.stringify(Array.from(setObj))) } catch { } }
   const dismissAlert = (key) => setDismissedAlerts(prev => { const next = new Set(prev); next.add(key); persistDismissed(next); return next })
   const upcomingVaccines = useMemo(() => {
     if (!rows?.length) return []
-    const tomorrow = new Date(); tomorrow.setHours(0,0,0,0); tomorrow.setDate(tomorrow.getDate() + 1)
-    const target = tomorrow.toISOString().slice(0,10)
+    const tomorrow = new Date(); tomorrow.setHours(0, 0, 0, 0); tomorrow.setDate(tomorrow.getDate() + 1)
+    const target = tomorrow.toISOString().slice(0, 10)
     const alerts = []
     rows.forEach(row => {
       const vaccines = row?.details?.vaccines
@@ -292,7 +292,7 @@ export default function ReceptionPets(){
       vaccines.forEach(v => {
         const due = toISODate(v?.nextDue)
         if (!due || due !== target) return
-        const key = `vax|${pid}|${String(v?.name||'').trim()}|${due}`
+        const key = `vax|${pid}|${String(v?.name || '').trim()}|${due}`
         if (dismissedAlerts.has(key)) return
         alerts.push({
           key,
@@ -310,8 +310,8 @@ export default function ReceptionPets(){
 
   const upcomingDeworm = useMemo(() => {
     if (!rows?.length) return []
-    const tomorrow = new Date(); tomorrow.setHours(0,0,0,0); tomorrow.setDate(tomorrow.getDate() + 1)
-    const target = tomorrow.toISOString().slice(0,10)
+    const tomorrow = new Date(); tomorrow.setHours(0, 0, 0, 0); tomorrow.setDate(tomorrow.getDate() + 1)
+    const target = tomorrow.toISOString().slice(0, 10)
     const alerts = []
     rows.forEach(row => {
       const dew = row?.details?.deworming
@@ -330,7 +330,7 @@ export default function ReceptionPets(){
     try {
       const cid = (form?.owner?.clientId || form?.owner?.ownerId || '').trim()
       if (!cid) return []
-      return (rows || []).filter(p => 
+      return (rows || []).filter(p =>
         (p.clientId && String(p.clientId).trim() === cid) ||
         (p.details?.owner?.clientId && String(p.details.owner.clientId).trim() === cid) ||
         (p.details?.owner?.ownerId && String(p.details.owner.ownerId).trim() === cid)
@@ -350,16 +350,16 @@ export default function ReceptionPets(){
           localStorage.setItem('taxonomy_list', JSON.stringify(list))
           return
         }
-      } catch {}
+      } catch { }
 
       // Fallback to localStorage
       try {
-        const stored = JSON.parse(localStorage.getItem('taxonomy_list')||'[]')
+        const stored = JSON.parse(localStorage.getItem('taxonomy_list') || '[]')
         if (Array.isArray(stored) && stored.length) {
           setTaxonomy(stored)
           return
         }
-      } catch {}
+      } catch { }
 
       // Seed minimal defaults and upsert to API (best-effort)
       const defaults = [
@@ -383,7 +383,7 @@ export default function ReceptionPets(){
       localStorage.setItem('taxonomy_list', JSON.stringify(defaults))
       try {
         await Promise.all(defaults.map(d => taxonomyAPI.upsert(d.commonName, d.speciesName)))
-      } catch {}
+      } catch { }
     } finally {
       setTaxLoading(false)
     }
@@ -420,7 +420,7 @@ export default function ReceptionPets(){
               consultant = { paidBefore: paid, amount: paid ? amt : 0, date: paid ? date : '' }
             }
           }
-        } catch {}
+        } catch { }
         setPaymentSummary({
           due: toNum(data.totals?.currentDue),
           totalBilled: toNum(data.totals?.totalBilled),
@@ -433,13 +433,13 @@ export default function ReceptionPets(){
           entries
         })
         return
-      } catch {}
+      } catch { }
       let sales = []
       let procs = []
       try {
         const s = await pharmacySalesAPI.getAll()
         sales = (s.data || []).filter(x => (x.clientId || '').trim() === cid)
-      } catch {}
+      } catch { }
       try {
         try {
           const r = await proceduresAPI.getAll(`?clientId=${cid}`)
@@ -448,7 +448,7 @@ export default function ReceptionPets(){
           const r = await proceduresAPI.getAll('')
           procs = (r.data || []).filter(x => (x.clientId || '').trim() === cid)
         }
-      } catch {}
+      } catch { }
 
       const entries = []
       sales.forEach(s => {
@@ -481,17 +481,17 @@ export default function ReceptionPets(){
           mode: p.paymentMethod || p.paymentMode || '—'
         })
       })
-      entries.sort((a,b)=> new Date(b.date||0) - new Date(a.date||0))
+      entries.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0))
 
       let due = 0
       try {
         const d = await pharmacyDuesAPI.getByClient(cid)
         due = toNum(d.previousDue || d.data?.previousDue || d.data?.totalDue)
-      } catch {}
+      } catch { }
 
-      const totalBilled = entries.reduce((sum,e)=> sum + toNum(e.amount), 0)
-      const totalReceived = entries.reduce((sum,e)=> sum + toNum(e.received), 0)
-      const totalPending = entries.reduce((sum,e)=> sum + Math.max(0, toNum(e.pending)), 0)
+      const totalBilled = entries.reduce((sum, e) => sum + toNum(e.amount), 0)
+      const totalReceived = entries.reduce((sum, e) => sum + toNum(e.received), 0)
+      const totalPending = entries.reduce((sum, e) => sum + Math.max(0, toNum(e.pending)), 0)
       const lastPaid = entries.find(e => toNum(e.received) > 0)
 
       // Build per-pet list from local rows (consultant defaults to Pending in fallback)
@@ -540,9 +540,9 @@ export default function ReceptionPets(){
         const cid = (form.owner.clientId || form.owner.ownerId || '').trim()
         const focusPetId = (currentId || form?.pet?.petId || '').toString()
         if (cid) loadClientPayments(cid, focusPetId)
-      } catch {}
+      } catch { }
     }
-    const onStorage = (e) => { try { if (e.key === 'financial_updated_at') refresh() } catch {} }
+    const onStorage = (e) => { try { if (e.key === 'financial_updated_at') refresh() } catch { } }
     window.addEventListener('financial-updated', refresh)
     window.addEventListener('storage', onStorage)
     return () => {
@@ -552,11 +552,11 @@ export default function ReceptionPets(){
   }, [form.owner.clientId, form.owner.ownerId, currentId, form?.pet?.petId])
 
   const petNames = useMemo(() => {
-    return Array.from(new Set((taxonomy||[]).map(t => t.commonName))).sort()
+    return Array.from(new Set((taxonomy || []).map(t => t.commonName))).sort()
   }, [taxonomy])
 
   const speciesOptions = useMemo(() => {
-    const base = Array.from(new Set((taxonomy||[]).map(t => t.speciesName))).sort()
+    const base = Array.from(new Set((taxonomy || []).map(t => t.speciesName))).sort()
     const current = form.pet?.species ? [form.pet.species] : []
     return Array.from(new Set([...current, ...base]))
   }, [taxonomy, form.pet.species])
@@ -581,7 +581,7 @@ export default function ReceptionPets(){
           const list = JSON.parse(e.newValue || '[]')
           if (Array.isArray(list)) setDoctors(list)
         }
-      } catch {}
+      } catch { }
     }
     window.addEventListener('storage', onStorage)
     return () => window.removeEventListener('storage', onStorage)
@@ -593,12 +593,12 @@ export default function ReceptionPets(){
       if (mode === 'view') return
       const sel = String(form?.clinic?.consultingVet || '').trim()
       if (!sel) return
-      const doc = (doctors||[]).find(d => String(d?.name || d?.username || '').trim() === sel)
+      const doc = (doctors || []).find(d => String(d?.name || d?.username || '').trim() === sel)
       const feeStr = doc && (doc.fee != null && doc.fee !== '') ? String(doc.fee) : ''
       if (feeStr && feeStr !== String(form?.clinic?.consultantFees || '')) {
         setForm(prev => ({ ...prev, clinic: { ...prev.clinic, consultantFees: feeStr } }))
       }
-    } catch {}
+    } catch { }
   }, [form.clinic.consultingVet, doctors, mode])
 
   const loadDoctors = async () => {
@@ -616,7 +616,7 @@ export default function ReceptionPets(){
     try {
       const cached = JSON.parse(localStorage.getItem('doctor_profiles') || '[]')
       if (Array.isArray(cached)) setDoctors(cached)
-    } catch {}
+    } catch { }
   }
 
   const upsertTaxonomy = async (commonName, speciesName) => {
@@ -663,20 +663,20 @@ export default function ReceptionPets(){
     }
     await upsertTaxonomy(commonName, speciesName)
     if (taxonomyDialog.type === 'name') {
-      updateSection('pet','petName', commonName)
-      updateSection('pet','species', speciesName)
+      updateSection('pet', 'petName', commonName)
+      updateSection('pet', 'species', speciesName)
     } else {
-      updateSection('pet','species', speciesName)
+      updateSection('pet', 'species', speciesName)
     }
     closeTaxonomyDialog()
   }
 
   const handlePetNameChange = (value) => {
-    updateSection('pet','petName', value)
+    updateSection('pet', 'petName', value)
   }
 
   const handleSpeciesChange = (value) => {
-    updateSection('pet','species', value)
+    updateSection('pet', 'species', value)
   }
 
   const handleSpeciesSelectChange = (value) => {
@@ -696,7 +696,7 @@ export default function ReceptionPets(){
       setBreedDialog({ open: true, typeName: form.pet.type || '', breedName: '', error: '' })
       return
     }
-    updateSection('pet','breed', value)
+    updateSection('pet', 'breed', value)
   }
 
   const handleTypeChange = (value) => {
@@ -704,13 +704,13 @@ export default function ReceptionPets(){
       openTaxonomyDialog('name')
       return
     }
-    updateSection('pet','type', value)
+    updateSection('pet', 'type', value)
     const match = taxonomy.find(t => t.commonName === value)
     const species = match?.speciesName || TYPE_TO_SPECIES[value] || ''
-    updateSection('pet','species', species)
-    updateSection('pet','breed', '')
+    updateSection('pet', 'species', species)
+    updateSection('pet', 'breed', '')
     if (species && value) {
-      try { upsertTaxonomy(value, species) } catch {}
+      try { upsertTaxonomy(value, species) } catch { }
     }
   }
 
@@ -725,14 +725,14 @@ export default function ReceptionPets(){
       const list = Array.isArray(prev?.[typeName]) ? prev[typeName] : []
       const nextList = Array.from(new Set([...list, breedName])).sort()
       const next = { ...(prev || {}), [typeName]: nextList }
-      try { localStorage.setItem('custom_breeds', JSON.stringify(next)) } catch {}
+      try { localStorage.setItem('custom_breeds', JSON.stringify(next)) } catch { }
       return next
     })
     if (typeName !== form.pet.type) {
       handleTypeChange(typeName)
-      setTimeout(() => { updateSection('pet','breed', breedName) }, 0)
+      setTimeout(() => { updateSection('pet', 'breed', breedName) }, 0)
     } else {
-      updateSection('pet','breed', breedName)
+      updateSection('pet', 'breed', breedName)
     }
     setBreedDialog({ open: false, typeName: '', breedName: '', error: '' })
   }
@@ -740,17 +740,17 @@ export default function ReceptionPets(){
   // Load pets and taxonomy from MongoDB on mount
   useEffect(() => {
     try {
-      const cached = JSON.parse(localStorage.getItem('reception_pets')||'[]')
+      const cached = JSON.parse(localStorage.getItem('reception_pets') || '[]')
       if (Array.isArray(cached) && cached.length) setRows(cached)
-    } catch {}
+    } catch { }
     loadPets()
     loadTaxonomy()
     loadDoctors()
     // Load owners for lookup (from localStorage)
     try {
-      const storedOwners = JSON.parse(localStorage.getItem('reception_owners')||'[]')
+      const storedOwners = JSON.parse(localStorage.getItem('reception_owners') || '[]')
       if (Array.isArray(storedOwners)) setOwners(storedOwners)
-    } catch {}
+    } catch { }
   }, [])
 
   const loadPets = async () => {
@@ -770,7 +770,7 @@ export default function ReceptionPets(){
       try {
         const stored = localStorage.getItem('reception_pets')
         if (stored) setRows(JSON.parse(stored))
-      } catch (e) {}
+      } catch (e) { }
     } finally {
       setLoading(false)
     }
@@ -779,14 +779,14 @@ export default function ReceptionPets(){
   // Persist owners when changed indirectly via submit
   const saveOwner = owner => {
     let list
-    try { list = JSON.parse(localStorage.getItem('reception_owners')||'[]') } catch { list = [] }
-    const existing = list.find(o => 
-      (o.ownerId && o.ownerId===owner.ownerId) ||
-      (o.clientId && o.clientId===owner.clientId) ||
-      (o.nic && o.nic===owner.nic) ||
-      (o.contact && o.contact===owner.contact)
+    try { list = JSON.parse(localStorage.getItem('reception_owners') || '[]') } catch { list = [] }
+    const existing = list.find(o =>
+      (o.ownerId && o.ownerId === owner.ownerId) ||
+      (o.clientId && o.clientId === owner.clientId) ||
+      (o.nic && o.nic === owner.nic) ||
+      (o.contact && o.contact === owner.contact)
     )
-    list = existing ? list.map(o => (o.ownerId===existing.ownerId? owner : o)) : [{...owner}, ...list]
+    list = existing ? list.map(o => (o.ownerId === existing.ownerId ? owner : o)) : [{ ...owner }, ...list]
     localStorage.setItem('reception_owners', JSON.stringify(list))
   }
 
@@ -795,33 +795,33 @@ export default function ReceptionPets(){
     setForm(prev => ({ ...prev, [section]: { ...prev[section], [key]: value } }))
   }
   const saveVaccineItems = async (items) => {
-    const next = Array.from(new Set((items||[]).map(s=>String(s||'').trim()).filter(Boolean)))
+    const next = Array.from(new Set((items || []).map(s => String(s || '').trim()).filter(Boolean)))
     setVaccineItems(next)
-    try { localStorage.setItem('vaccine_items', JSON.stringify(next)) } catch {}
-    try { await saveSettings({ customSettings: { ...(settings.customSettings||{}), vaccineItems: next } }) } catch {}
+    try { localStorage.setItem('vaccine_items', JSON.stringify(next)) } catch { }
+    try { await saveSettings({ customSettings: { ...(settings.customSettings || {}), vaccineItems: next } }) } catch { }
   }
   const saveDewormItems = async (items) => {
-    const next = Array.from(new Set((items||[]).map(s=>String(s||'').trim()).filter(Boolean)))
+    const next = Array.from(new Set((items || []).map(s => String(s || '').trim()).filter(Boolean)))
     setDewormItems(next)
-    try { localStorage.setItem('deworm_items', JSON.stringify(next)) } catch {}
-    try { await saveSettings({ customSettings: { ...(settings.customSettings||{}), dewormItems: next } }) } catch {}
+    try { localStorage.setItem('deworm_items', JSON.stringify(next)) } catch { }
+    try { await saveSettings({ customSettings: { ...(settings.customSettings || {}), dewormItems: next } }) } catch { }
   }
   const ensureVaccineItem = (name) => {
-    const n = String(name||'').trim(); if(!n) return
-    setVaccineItems(prev => { if (prev.includes(n)) return prev; const next=[...prev,n]; try{localStorage.setItem('vaccine_items', JSON.stringify(next))}catch{}; return next })
+    const n = String(name || '').trim(); if (!n) return
+    setVaccineItems(prev => { if (prev.includes(n)) return prev; const next = [...prev, n]; try { localStorage.setItem('vaccine_items', JSON.stringify(next)) } catch { }; return next })
   }
   const ensureDewormItem = (name) => {
-    const n = String(name||'').trim(); if(!n) return
-    setDewormItems(prev => { if (prev.includes(n)) return prev; const next=[...prev,n]; try{localStorage.setItem('deworm_items', JSON.stringify(next))}catch{}; return next })
+    const n = String(name || '').trim(); if (!n) return
+    setDewormItems(prev => { if (prev.includes(n)) return prev; const next = [...prev, n]; try { localStorage.setItem('deworm_items', JSON.stringify(next)) } catch { }; return next })
   }
   const updateVaccine = (idx, field, value) => {
     setForm(prev => {
       const vaccines = [...prev.vaccines]
       const v = { ...vaccines[idx], [field]: value }
-      if(field==='dateGiven' || field==='shotStage') {
+      if (field === 'dateGiven' || field === 'shotStage') {
         v.nextDue = calcNextDue(v.dateGiven, v.shotStage)
       }
-      if(field==='name') { ensureVaccineItem(value) }
+      if (field === 'name') { ensureVaccineItem(value) }
       vaccines[idx] = v
       return { ...prev, vaccines }
     })
@@ -834,7 +834,7 @@ export default function ReceptionPets(){
       const next = { ...base, [field]: value }
       if (field === 'days') {
         const d = Number(value)
-        next.days = Number.isFinite(d) && d>0 ? d : 90
+        next.days = Number.isFinite(d) && d > 0 ? d : 90
         if (next.dateGiven) next.nextDue = calcDewormingNext(next.dateGiven, next.days)
       }
       if (field === 'dateGiven') {
@@ -845,20 +845,20 @@ export default function ReceptionPets(){
     })
   }
 
-  const openManageVaccines = () => setManageVaccines({ open:true, items:[...vaccineItems], newItem:'', error:'' })
-  const openManageDeworm = () => setManageDeworm({ open:true, items:[...dewormItems], newItem:'', error:'' })
-  const closeManageVaccines = () => setManageVaccines(prev=>({ ...prev, open:false, error:'' }))
-  const closeManageDeworm = () => setManageDeworm(prev=>({ ...prev, open:false, error:'' }))
-  const addVaccineItem = () => setManageVaccines(prev=>{ const n=(prev.newItem||'').trim(); if(!n) return prev; const items=Array.from(new Set([...prev.items, n])); return { ...prev, items, newItem:'' } })
-  const addDewormItem = () => setManageDeworm(prev=>{ const n=(prev.newItem||'').trim(); if(!n) return prev; const items=Array.from(new Set([...prev.items, n])); return { ...prev, items, newItem:'' } })
-  const removeVaccineItem = (i) => setManageVaccines(prev=>({ ...prev, items: prev.items.filter((_,idx)=>idx!==i) }))
-  const removeDewormItem = (i) => setManageDeworm(prev=>({ ...prev, items: prev.items.filter((_,idx)=>idx!==i) }))
-  const setManageVaccineItem = (i, text) => setManageVaccines(prev=>({ ...prev, items: prev.items.map((it,idx)=> idx===i ? text : it) }))
-  const setManageDewormItem = (i, text) => setManageDeworm(prev=>({ ...prev, items: prev.items.map((it,idx)=> idx===i ? text : it) }))
+  const openManageVaccines = () => setManageVaccines({ open: true, items: [...vaccineItems], newItem: '', error: '' })
+  const openManageDeworm = () => setManageDeworm({ open: true, items: [...dewormItems], newItem: '', error: '' })
+  const closeManageVaccines = () => setManageVaccines(prev => ({ ...prev, open: false, error: '' }))
+  const closeManageDeworm = () => setManageDeworm(prev => ({ ...prev, open: false, error: '' }))
+  const addVaccineItem = () => setManageVaccines(prev => { const n = (prev.newItem || '').trim(); if (!n) return prev; const items = Array.from(new Set([...prev.items, n])); return { ...prev, items, newItem: '' } })
+  const addDewormItem = () => setManageDeworm(prev => { const n = (prev.newItem || '').trim(); if (!n) return prev; const items = Array.from(new Set([...prev.items, n])); return { ...prev, items, newItem: '' } })
+  const removeVaccineItem = (i) => setManageVaccines(prev => ({ ...prev, items: prev.items.filter((_, idx) => idx !== i) }))
+  const removeDewormItem = (i) => setManageDeworm(prev => ({ ...prev, items: prev.items.filter((_, idx) => idx !== i) }))
+  const setManageVaccineItem = (i, text) => setManageVaccines(prev => ({ ...prev, items: prev.items.map((it, idx) => idx === i ? text : it) }))
+  const setManageDewormItem = (i, text) => setManageDeworm(prev => ({ ...prev, items: prev.items.map((it, idx) => idx === i ? text : it) }))
   const saveManageVaccines = () => { saveVaccineItems(manageVaccines.items); closeManageVaccines() }
   const saveManageDeworm = () => { saveDewormItems(manageDeworm.items); closeManageDeworm() }
-  const handleVaccineSelect = (idx, value) => { if (value==='__add_vaccine__'){ openManageVaccines(); return } updateVaccine(idx,'name', value) }
-  const handleDewormSelect = (value) => { if (value==='__add_deworm__'){ openManageDeworm(); return } updateDeworming('name', value) }
+  const handleVaccineSelect = (idx, value) => { if (value === '__add_vaccine__') { openManageVaccines(); return } updateVaccine(idx, 'name', value) }
+  const handleDewormSelect = (value) => { if (value === '__add_deworm__') { openManageDeworm(); return } updateDeworming('name', value) }
 
   // Sync lists from DB settings when available
   useEffect(() => {
@@ -866,24 +866,24 @@ export default function ReceptionPets(){
       const s = settings?.customSettings || {}
       if (Array.isArray(s.vaccineItems) && s.vaccineItems.length) setVaccineItems(Array.from(new Set(s.vaccineItems)))
       if (Array.isArray(s.dewormItems) && s.dewormItems.length) setDewormItems(Array.from(new Set(s.dewormItems)))
-    } catch {}
+    } catch { }
   }, [settings?.customSettings])
 
   const openQuickAdd = (type, targetIndex = -1, preset = '') => {
-    setQuickAdd({ open:true, type, value:preset, targetIndex })
+    setQuickAdd({ open: true, type, value: preset, targetIndex })
   }
   const saveQuickAdd = async () => {
-    const name = (quickAdd.value||'').trim(); if(!name) { setQuickAdd(prev=>({ ...prev, open:false })); return }
+    const name = (quickAdd.value || '').trim(); if (!name) { setQuickAdd(prev => ({ ...prev, open: false })); return }
     if (quickAdd.type === 'vaccine') {
-      await saveVaccineItems([ ...vaccineItems, name ])
+      await saveVaccineItems([...vaccineItems, name])
       if (quickAdd.targetIndex >= 0) updateVaccine(quickAdd.targetIndex, 'name', name)
       setOpenVaccIndex(-1)
     } else if (quickAdd.type === 'deworm') {
-      await saveDewormItems([ ...dewormItems, name ])
+      await saveDewormItems([...dewormItems, name])
       updateDeworming('name', name)
       setOpenDeworm(false)
     }
-    setQuickAdd({ open:false, type:'', value:'', targetIndex:-1 })
+    setQuickAdd({ open: false, type: '', value: '', targetIndex: -1 })
   }
 
   // Auto-fill owner only if ID matches (clientId/ownerId)
@@ -891,13 +891,13 @@ export default function ReceptionPets(){
     const { ownerId, clientId } = form.owner
     const cid = cidParam || clientId || ownerId
     if (!cid) return
-    const found = owners.find(o => (o.clientId===cid) || (o.ownerId===cid))
-    if(found) { 
+    const found = owners.find(o => (o.clientId === cid) || (o.ownerId === cid))
+    if (found) {
       setForm(prev => ({ ...prev, owner: { ...prev.owner, ...found } }))
       return
     }
     // Fallback: hydrate from existing pets in list
-    const matchPet = rows.find(p => (p.clientId && p.clientId===cid) || (p.details?.owner?.clientId===cid) || (p.details?.owner?.ownerId===cid))
+    const matchPet = rows.find(p => (p.clientId && p.clientId === cid) || (p.details?.owner?.clientId === cid) || (p.details?.owner?.ownerId === cid))
     if (matchPet) {
       const d = matchPet.details || {}
       const ow = d.owner || {}
@@ -927,35 +927,35 @@ export default function ReceptionPets(){
     }
 
     setClientIdValidation({ isValidating: true, error: '', isValid: true })
-    
+
     const validation = await validateClientId(clientId, mode === 'edit' ? currentId : null)
-    setClientIdValidation({ 
-      isValidating: false, 
+    setClientIdValidation({
+      isValidating: false,
       error: validation.isValid ? '' : validation.error,
-      isValid: validation.isValid 
+      isValid: validation.isValid
     })
   }
 
   // Validate Client ID uniqueness
   const validateClientId = async (clientId, excludeCurrentId = null) => {
     if (!clientId) return { isValid: true }
-    
+
     try {
       // Check against existing pets in database
       const response = await petsAPI.getAll()
       const existingPets = response.data || []
-      
-      const duplicate = existingPets.find(pet => 
-        pet.clientId === clientId && 
-        pet.id !== excludeCurrentId && 
+
+      const duplicate = existingPets.find(pet =>
+        pet.clientId === clientId &&
+        pet.id !== excludeCurrentId &&
         pet._id !== excludeCurrentId
       )
-      
+
       if (duplicate) {
         // Allow multiple pets under the same client; treat as valid
         return { isValid: true }
       }
-      
+
       return { isValid: true }
     } catch (error) {
       console.error('Error validating Client ID:', error)
@@ -966,13 +966,13 @@ export default function ReceptionPets(){
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (loading) return
-    
+
     try {
       setLoading(true)
       setError(null)
-      
+
       const clientId = form.owner.clientId || form.owner.ownerId || `CL-${Date.now()}`
-      
+
       // Validate Client ID uniqueness (skip for edit mode with same ID)
       const validation = await validateClientId(clientId, mode === 'edit' ? currentId : null)
       if (!validation.isValid) {
@@ -980,7 +980,7 @@ export default function ReceptionPets(){
         setLoading(false)
         return
       }
-      
+
       const ownerId = clientId
       const petId = form.pet.petId || `PET-${Date.now()}`
       const owner = { ...form.owner, ownerId, clientId }
@@ -993,22 +993,22 @@ export default function ReceptionPets(){
         const n = parseInt(m[1], 10)
         const unit = m[2]
         const d = new Date()
-        if (['day','days'].includes(unit)) d.setDate(d.getDate() - n)
-        else if (['week','weeks'].includes(unit)) d.setDate(d.getDate() - n*7)
-        else if (['month','months'].includes(unit)) d.setMonth(d.getMonth() - n)
-        else if (['year','years'].includes(unit)) d.setFullYear(d.getFullYear() - n)
-        return d.toISOString().slice(0,10)
+        if (['day', 'days'].includes(unit)) d.setDate(d.getDate() - n)
+        else if (['week', 'weeks'].includes(unit)) d.setDate(d.getDate() - n * 7)
+        else if (['month', 'months'].includes(unit)) d.setMonth(d.getMonth() - n)
+        else if (['year', 'years'].includes(unit)) d.setFullYear(d.getFullYear() - n)
+        return d.toISOString().slice(0, 10)
       }
       const usingApprox = !!form.pet.approxAge
-      const ageCapturedAt = usingApprox ? new Date().toISOString().slice(0,10) : ''
+      const ageCapturedAt = usingApprox ? new Date().toISOString().slice(0, 10) : ''
       const derivedDOB = (!form.pet.dateOfBirth && usingApprox) ? parseApproxAgeToDOB(form.pet.approxAge) : ''
-      const pet = { 
-        ...form.pet, 
-        petId, 
-        ownerId, 
-        dateOfBirth: form.pet.dateOfBirth || derivedDOB 
+      const pet = {
+        ...form.pet,
+        petId,
+        ownerId,
+        dateOfBirth: form.pet.dateOfBirth || derivedDOB
       }
-      
+
       const petData = {
         id: petId,
         clientId: clientId,
@@ -1079,7 +1079,7 @@ export default function ReceptionPets(){
           }
         },
         status: form?.life?.dead ? 'Expired' : 'Active',
-        dateOfDeath: form?.life?.dead ? (form?.life?.deathDate || new Date().toISOString().slice(0,10)) : undefined,
+        dateOfDeath: form?.life?.dead ? (form?.life?.deathDate || new Date().toISOString().slice(0, 10)) : undefined,
         deathNote: form?.life?.dead ? (form?.life?.deathNote || '') : undefined
       }
 
@@ -1101,27 +1101,27 @@ export default function ReceptionPets(){
       setForm(initialForm)
       setMode('create')
       setCurrentId('')
-      
+
       // Save owner to localStorage for autocomplete
       saveOwner(owner)
-      
-      try { 
-        addActivity({ 
-          user: 'Reception', 
-          text: `${mode === 'edit' ? 'Updated' : 'Registered'} pet: ${pet.petName}` 
-        }) 
-      } catch {}
-      
+
+      try {
+        addActivity({
+          user: 'Reception',
+          text: `${mode === 'edit' ? 'Updated' : 'Registered'} pet: ${pet.petName}`
+        })
+      } catch { }
+
       // Reload pets to ensure sync
       await loadPets()
-    try {
-      if (isOpen) {
-        const cidNow = (form?.owner?.clientId || form?.owner?.ownerId || '').trim()
-        const pidNow = (savedPet?.id || savedPet?._id || savedPet?.details?.pet?.petId || '').toString()
-        if (cidNow) await loadClientPayments(cidNow, pidNow)
-      }
-    } catch {}
-      
+      try {
+        if (isOpen) {
+          const cidNow = (form?.owner?.clientId || form?.owner?.ownerId || '').trim()
+          const pidNow = (savedPet?.id || savedPet?._id || savedPet?.details?.pet?.petId || '').toString()
+          if (cidNow) await loadClientPayments(cidNow, pidNow)
+        }
+      } catch { }
+
       try {
         const wasPaidBefore = !!paymentSummary?.consultant?.paidBefore
         const feeRaw = (petData?.details?.clinic?.consultantFees ?? savedPet?.details?.clinic?.consultantFees ?? savedPet?.consultantFees)
@@ -1130,9 +1130,9 @@ export default function ReceptionPets(){
           setReceipt(savedPet)
           setReceiptOpen(true)
         }
-        try { localStorage.setItem('financial_updated_at', String(Date.now())); window.dispatchEvent(new Event('financial-updated')) } catch {}
-      } catch {}
-      
+        try { localStorage.setItem('financial_updated_at', String(Date.now())); window.dispatchEvent(new Event('financial-updated')) } catch { }
+      } catch { }
+
     } catch (err) {
       console.error('Error saving pet:', err)
       setError(err.message || 'Failed to save pet')
@@ -1144,7 +1144,7 @@ export default function ReceptionPets(){
   const isDateInRange = (dateStr) => {
     if (showAll) return true
     if (!dateStr) return false
-    const d = new Date(dateStr).toISOString().slice(0,10)
+    const d = new Date(dateStr).toISOString().slice(0, 10)
     return d >= dateRange.fromDate && d <= dateRange.toDate
   }
 
@@ -1168,14 +1168,14 @@ export default function ReceptionPets(){
         owner.contact,
         pet.petId,
         pet.petName
-      ].some(v => String(v||'').toLowerCase().includes(s))
+      ].some(v => String(v || '').toLowerCase().includes(s))
       const dateField = d.clinic?.dateOfRegistration || r.createdAt || r.when
       const matchesDate = showAll ? true : isDateInRange(dateField)
       return matchesSearch && (s ? true : matchesDate)
     })
   }, [rows, query, dateRange.fromDate, dateRange.toDate, showAll])
 
-  const csvEscape = v => `"${String(v??'').replace(/"/g,'""')}"`
+  const csvEscape = v => `"${String(v ?? '').replace(/"/g, '""')}"`
   const importInputRef = useRef(null)
   const [importing, setImporting] = useState(false)
   const [exporting, setExporting] = useState(false)
@@ -1195,15 +1195,15 @@ export default function ReceptionPets(){
           setLoading(true)
           setError('')
           // Clear reception data (pets, appointments, procedure records)
-          try { await backupAPI.clearReception() } catch {}
+          try { await backupAPI.clearReception() } catch { }
           // Clear pharmacy data (sales, dues) so client directory totals are reset
-          try { await backupAPI.clearPharmacy() } catch {}
+          try { await backupAPI.clearPharmacy() } catch { }
           // Optional: clear other modules to ensure system-wide reset (lab, shop, doctor)
-          try { await backupAPI.clearLab() } catch {}
-          try { await backupAPI.clearShop() } catch {}
-          try { await backupAPI.clearDoctor() } catch {}
+          try { await backupAPI.clearLab() } catch { }
+          try { await backupAPI.clearShop() } catch { }
+          try { await backupAPI.clearDoctor() } catch { }
           await loadPets()
-          try { localStorage.setItem('data_reset_at', String(Date.now())); window.dispatchEvent(new Event('data-reset')) } catch {}
+          try { localStorage.setItem('data_reset_at', String(Date.now())); window.dispatchEvent(new Event('data-reset')) } catch { }
           setInfoDialog({ open: true, title: 'Delete All', message: 'All reception and pharmacy data have been cleared. Client Directory will reflect the changes after refresh.', okText: 'OK' })
         } catch (e) {
           setError(e?.message || 'Failed to clear data')
@@ -1220,40 +1220,40 @@ export default function ReceptionPets(){
       setImporting(true)
       const ext = file.name.toLowerCase().split('.').pop()
       let records = []
-      if (ext==='xlsx' || ext==='xls'){
-        try { await ensureXLSX() } catch {}
-        if(!window.XLSX) throw new Error('XLSX parser not available; please upload CSV')
+      if (ext === 'xlsx' || ext === 'xls') {
+        try { await ensureXLSX() } catch { }
+        if (!window.XLSX) throw new Error('XLSX parser not available; please upload CSV')
         const buf = await file.arrayBuffer()
-        const wb = window.XLSX.read(buf, { type:'array' })
+        const wb = window.XLSX.read(buf, { type: 'array' })
         const ws = wb.Sheets[wb.SheetNames[0]]
-        const rowsAoA = window.XLSX.utils.sheet_to_json(ws, { header:1, defval:'', raw:false })
-        const nk = s => String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'')
+        const rowsAoA = window.XLSX.utils.sheet_to_json(ws, { header: 1, defval: '', raw: false })
+        const nk = s => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '')
         let headerIndex = 0
-        for (let i=0;i<Math.min(rowsAoA.length, 10);i++){
+        for (let i = 0; i < Math.min(rowsAoA.length, 10); i++) {
           const r = rowsAoA[i]
           const set = new Set(r.map(nk))
           if (set.has('patientid') && (set.has('animalname') || set.has('petname')) && set.has('ownername')) { headerIndex = i; break }
         }
-        const header = (rowsAoA[headerIndex]||[]).map(h=>String(h||'').trim())
+        const header = (rowsAoA[headerIndex] || []).map(h => String(h || '').trim())
         const recs = []
-        for (let i=headerIndex+1; i<rowsAoA.length; i++){
+        for (let i = headerIndex + 1; i < rowsAoA.length; i++) {
           const row = rowsAoA[i]
-          if (!row || row.every(x=>String(x||'').trim()==='')) continue
+          if (!row || row.every(x => String(x || '').trim() === '')) continue
           const obj = {}
-          header.forEach((h,idx)=>{ obj[h] = row[idx] ?? '' })
+          header.forEach((h, idx) => { obj[h] = row[idx] ?? '' })
           recs.push(obj)
         }
         records = recs
       } else {
         const text = await file.text()
         const rows = parseCSVText(text)
-        if(rows.length===0) return
-        const header = rows[0].map(h=>String(h||'').trim())
-        for(let i=1;i<rows.length;i++){
+        if (rows.length === 0) return
+        const header = rows[0].map(h => String(h || '').trim())
+        for (let i = 1; i < rows.length; i++) {
           const row = rows[i]
-          if(row.every(x=>String(x||'').trim()==='')) continue
+          if (row.every(x => String(x || '').trim() === '')) continue
           const obj = {}
-          header.forEach((h,idx)=>{ obj[h] = row[idx] ?? '' })
+          header.forEach((h, idx) => { obj[h] = row[idx] ?? '' })
           records.push(obj)
         }
       }
@@ -1268,13 +1268,13 @@ export default function ReceptionPets(){
   const buildFinanceByClient = async () => {
     let sales = []
     let procs = []
-    try { const s = await pharmacySalesAPI.getAll(); sales = s.data||[] } catch {}
-    try { const p = await proceduresAPI.getAll(''); procs = p.data||[] } catch {}
-    const toNum = (v)=>{ if(v==null) return 0; const n=typeof v==='string'? Number(v.replace(/,/g,'')) : Number(v); return Number.isNaN(n)?0:n }
+    try { const s = await pharmacySalesAPI.getAll(); sales = s.data || [] } catch { }
+    try { const p = await proceduresAPI.getAll(''); procs = p.data || [] } catch { }
+    const toNum = (v) => { if (v == null) return 0; const n = typeof v === 'string' ? Number(v.replace(/,/g, '')) : Number(v); return Number.isNaN(n) ? 0 : n }
     const map = {}
-    sales.forEach(s=>{
-      const cid = (s.clientId||'').trim(); if(!cid) return
-      if(!map[cid]) map[cid] = { billed:0, received:0 }
+    sales.forEach(s => {
+      const cid = (s.clientId || '').trim(); if (!cid) return
+      if (!map[cid]) map[cid] = { billed: 0, received: 0 }
       const subtotal = toNum(s.subtotal)
       const discount = toNum(s.discount)
       const billed = toNum(s.totalAmount ?? (subtotal - discount))
@@ -1282,15 +1282,15 @@ export default function ReceptionPets(){
       map[cid].billed += billed
       map[cid].received += received
     })
-    procs.forEach(p=>{
-      const cid = (p.clientId||'').trim(); if(!cid) return
-      if(!map[cid]) map[cid] = { billed:0, received:0 }
+    procs.forEach(p => {
+      const cid = (p.clientId || '').trim(); if (!cid) return
+      if (!map[cid]) map[cid] = { billed: 0, received: 0 }
       const gt = toNum(p.grandTotal ?? (toNum(p.subtotal) + toNum(p.previousDues)))
       const recv = (p.receivedAmount != null) ? toNum(p.receivedAmount) : (p.receivable != null ? Math.max(0, gt - toNum(p.receivable)) : 0)
       map[cid].billed += gt
       map[cid].received += recv
     })
-    Object.keys(map).forEach(cid=>{ map[cid].balance = Math.max(0, map[cid].billed - map[cid].received) })
+    Object.keys(map).forEach(cid => { map[cid].balance = Math.max(0, map[cid].billed - map[cid].received) })
     return map
   }
 
@@ -1298,19 +1298,19 @@ export default function ReceptionPets(){
     try {
       setExporting(true)
       const fin = await buildFinanceByClient()
-      const headers = ['Patient ID','Pet Name','Client ID','Owner Name','Common Name','Species','DOB','Age','Gender','Contact','Receivable Total','Received Total','Balance']
-      const lines = filtered.map(r=>{
+      const headers = ['Patient ID', 'Pet Name', 'Client ID', 'Owner Name', 'Common Name', 'Species', 'DOB', 'Age', 'Gender', 'Contact', 'Receivable Total', 'Received Total', 'Balance']
+      const lines = filtered.map(r => {
         const d = r.details || {}
         const owner = d.owner || {}
         const pet = d.pet || {}
         const cid = (r.clientId || owner.clientId || '').trim()
-        const f = fin[cid] || { billed:0, received:0, balance:0 }
-        const dob = pet.dateOfBirth ? String(pet.dateOfBirth).slice(0,10) : ''
+        const f = fin[cid] || { billed: 0, received: 0, balance: 0 }
+        const dob = pet.dateOfBirth ? String(pet.dateOfBirth).slice(0, 10) : ''
         const row = [pet.petId || r.id, r.petName, cid, r.ownerName || owner.fullName, r.type || pet.type, r.species || pet.species, dob, r.age || pet.dobOrAge, r.gender || pet.gender, r.ownerContact || owner.contact, (f.billed - f.received), f.received, f.balance]
         return row.map(csvEscape).join(',')
       })
       const csv = [headers.join(','), ...lines].join('\n')
-      const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' })
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
@@ -1336,20 +1336,20 @@ export default function ReceptionPets(){
 
   const parseCSVText = (text) => {
     const rows = []
-    let i=0, field='', inQ=false, row=[]
-    while(i<text.length){
-      const c=text[i]
-      if(inQ){
-        if(c==='"' && text[i+1]==='"'){ field+='"'; i+=2; continue }
-        if(c==='"'){ inQ=false; i++; continue }
-        field+=c; i++; continue
+    let i = 0, field = '', inQ = false, row = []
+    while (i < text.length) {
+      const c = text[i]
+      if (inQ) {
+        if (c === '"' && text[i + 1] === '"') { field += '"'; i += 2; continue }
+        if (c === '"') { inQ = false; i++; continue }
+        field += c; i++; continue
       }
-      if(c==='"'){ inQ=true; i++; continue }
-      if(c===','){ row.push(field); field=''; i++; continue }
-      if(c==='\n' || c==='\r'){ if(field!==''||row.length){ row.push(field); rows.push(row); row=[]; field='' } ; i++; continue }
-      field+=c; i++
+      if (c === '"') { inQ = true; i++; continue }
+      if (c === ',') { row.push(field); field = ''; i++; continue }
+      if (c === '\n' || c === '\r') { if (field !== '' || row.length) { row.push(field); rows.push(row); row = []; field = '' }; i++; continue }
+      field += c; i++
     }
-    if(field!==''||row.length) { row.push(field); rows.push(row) }
+    if (field !== '' || row.length) { row.push(field); rows.push(row) }
     return rows
   }
 
@@ -1358,7 +1358,7 @@ export default function ReceptionPets(){
   const handleImportFile = async (e) => {
     const file = e.target.files && e.target.files[0]
     e.target.value = ''
-    if(!file) return
+    if (!file) return
     setConfirmDialog({
       open: true,
       title: 'Import from Excel',
@@ -1373,8 +1373,8 @@ export default function ReceptionPets(){
   }
 
   const importRecords = async (rowsIn) => {
-    const norm = s => String(s||'').trim()
-    const normKey = k => String(k||'').toLowerCase().replace(/[^a-z0-9]/g,'')
+    const norm = s => String(s || '').trim()
+    const normKey = k => String(k || '').toLowerCase().replace(/[^a-z0-9]/g, '')
     const valFromObject = (obj, aliases) => {
       // Try direct keys first
       for (const a of aliases) {
@@ -1385,8 +1385,8 @@ export default function ReceptionPets(){
       }
       // Build normalized table once
       const table = {}
-      const keys = Object.keys(obj||{})
-      keys.forEach(k=>{ table[normKey(k)] = obj[k] })
+      const keys = Object.keys(obj || {})
+      keys.forEach(k => { table[normKey(k)] = obj[k] })
       // Exact normalized match
       for (const a of aliases) {
         const nk = normKey(a)
@@ -1407,19 +1407,19 @@ export default function ReceptionPets(){
     const toISO = (v) => {
       if (!v) return ''
       if (v instanceof Date) {
-        try { return v.toISOString().slice(0,10) } catch { return '' }
+        try { return v.toISOString().slice(0, 10) } catch { return '' }
       }
       const s = String(v)
       // Excel serial number?
       if (/^\d{5,}$/.test(s)) {
         try {
-          const base = new Date(Date.UTC(1899,11,30))
-          base.setUTCDate(base.getUTCDate() + parseInt(s,10))
-          return base.toISOString().slice(0,10)
-        } catch {}
+          const base = new Date(Date.UTC(1899, 11, 30))
+          base.setUTCDate(base.getUTCDate() + parseInt(s, 10))
+          return base.toISOString().slice(0, 10)
+        } catch { }
       }
       // e.g. 21-Apr-23
-      try { return new Date(s).toISOString().slice(0,10) } catch { return '' }
+      try { return new Date(s).toISOString().slice(0, 10) } catch { return '' }
     }
     const normalizeGender = (v) => {
       const s = String(v || '').trim().toLowerCase()
@@ -1428,7 +1428,7 @@ export default function ReceptionPets(){
       if (['f', 'female', 'girl'].includes(s)) return 'Female'
       return ''
     }
-    const existed = new Set((rows||[]).map(r=>norm(r.id)))
+    const existed = new Set((rows || []).map(r => norm(r.id)))
     let created = 0, skipped = 0
     const rowErrors = []
 
@@ -1451,12 +1451,12 @@ export default function ReceptionPets(){
       due: 'Balance'
     }
     const ALIASES = {
-      billed: ['Total Billed','Total Amount','Grand Total','Amount','Total','Receivable Total'],
-      received: ['Total Received','Received Total','Received','Paid','Payment Received','Amount Received'],
-      due: ['Balance','Total Receivable','Outstanding','Pending','Due','Current Due']
+      billed: ['Total Billed', 'Total Amount', 'Grand Total', 'Amount', 'Total', 'Receivable Total'],
+      received: ['Total Received', 'Received Total', 'Received', 'Paid', 'Payment Received', 'Amount Received'],
+      due: ['Balance', 'Total Receivable', 'Outstanding', 'Pending', 'Due', 'Current Due']
     }
     const openings = []
-    for (const rec of rowsIn){
+    for (const rec of rowsIn) {
       // Read strictly by the specified headers, but allow light normalization fallback
       const pid = norm(rec[H.pid] ?? valFromObject(rec, [H.pid]))
       const petName = norm(rec[H.animalName] ?? valFromObject(rec, [H.animalName]))
@@ -1470,7 +1470,7 @@ export default function ReceptionPets(){
       const contact = norm(rec[H.contact] ?? valFromObject(rec, [H.contact]))
       const email = norm(rec[H.email] ?? valFromObject(rec, [H.email]))
       // Extract payment fields using aliases and auto-calc where needed
-      const numVal = (s) => { const t=String(s||'').replace(/,/g,'').replace(/[^0-9.\-]/g,'').trim(); const n=Number(t); return Number.isFinite(n)? n : 0 }
+      const numVal = (s) => { const t = String(s || '').replace(/,/g, '').replace(/[^0-9.\-]/g, '').trim(); const n = Number(t); return Number.isFinite(n) ? n : 0 }
       const billedRaw = rec[H.billed] ?? valFromObject(rec, [H.billed, ...ALIASES.billed])
       const receivedRaw = rec[H.received] ?? valFromObject(rec, [H.received, ...ALIASES.received])
       const dueRaw = rec[H.due] ?? valFromObject(rec, [H.due, ...ALIASES.due])
@@ -1491,13 +1491,13 @@ export default function ReceptionPets(){
         rowErrors.push(`Missing ${missing.join(', ')}`)
         continue
       }
-      if(existed.has(id)) {
+      if (existed.has(id)) {
         // Backfill financials for existing pet
-        if (billed>0 || received>0 || due>0) {
-          openings.push({ petId:id, clientId: clientId || id, petName, ownerName, contact, billed, received, due, note:'Imported from Excel (Backfill)' })
+        if (billed > 0 || received > 0 || due > 0) {
+          openings.push({ petId: id, clientId: clientId || id, petName, ownerName, contact, billed, received, due, note: 'Imported from Excel (Backfill)' })
         }
-        if ((clientId || id) && due>0) {
-          try { await pharmacyDuesAPI.upsert((clientId||id), { previousDue: due, name: ownerName, customerContact: contact }) } catch {}
+        if ((clientId || id) && due > 0) {
+          try { await pharmacyDuesAPI.upsert((clientId || id), { previousDue: due, name: ownerName, customerContact: contact }) } catch { }
         }
         skipped++; rowErrors.push(`Duplicate ${H.pid}: ${id}`); continue
       }
@@ -1516,8 +1516,8 @@ export default function ReceptionPets(){
         ownerContact: contact,
         ownerAddress: '',
         details: {
-          pet: { petId:id, petName:petName, type:commonName, species, breed:'', dateOfBirth:dob, dobOrAge:ageText, gender, colorMarkings:'', microchipTag:'', vaccinationStatus:'', dewormingStatus:'' },
-          owner: { ownerId, clientId: clientId || ownerId, fullName: ownerName, nic:'', contact: contact, email, address:'', emergencyContactPerson:'', emergencyContactNumber:'' },
+          pet: { petId: id, petName: petName, type: commonName, species, breed: '', dateOfBirth: dob, dobOrAge: ageText, gender, colorMarkings: '', microchipTag: '', vaccinationStatus: '', dewormingStatus: '' },
+          owner: { ownerId, clientId: clientId || ownerId, fullName: ownerName, nic: '', contact: contact, email, address: '', emergencyContactPerson: '', emergencyContactNumber: '' },
           medical: initialForm.medical,
           vaccines: initialForm.vaccines,
           complaint: initialForm.complaint,
@@ -1528,11 +1528,11 @@ export default function ReceptionPets(){
       try {
         await petsAPI.create(petData)
         // Queue financial opening so Payment Summary shows up for imported rows
-        if (billed>0 || received>0 || due>0) {
-          openings.push({ petId:id, clientId: clientId || ownerId, petName, ownerName, contact, billed, received, due, note:'Imported from Excel' })
+        if (billed > 0 || received > 0 || due > 0) {
+          openings.push({ petId: id, clientId: clientId || ownerId, petName, ownerName, contact, billed, received, due, note: 'Imported from Excel' })
         }
-        if ((clientId || ownerId) && due>0) {
-          try { await pharmacyDuesAPI.upsert((clientId||ownerId), { previousDue: due, name: ownerName, customerContact: contact }) } catch {}
+        if ((clientId || ownerId) && due > 0) {
+          try { await pharmacyDuesAPI.upsert((clientId || ownerId), { previousDue: due, name: ownerName, customerContact: contact }) } catch { }
         }
         created++
         existed.add(id)
@@ -1544,11 +1544,11 @@ export default function ReceptionPets(){
     }
     await loadPets()
     if (rowErrors.length) {
-      const first = rowErrors.slice(0, 10).map((t,i)=>`${i+1}. ${t}`).join('\n')
+      const first = rowErrors.slice(0, 10).map((t, i) => `${i + 1}. ${t}`).join('\n')
       setInfoDialog({
         open: true,
         title: 'Import Complete',
-        message: `Added: ${created}, Skipped: ${skipped}\n\nIssues:\n${first}${rowErrors.length>10?`\n...and ${rowErrors.length-10} more`:''}`,
+        message: `Added: ${created}, Skipped: ${skipped}\n\nIssues:\n${first}${rowErrors.length > 10 ? `\n...and ${rowErrors.length - 10} more` : ''}`,
         okText: 'OK'
       })
     } else {
@@ -1558,7 +1558,7 @@ export default function ReceptionPets(){
 
   const printReceipt = (payload = null) => {
     const activeReceipt = payload || receipt
-    if(!activeReceipt) return
+    if (!activeReceipt) return
     const d = activeReceipt.details || {}
     const owner = d.owner || {}
     const pet = d.pet || {}
@@ -1585,7 +1585,7 @@ export default function ReceptionPets(){
       const pick = [n1, n2, n3].find(x => !isNaN(x) && x > 0)
       return pick || 0
     })()
-    
+
     const isBlankCore = [ownerName, ownerId, petName, petId].every(v => !v || v === '-')
     if (isBlankCore) { setReceiptOpen(false); return }
 
@@ -1648,7 +1648,7 @@ export default function ReceptionPets(){
         setReceiptOpen(false)
         return
       }
-    } catch {}
+    } catch { }
 
     // Fallback: hidden iframe (keeps current window; no about:blank tab)
     try {
@@ -1663,11 +1663,11 @@ export default function ReceptionPets(){
       document.body.appendChild(iframe)
       iframe.onload = () => {
         try { iframe.contentWindow?.focus(); iframe.contentWindow?.print() } finally {
-          setTimeout(() => { try { document.body.removeChild(iframe) } catch {}; setReceiptOpen(false) }, 200)
+          setTimeout(() => { try { document.body.removeChild(iframe) } catch { }; setReceiptOpen(false) }, 200)
         }
       }
       return
-    } catch {}
+    } catch { }
 
     // No separate window fallback
     setReceiptOpen(false)
@@ -1707,7 +1707,7 @@ export default function ReceptionPets(){
       complaint: d.complaint || initialForm.complaint,
       clinic: d.clinic || initialForm.clinic,
       life: d.life || {
-        dead: (row.status==='Expired' || row.status==='Deceased'),
+        dead: (row.status === 'Expired' || row.status === 'Deceased'),
         deathDate: row.dateOfDeath || d.life?.deathDate || '',
         deathNote: d.life?.deathNote || ''
       }
@@ -1717,7 +1717,7 @@ export default function ReceptionPets(){
       const cid = (d.owner?.clientId || row.clientId || d.owner?.ownerId || row.ownerId || '').trim()
       const pid = (row.id || row._id || d.pet?.petId || '').toString()
       if (cid) loadClientPayments(cid, pid)
-    } catch {}
+    } catch { }
   }
   const openEdit = row => {
     const d = row.details || {}
@@ -1746,7 +1746,7 @@ export default function ReceptionPets(){
       complaint: d.complaint || initialForm.complaint,
       clinic: d.clinic || initialForm.clinic,
       life: d.life || {
-        dead: (row.status==='Expired' || row.status==='Deceased'),
+        dead: (row.status === 'Expired' || row.status === 'Deceased'),
         deathDate: row.dateOfDeath || d.life?.deathDate || '',
         deathNote: d.life?.deathNote || ''
       }
@@ -1756,30 +1756,30 @@ export default function ReceptionPets(){
       const cid = (d.owner?.clientId || row.clientId || d.owner?.ownerId || row.ownerId || '').trim()
       const pid = (row.id || row._id || d.pet?.petId || '').toString()
       if (cid) loadClientPayments(cid, pid)
-    } catch {}
+    } catch { }
   }
   const askDelete = row => { setRowToDelete(row); setShowDeleteConfirm(true) }
   const confirmDelete = async () => {
-    if(!rowToDelete) return
-    
+    if (!rowToDelete) return
+
     try {
       setLoading(true)
       setError(null)
-      
+
       const id = rowToDelete.id || rowToDelete._id
       await petsAPI.delete(id)
-      
+
       setRows(prev => prev.filter(r => r.id !== id && r._id !== id))
       setShowDeleteConfirm(false)
       setRowToDelete(null)
-      
-      try { 
-        addActivity({ user: 'Reception', text: `Deleted pet: ${rowToDelete.petName || rowToDelete.name}` }) 
-      } catch {}
-      
+
+      try {
+        addActivity({ user: 'Reception', text: `Deleted pet: ${rowToDelete.petName || rowToDelete.name}` })
+      } catch { }
+
       // Reload to ensure sync
       await loadPets()
-      
+
     } catch (err) {
       console.error('Error deleting pet:', err)
       setError(err.message || 'Failed to delete pet')
@@ -1792,9 +1792,9 @@ export default function ReceptionPets(){
 
   const openReceiptDialog = () => {
     try {
-      const row = rows.find(r => (r.id===currentId || r._id===currentId))
+      const row = rows.find(r => (r.id === currentId || r._id === currentId))
       if (row) { setReceipt(row); setReceiptOpen(true); return }
-    } catch {}
+    } catch { }
   }
 
   const focusNextFieldOnEnter = (e) => {
@@ -1802,6 +1802,7 @@ export default function ReceptionPets(){
       if (e.key !== 'Enter' || e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) return
       const el = e.target
       if (!el) return
+
       const tag = (el.tagName || '').toLowerCase()
       if (tag === 'textarea') return
       if (tag === 'button') return
@@ -1835,7 +1836,7 @@ export default function ReceptionPets(){
       e.preventDefault()
       next.focus?.()
       if (next.select) next.select()
-    } catch {}
+    } catch { }
   }
 
   return (
@@ -1889,19 +1890,19 @@ export default function ReceptionPets(){
               <div className="text-lg font-bold text-slate-800">
                 {showAll
                   ? 'All'
-                  : (dateRange.fromDate === dateRange.toDate 
-                      ? new Date(dateRange.fromDate).toLocaleDateString()
-                      : `${new Date(dateRange.fromDate).toLocaleDateString()} - ${new Date(dateRange.toDate).toLocaleDateString()}`)
+                  : (dateRange.fromDate === dateRange.toDate
+                    ? new Date(dateRange.fromDate).toLocaleDateString()
+                    : `${new Date(dateRange.fromDate).toLocaleDateString()} - ${new Date(dateRange.toDate).toLocaleDateString()}`)
                 }
               </div>
             </div>
           </div>
-          <DateRangePicker 
-            onDateChange={(dr)=>{ setDateRange(dr); setShowAll(dr.fromDate === '1900-01-01' && dr.toDate === '2999-12-31') }}
+          <DateRangePicker
+            onDateChange={(dr) => { setDateRange(dr); setShowAll(dr.fromDate === '1900-01-01' && dr.toDate === '2999-12-31') }}
             defaultFromDate={dateRange.fromDate}
             defaultToDate={dateRange.toDate}
             showAllButton={true}
-            onAllClick={()=> setShowAll(true)}
+            onAllClick={() => setShowAll(true)}
           />
         </div>
       </div>
@@ -1925,7 +1926,7 @@ export default function ReceptionPets(){
                 <label className="block text-sm font-medium text-slate-700 mb-1">Pet Name (Common Name)</label>
                 <input
                   value={taxonomyDialog.commonName}
-                  onChange={e=>setTaxonomyDialog(prev=>({...prev, commonName: e.target.value}))}
+                  onChange={e => setTaxonomyDialog(prev => ({ ...prev, commonName: e.target.value }))}
                   placeholder="e.g., Dog"
                   className="w-full h-11 px-3 rounded-lg border border-slate-300"
                   disabled={taxonomyDialog.type === 'species'}
@@ -1935,7 +1936,7 @@ export default function ReceptionPets(){
                 <label className="block text-sm font-medium text-slate-700 mb-1">Species (Scientific Name)</label>
                 <input
                   value={taxonomyDialog.speciesName}
-                  onChange={e=>setTaxonomyDialog(prev=>({...prev, speciesName: e.target.value}))}
+                  onChange={e => setTaxonomyDialog(prev => ({ ...prev, speciesName: e.target.value }))}
                   placeholder="e.g., Canis lupus familiaris"
                   className="w-full h-11 px-3 rounded-lg border border-slate-300"
                 />
@@ -1955,19 +1956,19 @@ export default function ReceptionPets(){
       {/* Breed Dialog */}
       {breedDialog.open && (
         <div className="fixed inset-0 z-[80] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/50" onClick={()=>setBreedDialog(prev=>({...prev, open:false, error:''}))}></div>
+          <div className="absolute inset-0 bg-black/50" onClick={() => setBreedDialog(prev => ({ ...prev, open: false, error: '' }))}></div>
           <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl ring-1 ring-emerald-200 p-6 space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xl font-bold text-slate-800">Add New Breed</h3>
                 <p className="text-sm text-slate-500">Breed will be saved for the selected Type.</p>
               </div>
-              <button onClick={()=>setBreedDialog(prev=>({...prev, open:false, error:''}))} className="text-slate-500 hover:text-slate-700 text-2xl leading-none">×</button>
+              <button onClick={() => setBreedDialog(prev => ({ ...prev, open: false, error: '' }))} className="text-slate-500 hover:text-slate-700 text-2xl leading-none">×</button>
             </div>
             <div className="space-y-3">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
-                <select value={breedDialog.typeName} onChange={e=>setBreedDialog(prev=>({...prev, typeName: e.target.value}))} className="w-full h-11 px-3 rounded-lg border border-slate-300">
+                <select value={breedDialog.typeName} onChange={e => setBreedDialog(prev => ({ ...prev, typeName: e.target.value }))} className="w-full h-11 px-3 rounded-lg border border-slate-300">
                   <option value="">Select Type</option>
                   {Object.keys(TYPE_TO_SPECIES).map(t => (
                     <option key={t} value={t}>{t}</option>
@@ -1976,14 +1977,14 @@ export default function ReceptionPets(){
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Breed Name</label>
-                <input value={breedDialog.breedName} onChange={e=>setBreedDialog(prev=>({...prev, breedName: e.target.value}))} placeholder="e.g., Ragdoll" className="w-full h-11 px-3 rounded-lg border border-slate-300" />
+                <input value={breedDialog.breedName} onChange={e => setBreedDialog(prev => ({ ...prev, breedName: e.target.value }))} placeholder="e.g., Ragdoll" className="w-full h-11 px-3 rounded-lg border border-slate-300" />
               </div>
               {breedDialog.error && (
                 <div className="text-sm text-red-600">{breedDialog.error}</div>
               )}
             </div>
             <div className="flex justify-end gap-3">
-              <button onClick={()=>setBreedDialog(prev=>({...prev, open:false, error:''}))} className="h-11 px-6 rounded-xl border border-slate-300 text-slate-600">Cancel</button>
+              <button onClick={() => setBreedDialog(prev => ({ ...prev, open: false, error: '' }))} className="h-11 px-6 rounded-xl border border-slate-300 text-slate-600">Cancel</button>
               <button onClick={handleBreedDialogSubmit} className="h-11 px-6 rounded-xl bg-emerald-600 text-white font-semibold">Save</button>
             </div>
           </div>
@@ -2010,9 +2011,9 @@ export default function ReceptionPets(){
       )}
 
       {/* Enhanced Registration Card */}
-      <div className="rounded-3xl bg-gradient-to-br from-white via-emerald-50 to-teal-50 shadow-2xl ring-1 ring-emerald-200 border border-emerald-100 p-8">
+      <div className="rounded-3xl bg-gradient-to-br from-white via-blue-50 to-sky-50 shadow-2xl ring-1 ring-blue-200 border border-blue-100 p-8">
         <div className="mb-6 flex items-center gap-4">
-          <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center">
+          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-sky-600 rounded-2xl flex items-center justify-center">
             <FiUserPlus className="w-8 h-8 text-white" />
           </div>
           <div className="flex-1">
@@ -2020,38 +2021,38 @@ export default function ReceptionPets(){
             <div className="text-slate-600">Add comprehensive pet and owner information</div>
           </div>
           <div className="text-right">
-            <div className="text-3xl font-bold text-emerald-600">{filtered.length}</div>
+            <div className="text-3xl font-bold text-blue-600">{filtered.length}</div>
             <div className="text-sm text-slate-600">Total Registered</div>
           </div>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="bg-white/60 rounded-2xl p-4 text-center">
-            <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-3">
-              <FiUser className="w-6 h-6 text-emerald-600" />
+            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+              <FiUser className="w-6 h-6 text-blue-600" />
             </div>
             <div className="font-semibold text-slate-800">Owner Details</div>
             <div className="text-sm text-slate-600">Complete owner information</div>
           </div>
           <div className="bg-white/60 rounded-2xl p-4 text-center">
-            <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center mx-auto mb-3">
-              <FiHeart className="w-6 h-6 text-teal-600" />
+            <div className="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+              <FiHeart className="w-6 h-6 text-sky-600" />
             </div>
             <div className="font-semibold text-slate-800">Pet Information</div>
             <div className="text-sm text-slate-600">Detailed pet records</div>
           </div>
           <div className="bg-white/60 rounded-2xl p-4 text-center">
-            <div className="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center mx-auto mb-3">
-              <FiShield className="w-6 h-6 text-cyan-600" />
+            <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+              <FiShield className="w-6 h-6 text-indigo-600" />
             </div>
             <div className="font-semibold text-slate-800">Medical History</div>
             <div className="text-sm text-slate-600">Health and vaccination records</div>
           </div>
         </div>
-        
-        <button 
-          onClick={openCreate} 
-          className="w-full h-16 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex items-center justify-center gap-3"
+
+        <button
+          onClick={openCreate}
+          className="w-full h-16 rounded-2xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex items-center justify-center gap-3"
         >
           <FiUserPlus className="w-6 h-6" />
           Open Registration Form
@@ -2062,643 +2063,642 @@ export default function ReceptionPets(){
       {isOpen ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/40"></div>
-          <div className="relative w-[95%] max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-xl ring-1 ring-slate-200 p-6" onClick={(e)=>e.stopPropagation()}>
+          <div className="relative w-[95%] max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-xl ring-1 ring-slate-200 p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
-              <div className="font-semibold text-slate-800">{mode==='view'?'View Registration':mode==='edit'?'Edit Registration':'New Registration'}</div>
-              <button onClick={()=>{setIsOpen(false); setMode('create'); setCurrentId('')}} className="text-slate-600 hover:text-slate-800 cursor-pointer">✕</button>
+              <div className="font-semibold text-slate-800">{mode === 'view' ? 'View Registration' : mode === 'edit' ? 'Edit Registration' : 'New Registration'}</div>
+              <button onClick={() => { setIsOpen(false); setMode('create'); setCurrentId('') }} className="text-slate-600 hover:text-slate-800 cursor-pointer">✕</button>
             </div>
             <form onSubmit={handleSubmit} onKeyDown={focusNextFieldOnEnter} className="space-y-6">
-          {/* 1. Owner Information */}
-          <section className="rounded-xl p-4 bg-gradient-to-br from-slate-50 to-white ring-1 ring-slate-200/70">
-            <div className="font-semibold text-slate-800 mb-3">Owner Information</div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Client ID</label>
-                <div className="relative">
-                  <input 
-                    value={form.owner.clientId} 
-                    onChange={e => {
-                      updateSection('owner','clientId',e.target.value)
-                      if (e.target.value.trim()) {
-                        handleClientIdValidation(e.target.value.trim())
-                        tryOwnerLookup(e.target.value.trim())
-                      } else {
-                        setClientIdValidation({ isValidating: false, error: '', isValid: true })
-                      }
-                    }} 
-                    onBlur={() => tryOwnerLookup()} 
-                    placeholder="Enter or scan Client ID" 
-                    className={`w-full h-10 px-3 rounded-lg border bg-white pr-10 ${
-                      clientIdValidation.isValidating ? 'border-blue-300' :
-                      !clientIdValidation.isValid ? 'border-red-300 bg-red-50' :
-                      clientIdValidation.isValid && form.owner.clientId ? 'border-green-300 bg-green-50' :
-                      'border-slate-300'
-                    }`}
-                    disabled={mode==='view'} 
-                  />
-                  {clientIdValidation.isValidating && (
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                    </div>
-                  )}
-                  {!clientIdValidation.isValidating && form.owner.clientId && (
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                      {clientIdValidation.isValid ? (
-                        <div className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center">
-                          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
+              {/* 1. Owner Information */}
+              <section className="rounded-xl p-4 bg-gradient-to-br from-slate-50 to-white ring-1 ring-slate-200/70">
+                <div className="font-semibold text-slate-800 mb-3">Owner Information</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Client ID</label>
+                    <div className="relative">
+                      <input
+                        value={form.owner.clientId}
+                        onChange={e => {
+                          updateSection('owner', 'clientId', e.target.value)
+                          if (e.target.value.trim()) {
+                            handleClientIdValidation(e.target.value.trim())
+                            tryOwnerLookup(e.target.value.trim())
+                          } else {
+                            setClientIdValidation({ isValidating: false, error: '', isValid: true })
+                          }
+                        }}
+                        onBlur={() => tryOwnerLookup()}
+                        placeholder="Enter or scan Client ID"
+                        className={`w-full h-10 px-3 rounded-lg border bg-white pr-10 ${clientIdValidation.isValidating ? 'border-blue-300' :
+                          !clientIdValidation.isValid ? 'border-red-300 bg-red-50' :
+                            clientIdValidation.isValid && form.owner.clientId ? 'border-green-300 bg-green-50' :
+                              'border-slate-300'
+                          }`}
+                        disabled={mode === 'view'}
+                      />
+                      {clientIdValidation.isValidating && (
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
                         </div>
-                      ) : (
-                        <div className="w-4 h-4 rounded-full bg-red-500 flex items-center justify-center">
-                          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                          </svg>
+                      )}
+                      {!clientIdValidation.isValidating && form.owner.clientId && (
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                          {clientIdValidation.isValid ? (
+                            <div className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center">
+                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </div>
+                          ) : (
+                            <div className="w-4 h-4 rounded-full bg-red-500 flex items-center justify-center">
+                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                              </svg>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
+                    {clientIdValidation.error && (
+                      <p className="text-red-600 text-xs mt-1 flex items-center gap-1">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                        {clientIdValidation.error}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+                    <input value={form.owner.fullName} onChange={e => updateSection('owner', 'fullName', e.target.value)} placeholder="Full Name" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" required disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">CNIC / ID Card No.</label>
+                    <input value={form.owner.nic} onChange={e => updateSection('owner', 'nic', e.target.value)} onBlur={tryOwnerLookup} placeholder="CNIC / ID Card No." className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Contact Number</label>
+                    <input value={form.owner.contact} onChange={e => updateSection('owner', 'contact', e.target.value)} onBlur={tryOwnerLookup} placeholder="Contact Number" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
+                    <input value={form.owner.email} onChange={e => updateSection('owner', 'email', e.target.value)} placeholder="Email Address" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
+                    <input value={form.owner.address} onChange={e => updateSection('owner', 'address', e.target.value)} placeholder="Address" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Emergency Contact Person</label>
+                    <input value={form.owner.emergencyContactPerson} onChange={e => updateSection('owner', 'emergencyContactPerson', e.target.value)} placeholder="Emergency Contact Person" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Emergency Contact No.</label>
+                    <input value={form.owner.emergencyContactNumber} onChange={e => updateSection('owner', 'emergencyContactNumber', e.target.value)} placeholder="Emergency Contact No." className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                </div>
+              </section>
+
+              {matchedOwnerPets.length > 0 && (
+                <section className="rounded-xl p-4 bg-gradient-to-br from-slate-50 to-white ring-1 ring-slate-200/70">
+                  <div className="font-semibold text-slate-800 mb-3">Existing Pets for this Client</div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {matchedOwnerPets.map(p => (
+                      <div key={p.id || p._id} className="border border-slate-200 rounded-lg p-3 bg-white">
+                        <div className="flex items-center justify-between mb-1">
+                          <div className="font-semibold text-slate-800">{p.petName || p.details?.pet?.petName || 'Pet'}</div>
+                          <span className={`px-2 py-0.5 rounded-full text-xs ${(p.status || 'Active') === 'Active' ? 'bg-emerald-100 text-emerald-700' : ((p.status === 'Expired' || p.status === 'Deceased') ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-600')}`}>
+                            {(p.status === 'Deceased') ? 'Expired' : (p.status || 'Active')}
+                          </span>
+                        </div>
+                        <div className="text-sm text-slate-600 space-y-0.5">
+                          <div><span className="font-medium">Type:</span> {p.type || p.details?.pet?.type || '-'}</div>
+                          <div><span className="font-medium">Breed:</span> {p.breed || p.details?.pet?.breed || '-'}</div>
+                          <div><span className="font-medium">Gender:</span> {p.gender || p.details?.pet?.gender || '-'}</div>
+                          <div><span className="font-medium">ID:</span> {p.id || p._id || p.details?.pet?.petId || '-'}</div>
+                          {((p.status === 'Expired' || p.status === 'Deceased') && (p.dateOfDeath || p.details?.life?.deathDate)) && (
+                            <div className="text-xs text-red-600 mt-1">Died: {formatLocalDate(p.dateOfDeath || p.details?.life?.deathDate)}</div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {(form.owner.clientId || form.owner.ownerId) && (
+                <section className="rounded-xl p-4 bg-gradient-to-br from-indigo-50 to-white ring-1 ring-indigo-200/70">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="font-semibold text-slate-800">Payment Summary</div>
+                    {payLoading && (
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-indigo-600"></div>
+                    )}
+                  </div>
+                  {payError && (
+                    <div className="mb-3 text-sm text-red-600">{payError}</div>
                   )}
-                </div>
-                {clientIdValidation.error && (
-                  <p className="text-red-600 text-xs mt-1 flex items-center gap-1">
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
-                    {clientIdValidation.error}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-                <input value={form.owner.fullName} onChange={e=>updateSection('owner','fullName',e.target.value)} placeholder="Full Name" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" required disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">CNIC / ID Card No.</label>
-                <input value={form.owner.nic} onChange={e=>updateSection('owner','nic',e.target.value)} onBlur={tryOwnerLookup} placeholder="CNIC / ID Card No." className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Contact Number</label>
-                <input value={form.owner.contact} onChange={e=>updateSection('owner','contact',e.target.value)} onBlur={tryOwnerLookup} placeholder="Contact Number" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
-                <input value={form.owner.email} onChange={e=>updateSection('owner','email',e.target.value)} placeholder="Email Address" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
-                <input value={form.owner.address} onChange={e=>updateSection('owner','address',e.target.value)} placeholder="Address" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Emergency Contact Person</label>
-                <input value={form.owner.emergencyContactPerson} onChange={e=>updateSection('owner','emergencyContactPerson',e.target.value)} placeholder="Emergency Contact Person" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Emergency Contact No.</label>
-                <input value={form.owner.emergencyContactNumber} onChange={e=>updateSection('owner','emergencyContactNumber',e.target.value)} placeholder="Emergency Contact No." className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-            </div>
-          </section>
-
-          {matchedOwnerPets.length > 0 && (
-            <section className="rounded-xl p-4 bg-gradient-to-br from-slate-50 to-white ring-1 ring-slate-200/70">
-              <div className="font-semibold text-slate-800 mb-3">Existing Pets for this Client</div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {matchedOwnerPets.map(p => (
-                  <div key={p.id || p._id} className="border border-slate-200 rounded-lg p-3 bg-white">
-                    <div className="flex items-center justify-between mb-1">
-                      <div className="font-semibold text-slate-800">{p.petName || p.details?.pet?.petName || 'Pet'}</div>
-                      <span className={`px-2 py-0.5 rounded-full text-xs ${ (p.status || 'Active')==='Active' ? 'bg-emerald-100 text-emerald-700' : ((p.status==='Expired'||p.status==='Deceased') ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-600') }`}>
-                        {(p.status==='Deceased') ? 'Expired' : (p.status || 'Active')}
-                      </span>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                    <div className="bg-white rounded-lg border border-indigo-200 p-3">
+                      <div className="text-slate-600 text-xs">Total Billed</div>
+                      <div className="text-xl font-bold text-slate-800">Rs. {Number(paymentSummary.totalBilled || 0).toLocaleString()}</div>
                     </div>
-                    <div className="text-sm text-slate-600 space-y-0.5">
-                      <div><span className="font-medium">Type:</span> {p.type || p.details?.pet?.type || '-'}</div>
-                      <div><span className="font-medium">Breed:</span> {p.breed || p.details?.pet?.breed || '-'}</div>
-                      <div><span className="font-medium">Gender:</span> {p.gender || p.details?.pet?.gender || '-'}</div>
-                      <div><span className="font-medium">ID:</span> {p.id || p._id || p.details?.pet?.petId || '-'}</div>
-                      {((p.status==='Expired'||p.status==='Deceased') && (p.dateOfDeath || p.details?.life?.deathDate)) && (
-                        <div className="text-xs text-red-600 mt-1">Died: {formatLocalDate(p.dateOfDeath || p.details?.life?.deathDate)}</div>
-                      )}
+                    <div className="bg-white rounded-lg border border-green-200 p-3">
+                      <div className="text-slate-600 text-xs">Total Received</div>
+                      <div className="text-xl font-bold text-green-700">Rs. {Number(paymentSummary.totalReceived || 0).toLocaleString()}</div>
+                    </div>
+                    <div className="bg-white rounded-lg border border-amber-200 p-3">
+                      <div className="text-slate-600 text-xs">Total Receivable (Balance)</div>
+                      <div className="text-xl font-bold text-amber-700">Rs. {Number(paymentSummary.totalPending || 0).toLocaleString()}</div>
+                    </div>
+                    <div className="bg-white rounded-lg border border-slate-200 p-3">
+                      <div className="text-slate-600 text-xs">Last Payment</div>
+                      <div className="text-sm font-semibold text-slate-800">
+                        {paymentSummary.lastPayment ? `Rs. ${Number(paymentSummary.lastPayment.amount || 0).toLocaleString()} • ${formatLocalDate(paymentSummary.lastPayment.date)} • ${paymentSummary.lastPayment.mode || '—'}` : '—'}
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {(form.owner.clientId || form.owner.ownerId) && (
-            <section className="rounded-xl p-4 bg-gradient-to-br from-indigo-50 to-white ring-1 ring-indigo-200/70">
-              <div className="flex items-center justify-between mb-3">
-                <div className="font-semibold text-slate-800">Payment Summary</div>
-                {payLoading && (
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-indigo-600"></div>
-                )}
-              </div>
-              {payError && (
-                <div className="mb-3 text-sm text-red-600">{payError}</div>
-              )}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-                <div className="bg-white rounded-lg border border-indigo-200 p-3">
-                  <div className="text-slate-600 text-xs">Total Billed</div>
-                  <div className="text-xl font-bold text-slate-800">Rs. {Number(paymentSummary.totalBilled||0).toLocaleString()}</div>
-                </div>
-                <div className="bg-white rounded-lg border border-green-200 p-3">
-                  <div className="text-slate-600 text-xs">Total Received</div>
-                  <div className="text-xl font-bold text-green-700">Rs. {Number(paymentSummary.totalReceived||0).toLocaleString()}</div>
-                </div>
-                <div className="bg-white rounded-lg border border-amber-200 p-3">
-                  <div className="text-slate-600 text-xs">Total Receivable (Balance)</div>
-                  <div className="text-xl font-bold text-amber-700">Rs. {Number(paymentSummary.totalPending||0).toLocaleString()}</div>
-                </div>
-                <div className="bg-white rounded-lg border border-slate-200 p-3">
-                  <div className="text-slate-600 text-xs">Last Payment</div>
-                  <div className="text-sm font-semibold text-slate-800">
-                    {paymentSummary.lastPayment ? `Rs. ${Number(paymentSummary.lastPayment.amount||0).toLocaleString()} • ${formatLocalDate(paymentSummary.lastPayment.date)} • ${paymentSummary.lastPayment.mode || '—'}` : '—'}
+                  {paymentSummary.modules && (
+                    <div className="mt-3 grid grid-cols-1 md:grid-cols-4 gap-3">
+                      {['pharmacy', 'lab', 'procedures', 'petShop'].map(key => (
+                        <div key={key} className="bg-white rounded-lg border border-slate-200 p-3">
+                          <div className="text-xs font-semibold text-slate-700 capitalize">{key === 'petShop' ? 'Pet Shop' : key}</div>
+                          <div className="text-xs text-slate-600">Received: Rs. {Number(paymentSummary.modules?.[key]?.received || 0).toLocaleString()}</div>
+                          <div className="text-xs text-slate-600">Pending: Rs. {Number(paymentSummary.modules?.[key]?.pending || 0).toLocaleString()}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div className="mt-3">
+                    {(() => {
+                      const pid = String((currentId || form?.pet?.petId || '') || '')
+                      const list = Array.isArray(paymentSummary.pets) ? paymentSummary.pets : []
+                      const it = list.find(p => String(p.petId || '') === pid)
+                      const pname = form?.pet?.petName || it?.petName || ''
+                      const paid = !!(it && it.modules && it.modules.consultant && it.modules.consultant.paid)
+                      const amt = Number(it?.modules?.consultant?.amount || 0)
+                      const d = it?.modules?.consultant?.date || paymentSummary.consultant?.date || ''
+                      return (
+                        <div className={`p-3 rounded-lg ${paid ? 'bg-green-50 border border-green-200 text-green-800' : 'bg-red-50 border border-red-200 text-red-800'}`}>
+                          {paid
+                            ? `Consultant Fee Paid${pname ? ` for ${pname}` : ''}: Rs. ${amt.toLocaleString()}${d ? ` on ${formatLocalDate(d)}` : ''}`
+                            : `Consultant Fee Pending${pname ? ` for ${pname}` : ''}`}
+                        </div>
+                      )
+                    })()}
                   </div>
-                </div>
-              </div>
-              {paymentSummary.modules && (
-                <div className="mt-3 grid grid-cols-1 md:grid-cols-4 gap-3">
-                  {['pharmacy','lab','procedures','petShop'].map(key => (
-                    <div key={key} className="bg-white rounded-lg border border-slate-200 p-3">
-                      <div className="text-xs font-semibold text-slate-700 capitalize">{key === 'petShop' ? 'Pet Shop' : key}</div>
-                      <div className="text-xs text-slate-600">Received: Rs. {Number(paymentSummary.modules?.[key]?.received||0).toLocaleString()}</div>
-                      <div className="text-xs text-slate-600">Pending: Rs. {Number(paymentSummary.modules?.[key]?.pending||0).toLocaleString()}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="mt-3">
-                {(() => {
-                  const pid = String((currentId || form?.pet?.petId || '') || '')
-                  const list = Array.isArray(paymentSummary.pets) ? paymentSummary.pets : []
-                  const it = list.find(p => String(p.petId||'') === pid)
-                  const pname = form?.pet?.petName || it?.petName || ''
-                  const paid = !!(it && it.modules && it.modules.consultant && it.modules.consultant.paid)
-                  const amt = Number(it?.modules?.consultant?.amount || 0)
-                  const d = it?.modules?.consultant?.date || paymentSummary.consultant?.date || ''
-                  return (
-                    <div className={`p-3 rounded-lg ${paid ? 'bg-green-50 border border-green-200 text-green-800' : 'bg-red-50 border border-red-200 text-red-800'}`}>
-                      {paid
-                        ? `Consultant Fee Paid${pname?` for ${pname}`:''}: Rs. ${amt.toLocaleString()}${d?` on ${formatLocalDate(d)}`:''}`
-                        : `Consultant Fee Pending${pname?` for ${pname}`:''}`}
-                    </div>
-                  )
-                })()}
-              </div>
-              <div className="mt-3">
-                {Array.isArray(paymentSummary.pets) && paymentSummary.pets.length > 0 && (
-                  <div className="border border-slate-200 rounded-xl overflow-hidden">
+                  <div className="mt-3">
+                    {Array.isArray(paymentSummary.pets) && paymentSummary.pets.length > 0 && (
+                      <div className="border border-slate-200 rounded-xl overflow-hidden">
+                        <table className="w-full text-sm">
+                          <thead className="bg-slate-50 border-b border-slate-200">
+                            <tr>
+                              <th className="px-3 py-2 text-left text-xs font-semibold text-slate-600">Pet</th>
+                              <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Pharmacy Due</th>
+                              <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Lab Due</th>
+                              <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Procedures Due</th>
+                              <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Pet Shop Due</th>
+                              <th className="px-3 py-2 text-left text-xs font-semibold text-slate-600">Consultant</th>
+                              <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Total Received</th>
+                              <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Total Pending</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {paymentSummary.pets.map(p => (
+                              <tr key={p.petId} className="border-t border-slate-100">
+                                <td className="px-3 py-2">{p.petName}</td>
+                                <td className="px-3 py-2 text-right">{Number(p.modules?.pharmacy?.pending || 0).toLocaleString()}</td>
+                                <td className="px-3 py-2 text-right">{Number(p.modules?.lab?.pending || 0).toLocaleString()}</td>
+                                <td className="px-3 py-2 text-right">{Number(p.modules?.procedures?.pending || 0).toLocaleString()}</td>
+                                <td className="px-3 py-2 text-right">{Number(p.modules?.petShop?.pending || 0).toLocaleString()}</td>
+                                <td className="px-3 py-2">{p.modules?.consultant?.paid ? `Paid ${Number(p.modules.consultant.amount || 0).toLocaleString()}` : 'Pending'}</td>
+                                <td className="px-3 py-2 text-right">{Number(p.totals?.received || 0).toLocaleString()}</td>
+                                <td className="px-3 py-2 text-right">{Number(p.totals?.pending || 0).toLocaleString()}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-4 border border-slate-200 rounded-xl overflow-hidden">
                     <table className="w-full text-sm">
                       <thead className="bg-slate-50 border-b border-slate-200">
                         <tr>
-                          <th className="px-3 py-2 text-left text-xs font-semibold text-slate-600">Pet</th>
-                          <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Pharmacy Due</th>
-                          <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Lab Due</th>
-                          <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Procedures Due</th>
-                          <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Pet Shop Due</th>
-                          <th className="px-3 py-2 text-left text-xs font-semibold text-slate-600">Consultant</th>
-                          <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Total Received</th>
-                          <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Total Pending</th>
+                          <th className="px-3 py-2 text-left text-xs font-semibold text-slate-600">Date</th>
+                          <th className="px-3 py-2 text-left text-xs font-semibold text-slate-600">Source</th>
+                          <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Amount</th>
+                          <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Received</th>
+                          <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Pending</th>
+                          <th className="px-3 py-2 text-left text-xs font-semibold text-slate-600">Mode</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {paymentSummary.pets.map(p => (
-                          <tr key={p.petId} className="border-t border-slate-100">
-                            <td className="px-3 py-2">{p.petName}</td>
-                            <td className="px-3 py-2 text-right">{Number(p.modules?.pharmacy?.pending||0).toLocaleString()}</td>
-                            <td className="px-3 py-2 text-right">{Number(p.modules?.lab?.pending||0).toLocaleString()}</td>
-                            <td className="px-3 py-2 text-right">{Number(p.modules?.procedures?.pending||0).toLocaleString()}</td>
-                            <td className="px-3 py-2 text-right">{Number(p.modules?.petShop?.pending||0).toLocaleString()}</td>
-                            <td className="px-3 py-2">{p.modules?.consultant?.paid ? `Paid ${Number(p.modules.consultant.amount||0).toLocaleString()}` : 'Pending'}</td>
-                            <td className="px-3 py-2 text-right">{Number(p.totals?.received||0).toLocaleString()}</td>
-                            <td className="px-3 py-2 text-right">{Number(p.totals?.pending||0).toLocaleString()}</td>
+                        {paymentSummary.entries.map(e => (
+                          <tr key={e.id} className="border-t border-slate-100">
+                            <td className="px-3 py-2">{formatLocalDate(e.date)}</td>
+                            <td className="px-3 py-2">{e.type}</td>
+                            <td className="px-3 py-2 text-right">{Number(e.amount || 0).toLocaleString()}</td>
+                            <td className="px-3 py-2 text-right">{Number(e.received || 0).toLocaleString()}</td>
+                            <td className="px-3 py-2 text-right">{Number(e.pending || 0).toLocaleString()}</td>
+                            <td className="px-3 py-2">{e.mode || '—'}</td>
                           </tr>
                         ))}
+                        {paymentSummary.entries.length === 0 && (
+                          <tr><td colSpan="6" className="px-3 py-4 text-center text-slate-500">No invoices found</td></tr>
+                        )}
                       </tbody>
                     </table>
                   </div>
-                )}
-              </div>
-              <div className="mt-4 border border-slate-200 rounded-xl overflow-hidden">
-                <table className="w-full text-sm">
-                  <thead className="bg-slate-50 border-b border-slate-200">
-                    <tr>
-                      <th className="px-3 py-2 text-left text-xs font-semibold text-slate-600">Date</th>
-                      <th className="px-3 py-2 text-left text-xs font-semibold text-slate-600">Source</th>
-                      <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Amount</th>
-                      <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Received</th>
-                      <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600">Pending</th>
-                      <th className="px-3 py-2 text-left text-xs font-semibold text-slate-600">Mode</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paymentSummary.entries.map(e => (
-                      <tr key={e.id} className="border-t border-slate-100">
-                        <td className="px-3 py-2">{formatLocalDate(e.date)}</td>
-                        <td className="px-3 py-2">{e.type}</td>
-                        <td className="px-3 py-2 text-right">{Number(e.amount||0).toLocaleString()}</td>
-                        <td className="px-3 py-2 text-right">{Number(e.received||0).toLocaleString()}</td>
-                        <td className="px-3 py-2 text-right">{Number(e.pending||0).toLocaleString()}</td>
-                        <td className="px-3 py-2">{e.mode || '—'}</td>
-                      </tr>
-                    ))}
-                    {paymentSummary.entries.length === 0 && (
-                      <tr><td colSpan="6" className="px-3 py-4 text-center text-slate-500">No invoices found</td></tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          )}
+                </section>
+              )}
 
-          {/* 2. Pet Information */}
-          <section className="rounded-xl p-4 bg-gradient-to-br from-teal-50 to-white ring-1 ring-teal-200/70">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Pet Name</label>
-                <input value={form.pet.petName} onChange={e=>handlePetNameChange(e.target.value)} placeholder="Enter pet name" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" required disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
-                <select 
-                  value={form.pet.type}
-                  onChange={e=>handleTypeChange(e.target.value)}
-                  className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white"
-                  disabled={mode==='view'}
-                >
-                  <option value="">Select Type</option>
-                  {Object.keys(TYPE_TO_SPECIES).map(t => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
-                  <option value="__add_new__">+ Add new</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Breed</label>
-                <select 
-                  value={form.pet.breed}
-                  onChange={e=>handleBreedChange(e.target.value)}
-                  className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white"
-                  disabled={mode==='view'}
-                >
-                  <option value="">Select Breed</option>
-                  {breedOptions.map(b => (
-                    <option key={b} value={b}>{b}</option>
-                  ))}
-                  <option value="__add_breed__">+ Add new</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Gender</label>
-                <select value={form.pet.gender} onChange={e=>updateSection('pet','gender',e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'}>
-                  <option value="">Gender</option>
-                  <option>Male</option>
-                  <option>Female</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Species (auto)</label>
-                <select 
-                  value={form.pet.species}
-                  onChange={e=>handleSpeciesSelectChange(e.target.value)}
-                  className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white"
-                  disabled={mode==='view'}
-                >
-                  <option value="">Select Species</option>
-                  {speciesOptions.map(s => (
-                    <option key={s} value={s}>{s}</option>
-                  ))}
-                  <option value="__add_species__">+ Add new</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Date of Birth</label>
-                <input type="date" value={form.pet.dateOfBirth} onChange={e=>{ const v=e.target.value; updateSection('pet','dateOfBirth', v); updateSection('pet','approxAge', v ? ageFromDOB(v) : '') }} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Approx. Age</label>
-                <input value={form.pet.approxAge} onChange={e=>{ const v=e.target.value; updateSection('pet','approxAge', v); const dob = dobFromAgeText(v); if(dob) updateSection('pet','dateOfBirth', dob) }} placeholder="e.g. 10 days, 3 weeks, 2 months, 1 year or 3Y 2M 6D" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div className="sm:col-span-2">
-                <p className="text-xs text-slate-500">Pick either <strong>Date of Birth</strong> or enter <strong>Approx. Age</strong> (auto-calculates the other).</p>
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Color / Markings</label>
-              <input value={form.pet.colorMarkings} onChange={e=>updateSection('pet','colorMarkings',e.target.value)} placeholder="Color / Markings" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Microchip / Tag No. (if available)</label>
-              <input value={form.pet.microchipTag} onChange={e=>updateSection('pet','microchipTag',e.target.value)} placeholder="Microchip / Tag No. (if available)" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-            </div>
-            <div className="grid grid-cols-2 gap-3 md:col-span-2">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Neutered / Spayed</label>
-                <select value={form.pet.neuteredSpayed} onChange={e=>updateSection('pet','neuteredSpayed',e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'}>
-                  <option value="">Select option</option>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Vaccination Status</label>
-                <select value={form.pet.vaccinationStatus} onChange={e=>updateSection('pet','vaccinationStatus',e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'}>
-                  <option value="">Select option</option>
-                  <option>Up to date</option>
-                  <option>Due</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Deworming Status</label>
-                <select value={form.pet.dewormingStatus} onChange={e=>updateSection('pet','dewormingStatus',e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'}>
-                  <option value="">Select option</option>
-                  <option>Up to date</option>
-                  <option>Due</option>
-                </select>
-              </div>
-            </div>
-          </section>
-
-          {/* 3. Medical & Behavioral History */}
-          <section className="rounded-xl p-4 bg-gradient-to-br from-amber-50 to-white ring-1 ring-amber-200/70">
-            <div className="font-semibold text-slate-800 mb-3">Medical & Behavioral History</div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Known Allergies</label>
-                <input value={form.medical.allergies} onChange={e=>updateSection('medical','allergies',e.target.value)} placeholder="Known Allergies" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Chronic Diseases / Ongoing Treatments</label>
-                <input value={form.medical.chronicDiseases} onChange={e=>updateSection('medical','chronicDiseases',e.target.value)} placeholder="Chronic Diseases / Ongoing Treatments" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Previous Surgeries / Procedures</label>
-                <input value={form.medical.previousSurgeries} onChange={e=>updateSection('medical','previousSurgeries',e.target.value)} placeholder="Previous Surgeries / Procedures" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Regular Medications</label>
-                <input value={form.medical.regularMedications} onChange={e=>updateSection('medical','regularMedications',e.target.value)} placeholder="Regular Medications" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Dietary Habits</label>
-                <input value={form.medical.dietaryHabits} onChange={e=>updateSection('medical','dietaryHabits',e.target.value)} placeholder="Dietary Habits" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Temperament / Behavior Notes</label>
-                <input value={form.medical.temperamentNotes} onChange={e=>updateSection('medical','temperamentNotes',e.target.value)} placeholder="Temperament / Behavior Notes" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-            </div>
-          </section>
-
-          {/* 4. Vaccination Record */}
-          <section className="rounded-xl p-4 bg-gradient-to-br from-emerald-50 to-white ring-1 ring-emerald-200/70">
-            <div className="font-semibold text-slate-800 mb-3">Vaccination Record (if available)</div>
-            <div className="grid grid-cols-1 gap-3">
-              {form.vaccines.map((v, idx) => (
-                <div key={idx} className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+              {/* 2. Pet Information */}
+              <section className="rounded-xl p-4 bg-gradient-to-br from-sky-50 to-white ring-1 ring-sky-200/70">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Vaccine</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Pet Name</label>
+                    <input value={form.pet.petName} onChange={e => handlePetNameChange(e.target.value)} placeholder="Enter pet name" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" required disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
+                    <select
+                      value={form.pet.type}
+                      onChange={e => handleTypeChange(e.target.value)}
+                      className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white"
+                      disabled={mode === 'view'}
+                    >
+                      <option value="">Select Type</option>
+                      {Object.keys(TYPE_TO_SPECIES).map(t => (
+                        <option key={t} value={t}>{t}</option>
+                      ))}
+                      <option value="__add_new__">+ Add new</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Breed</label>
+                    <select
+                      value={form.pet.breed}
+                      onChange={e => handleBreedChange(e.target.value)}
+                      className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white"
+                      disabled={mode === 'view'}
+                    >
+                      <option value="">Select Breed</option>
+                      {breedOptions.map(b => (
+                        <option key={b} value={b}>{b}</option>
+                      ))}
+                      <option value="__add_breed__">+ Add new</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Gender</label>
+                    <select value={form.pet.gender} onChange={e => updateSection('pet', 'gender', e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'}>
+                      <option value="">Gender</option>
+                      <option>Male</option>
+                      <option>Female</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Species (auto)</label>
+                    <select
+                      value={form.pet.species}
+                      onChange={e => handleSpeciesSelectChange(e.target.value)}
+                      className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white"
+                      disabled={mode === 'view'}
+                    >
+                      <option value="">Select Species</option>
+                      {speciesOptions.map(s => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                      <option value="__add_species__">+ Add new</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Date of Birth</label>
+                    <input type="date" value={form.pet.dateOfBirth} onChange={e => { const v = e.target.value; updateSection('pet', 'dateOfBirth', v); updateSection('pet', 'approxAge', v ? ageFromDOB(v) : '') }} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Approx. Age</label>
+                    <input value={form.pet.approxAge} onChange={e => { const v = e.target.value; updateSection('pet', 'approxAge', v); const dob = dobFromAgeText(v); if (dob) updateSection('pet', 'dateOfBirth', dob) }} placeholder="e.g. 10 days, 3 weeks, 2 months, 1 year or 3Y 2M 6D" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <p className="text-xs text-slate-500">Pick either <strong>Date of Birth</strong> or enter <strong>Approx. Age</strong> (auto-calculates the other).</p>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Color / Markings</label>
+                  <input value={form.pet.colorMarkings} onChange={e => updateSection('pet', 'colorMarkings', e.target.value)} placeholder="Color / Markings" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Microchip / Tag No. (if available)</label>
+                  <input value={form.pet.microchipTag} onChange={e => updateSection('pet', 'microchipTag', e.target.value)} placeholder="Microchip / Tag No. (if available)" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                </div>
+                <div className="grid grid-cols-2 gap-3 md:col-span-2">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Neutered / Spayed</label>
+                    <select value={form.pet.neuteredSpayed} onChange={e => updateSection('pet', 'neuteredSpayed', e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'}>
+                      <option value="">Select option</option>
+                      <option>Yes</option>
+                      <option>No</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Vaccination Status</label>
+                    <select value={form.pet.vaccinationStatus} onChange={e => updateSection('pet', 'vaccinationStatus', e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'}>
+                      <option value="">Select option</option>
+                      <option>Up to date</option>
+                      <option>Due</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Deworming Status</label>
+                    <select value={form.pet.dewormingStatus} onChange={e => updateSection('pet', 'dewormingStatus', e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'}>
+                      <option value="">Select option</option>
+                      <option>Up to date</option>
+                      <option>Due</option>
+                    </select>
+                  </div>
+                </div>
+              </section>
+
+              {/* 3. Medical & Behavioral History */}
+              <section className="rounded-xl p-4 bg-gradient-to-br from-indigo-50 to-white ring-1 ring-indigo-200/70">
+                <div className="font-semibold text-slate-800 mb-3">Medical & Behavioral History</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Known Allergies</label>
+                    <input value={form.medical.allergies} onChange={e => updateSection('medical', 'allergies', e.target.value)} placeholder="Known Allergies" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Chronic Diseases / Ongoing Treatments</label>
+                    <input value={form.medical.chronicDiseases} onChange={e => updateSection('medical', 'chronicDiseases', e.target.value)} placeholder="Chronic Diseases / Ongoing Treatments" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Previous Surgeries / Procedures</label>
+                    <input value={form.medical.previousSurgeries} onChange={e => updateSection('medical', 'previousSurgeries', e.target.value)} placeholder="Previous Surgeries / Procedures" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Regular Medications</label>
+                    <input value={form.medical.regularMedications} onChange={e => updateSection('medical', 'regularMedications', e.target.value)} placeholder="Regular Medications" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Dietary Habits</label>
+                    <input value={form.medical.dietaryHabits} onChange={e => updateSection('medical', 'dietaryHabits', e.target.value)} placeholder="Dietary Habits" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Temperament / Behavior Notes</label>
+                    <input value={form.medical.temperamentNotes} onChange={e => updateSection('medical', 'temperamentNotes', e.target.value)} placeholder="Temperament / Behavior Notes" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                </div>
+              </section>
+
+              {/* 4. Vaccination Record */}
+              <section className="rounded-xl p-4 bg-gradient-to-br from-blue-50 to-white ring-1 ring-blue-200/70">
+                <div className="font-semibold text-slate-800 mb-3">Vaccination Record (if available)</div>
+                <div className="grid grid-cols-1 gap-3">
+                  {form.vaccines.map((v, idx) => (
+                    <div key={idx} className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Vaccine</label>
+                        <div className="relative">
+                          <button type="button" onClick={() => { if (mode !== 'view') { setOpenVaccIndex(openVaccIndex === idx ? -1 : idx) } }} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white text-left">
+                            {v.name || 'Vaccine'}
+                          </button>
+                          {openVaccIndex === idx && (
+                            <div className="absolute z-[60] mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg max-h-56 overflow-y-auto">
+                              {Array.from(new Set([v.name, ...vaccineItems].filter(Boolean))).map(opt => (
+                                <div key={opt} onClick={() => { updateVaccine(idx, 'name', opt); setOpenVaccIndex(-1) }} className="px-3 py-2 hover:bg-slate-50 cursor-pointer">{opt}</div>
+                              ))}
+                              <div className="border-t border-slate-100"></div>
+                              <button type="button" onClick={() => openQuickAdd('vaccine', idx)} className="w-full text-left px-3 py-2 text-indigo-600 hover:bg-indigo-50 cursor-pointer">+ ADD NEW</button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Date Given</label>
+                        <input type="date" value={v.dateGiven} onChange={e => updateVaccine(idx, 'dateGiven', e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Next Due (auto)</label>
+                        <input value={v.nextDue} readOnly placeholder="Next Due (auto)" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Vet's Name / Signature</label>
+                        <input value={v.vet} onChange={e => updateVaccine(idx, 'vet', e.target.value)} placeholder="Vet's Name / Signature" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Shot Stage</label>
+                        <select value={v.shotStage} onChange={e => updateVaccine(idx, 'shotStage', e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'}>
+                          <option value="">Shot Stage</option>
+                          <option>1st</option>
+                          <option>2nd</option>
+                          <option>3rd</option>
+                          <option>4th</option>
+                          <option>Annual</option>
+                        </select>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="text-xs text-slate-600 mt-2">Note: 1st–3rd shots → next due +21 days; 4th/Annual → +1 year.</div>
+              </section>
+
+              {/* Deworming (separate from Vaccination) */}
+              <section className="rounded-xl p-4 bg-gradient-to-br from-cyan-50 to-white ring-1 ring-cyan-200/70">
+                <div className="font-semibold text-slate-800 mb-3">Deworming (if available)</div>
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Deworming Name</label>
                     <div className="relative">
-                      <button type="button" onClick={()=>{ if(mode!=='view'){ setOpenVaccIndex(openVaccIndex===idx? -1 : idx) } }} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white text-left">
-                        {v.name || 'Vaccine'}
+                      <button type="button" onClick={() => { if (mode !== 'view') { setOpenDeworm(!openDeworm) } }} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white text-left">
+                        {form.deworming?.name || 'Deworming'}
                       </button>
-                      {openVaccIndex===idx && (
+                      {openDeworm && (
                         <div className="absolute z-[60] mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg max-h-56 overflow-y-auto">
-                          {Array.from(new Set([v.name, ...vaccineItems].filter(Boolean))).map(opt => (
-                            <div key={opt} onClick={()=>{ updateVaccine(idx,'name', opt); setOpenVaccIndex(-1) }} className="px-3 py-2 hover:bg-slate-50 cursor-pointer">{opt}</div>
+                          {Array.from(new Set([form.deworming?.name, ...dewormItems].filter(Boolean))).map(opt => (
+                            <div key={opt} onClick={() => { updateDeworming('name', opt); setOpenDeworm(false) }} className="px-3 py-2 hover:bg-slate-50 cursor-pointer">{opt}</div>
                           ))}
                           <div className="border-t border-slate-100"></div>
-                          <button type="button" onClick={()=>openQuickAdd('vaccine', idx)} className="w-full text-left px-3 py-2 text-indigo-600 hover:bg-indigo-50 cursor-pointer">+ ADD NEW</button>
+                          <button type="button" onClick={() => openQuickAdd('deworm')} className="w-full text-left px-3 py-2 text-indigo-600 hover:bg-indigo-50 cursor-pointer">+ ADD NEW</button>
                         </div>
                       )}
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">Date Given</label>
-                    <input type="date" value={v.dateGiven} onChange={e=>updateVaccine(idx,'dateGiven',e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
+                    <input type="date" value={form.deworming?.dateGiven || ''} onChange={e => updateDeworming('dateGiven', e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Next Deworming Days</label>
+                    <input type="number" min="1" value={form.deworming?.days ?? 90} onChange={e => updateDeworming('days', e.target.value)} placeholder="e.g. 90" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">Next Due (auto)</label>
-                    <input value={v.nextDue} readOnly placeholder="Next Due (auto)" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" />
+                    <input value={form.deworming?.nextDue || ''} readOnly placeholder="Next Due (auto)" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">Vet's Name / Signature</label>
-                    <input value={v.vet} onChange={e=>updateVaccine(idx,'vet',e.target.value)} placeholder="Vet's Name / Signature" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
+                    <input value={form.deworming?.vet || ''} onChange={e => updateDeworming('vet', e.target.value)} placeholder="Vet's Name / Signature" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
                   </div>
+                </div>
+                <div className="text-xs text-slate-600 mt-2">Note: Deworming next due = Date Given + entered days (default 90).</div>
+              </section>
+
+              {/* 5. Chief Complaint */}
+              <section className="rounded-xl p-4 bg-gradient-to-br from-rose-50 to-white ring-1 ring-rose-200/70">
+                <div className="font-semibold text-slate-800 mb-3">Chief Complaint</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Shot Stage</label>
-                    <select value={v.shotStage} onChange={e=>updateVaccine(idx,'shotStage',e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'}>
-                      <option value="">Shot Stage</option>
-                      <option>1st</option>
-                      <option>2nd</option>
-                      <option>3rd</option>
-                      <option>4th</option>
-                      <option>Annual</option>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Visit Type</label>
+                    <select value={form.complaint.visitType} onChange={e => setForm(prev => ({ ...prev, complaint: { ...prev.complaint, visitType: e.target.value } }))} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'}>
+                      <option>Emergency</option>
+                      <option>Routine</option>
+                      <option>Follow-up</option>
+                      <option>Vaccination</option>
                     </select>
                   </div>
-                </div>
-              ))}
-            </div>
-            <div className="text-xs text-slate-600 mt-2">Note: 1st–3rd shots → next due +21 days; 4th/Annual → +1 year.</div>
-          </section>
-
-          {/* Deworming (separate from Vaccination) */}
-          <section className="rounded-xl p-4 bg-gradient-to-br from-lime-50 to-white ring-1 ring-lime-200/70">
-            <div className="font-semibold text-slate-800 mb-3">Deworming (if available)</div>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Deworming Name</label>
-                <div className="relative">
-                  <button type="button" onClick={()=>{ if(mode!=='view'){ setOpenDeworm(!openDeworm) } }} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white text-left">
-                    {form.deworming?.name || 'Deworming'}
-                  </button>
-                  {openDeworm && (
-                    <div className="absolute z-[60] mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg max-h-56 overflow-y-auto">
-                      {Array.from(new Set([form.deworming?.name, ...dewormItems].filter(Boolean))).map(opt => (
-                        <div key={opt} onClick={()=>{ updateDeworming('name', opt); setOpenDeworm(false) }} className="px-3 py-2 hover:bg-slate-50 cursor-pointer">{opt}</div>
-                      ))}
-                      <div className="border-t border-slate-100"></div>
-                      <button type="button" onClick={()=>openQuickAdd('deworm')} className="w-full text-left px-3 py-2 text-indigo-600 hover:bg-indigo-50 cursor-pointer">+ ADD NEW</button>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Date Given</label>
-                <input type="date" value={form.deworming?.dateGiven || ''} onChange={e=>updateDeworming('dateGiven', e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Next Deworming Days</label>
-                <input type="number" min="1" value={form.deworming?.days ?? 90} onChange={e=>updateDeworming('days', e.target.value)} placeholder="e.g. 90" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Next Due (auto)</label>
-                <input value={form.deworming?.nextDue || ''} readOnly placeholder="Next Due (auto)" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Vet's Name / Signature</label>
-                <input value={form.deworming?.vet || ''} onChange={e=>updateDeworming('vet', e.target.value)} placeholder="Vet's Name / Signature" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-            </div>
-            <div className="text-xs text-slate-600 mt-2">Note: Deworming next due = Date Given + entered days (default 90).</div>
-          </section>
-
-          {/* 5. Chief Complaint */}
-          <section className="rounded-xl p-4 bg-gradient-to-br from-rose-50 to-white ring-1 ring-rose-200/70">
-            <div className="font-semibold text-slate-800 mb-3">Chief Complaint</div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Visit Type</label>
-                <select value={form.complaint.visitType} onChange={e=>setForm(prev=>({ ...prev, complaint:{ ...prev.complaint, visitType: e.target.value } }))} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'}>
-                  <option>Emergency</option>
-                  <option>Routine</option>
-                  <option>Follow-up</option>
-                  <option>Vaccination</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Chief Complaint</label>
-                <input value={form.complaint.chiefComplaint} onChange={e=>setForm(prev=>({ ...prev, complaint:{ ...prev.complaint, chiefComplaint: e.target.value } }))} placeholder="Chief Complaint" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-            </div>
-          </section>
-
-          {/* 6. Clinic Use Only */}
-          <section className="rounded-xl p-4 bg-gradient-to-br from-sky-50 to-white ring-1 ring-sky-200/70">
-            <div className="font-semibold text-slate-800 mb-3">Clinic Use Only</div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Date of Registration</label>
-                <input type="date" value={form.clinic.dateOfRegistration} onChange={e=>updateSection('clinic','dateOfRegistration',e.target.value)} placeholder="Date of Registration" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Registered By (Staff Name)</label>
-                <input value={form.clinic.registeredBy} onChange={e=>updateSection('clinic','registeredBy',e.target.value)} placeholder="Registered By (Staff Name)" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Consulting Veterinarian</label>
-                <select
-                  value={form.clinic.consultingVet}
-                  onChange={e=>updateSection('clinic','consultingVet',e.target.value)}
-                  className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white"
-                  disabled={mode==='view'}
-                >
-                  <option value="">Select Consulting Veterinarian</option>
-                  {doctorOptions.map(name => (
-                    <option key={name} value={name}>{name}</option>
-                  ))}
-                  {doctorOptions.length === 0 && (
-                    <option value="Dr. Mazhar Hussain">Dr. Mazhar Hussain</option>
-                  )}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Record Entered</label>
-                <select value={form.clinic.recordEntered} onChange={e=>updateSection('clinic','recordEntered',e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'}>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Remarks / Notes</label>
-                <input value={form.clinic.remarks} onChange={e=>updateSection('clinic','remarks',e.target.value)} placeholder="Remarks / Notes" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Consultant Fees (Optional)</label>
-                <input value={form.clinic.consultantFees} onChange={e=>updateSection('clinic','consultantFees',e.target.value)} placeholder="Consultant Fees (Optional)" type="number" min="0" step="0.01" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode==='view'} />
-              </div>
-            </div>
-          </section>
-
-          {/* Life Status */}
-          <section className="rounded-xl p-4 bg-gradient-to-br from-red-50 to-white ring-1 ring-red-200/70">
-            <div className="font-semibold text-slate-800 mb-3">Life Status</div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
-              <div className="flex items-center gap-2">
-                <input
-                  id="life-dead"
-                  type="checkbox"
-                  checked={!!form.life?.dead}
-                  onChange={e=>{
-                    const v = !!e.target.checked
-                    setForm(prev=>({
-                      ...prev,
-                      life: {
-                        ...(prev.life||{}),
-                        dead: v,
-                        deathDate: v ? (prev.life?.deathDate || new Date().toISOString().slice(0,10)) : '',
-                        deathNote: v ? (prev.life?.deathNote || '') : ''
-                      }
-                    }))
-                  }}
-                  disabled={mode==='view'}
-                />
-                <label htmlFor="life-dead" className="text-sm font-medium text-slate-700">Mark as Dead / Expired</label>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Date of Death</label>
-                <input type="date" value={form.life?.deathDate||''} onChange={e=>updateSection('life','deathDate',e.target.value)} disabled={mode==='view' || !form.life?.dead} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Notes</label>
-                <input value={form.life?.deathNote||''} onChange={e=>updateSection('life','deathNote',e.target.value)} placeholder="Reason / notes" disabled={mode==='view' || !form.life?.dead} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" />
-              </div>
-            </div>
-            {form.life?.dead && form.life?.deathDate && (
-              <div className="mt-2 text-sm text-red-700">This pet will be marked as Expired. Date: {formatLocalDate(form.life.deathDate)}</div>
-            )}
-          </section>
-
-          {/* Radiology Records (view mode) */}
-          {mode==='view' && (()=>{
-            const current = rows.find(r => (r.id===currentId || r._id===currentId)) || {}
-            let records = Array.isArray(current?.details?.radiology) ? [...current.details.radiology] : []
-            if (!records.length) {
-              try {
-                const local = JSON.parse(localStorage.getItem('radiology_records')||'[]')
-                records = local.filter(r => (r.patientId||'') === (current?.id||''))
-              } catch {}
-            }
-            if (!records.length) return null
-            records.sort((a,b)=> new Date(b.testDate || b.createdAt || 0) - new Date(a.testDate || a.createdAt || 0))
-            return (
-              <section className="rounded-xl p-4 bg-gradient-to-br from-rose-50 to-white ring-1 ring-rose-200/70">
-                <div className="font-semibold text-slate-800 mb-3">Radiology Records</div>
-                <div className="space-y-3">
-                  {records.map((rec, idx) => (
-                    <div key={idx} className="border border-rose-200 rounded-lg p-3">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="px-2 py-1 rounded-full text-xs font-semibold bg-rose-100 text-rose-700">{rec.testType || 'Imaging'}</span>
-                        <span className="text-xs text-slate-500">{new Date(rec.testDate || rec.createdAt || Date.now()).toLocaleDateString()}</span>
-                      </div>
-                      <div className="text-sm text-slate-600">
-                        {rec.bodyPart && <div><span className="font-medium">Body Part:</span> {rec.bodyPart}</div>}
-                        {rec.findings && <div className="mt-1"><span className="font-medium">Findings:</span> {rec.findings}</div>}
-                      </div>
-                      {Array.isArray(rec.images) && rec.images.length>0 && (
-                        <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mt-2">
-                          {rec.images.slice(0,5).map((img,i)=> (
-                            <img key={i} src={img.data} alt={`img-${i}`} className="w-full h-20 object-cover rounded border" />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Chief Complaint</label>
+                    <input value={form.complaint.chiefComplaint} onChange={e => setForm(prev => ({ ...prev, complaint: { ...prev.complaint, chiefComplaint: e.target.value } }))} placeholder="Chief Complaint" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
                 </div>
               </section>
-            )
-          })()}
 
-          {mode!=='view' && (
-            <div className="flex items-center gap-2">
-              <button className="px-4 h-10 rounded-lg bg-sky-600 hover:bg-sky-700 text-white shadow-sm cursor-pointer">Save Registration</button>
-              {currentId && (
-                <button type="button" onClick={(e)=>{ e.preventDefault(); openReceiptDialog() }} className="px-4 h-10 rounded-lg bg-slate-700 hover:bg-slate-800 text-white shadow-sm cursor-pointer">Print Receipt</button>
+              {/* 6. Clinic Use Only */}
+              <section className="rounded-xl p-4 bg-gradient-to-br from-sky-50 to-white ring-1 ring-sky-200/70">
+                <div className="font-semibold text-slate-800 mb-3">Clinic Use Only</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Date of Registration</label>
+                    <input type="date" value={form.clinic.dateOfRegistration} onChange={e => updateSection('clinic', 'dateOfRegistration', e.target.value)} placeholder="Date of Registration" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Registered By (Staff Name)</label>
+                    <input value={form.clinic.registeredBy} onChange={e => updateSection('clinic', 'registeredBy', e.target.value)} placeholder="Registered By (Staff Name)" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Consulting Veterinarian</label>
+                    <select
+                      value={form.clinic.consultingVet}
+                      onChange={e => updateSection('clinic', 'consultingVet', e.target.value)}
+                      className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white"
+                      disabled={mode === 'view'}
+                    >
+                      <option value="">Select Consulting Veterinarian</option>
+                      {doctorOptions.map(name => (
+                        <option key={name} value={name}>{name}</option>
+                      ))}
+                      {doctorOptions.length === 0 && (
+                        <option value="Dr. Mazhar Hussain">Dr. Mazhar Hussain</option>
+                      )}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Record Entered</label>
+                    <select value={form.clinic.recordEntered} onChange={e => updateSection('clinic', 'recordEntered', e.target.value)} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'}>
+                      <option>Yes</option>
+                      <option>No</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Remarks / Notes</label>
+                    <input value={form.clinic.remarks} onChange={e => updateSection('clinic', 'remarks', e.target.value)} placeholder="Remarks / Notes" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Consultant Fees (Optional)</label>
+                    <input value={form.clinic.consultantFees} onChange={e => updateSection('clinic', 'consultantFees', e.target.value)} placeholder="Consultant Fees (Optional)" type="number" min="0" step="0.01" className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" disabled={mode === 'view'} />
+                  </div>
+                </div>
+              </section>
+
+              {/* Life Status */}
+              <section className="rounded-xl p-4 bg-gradient-to-br from-red-50 to-white ring-1 ring-red-200/70">
+                <div className="font-semibold text-slate-800 mb-3">Life Status</div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+                  <div className="flex items-center gap-2">
+                    <input
+                      id="life-dead"
+                      type="checkbox"
+                      checked={!!form.life?.dead}
+                      onChange={e => {
+                        const v = !!e.target.checked
+                        setForm(prev => ({
+                          ...prev,
+                          life: {
+                            ...(prev.life || {}),
+                            dead: v,
+                            deathDate: v ? (prev.life?.deathDate || new Date().toISOString().slice(0, 10)) : '',
+                            deathNote: v ? (prev.life?.deathNote || '') : ''
+                          }
+                        }))
+                      }}
+                      disabled={mode === 'view'}
+                    />
+                    <label htmlFor="life-dead" className="text-sm font-medium text-slate-700">Mark as Dead / Expired</label>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Date of Death</label>
+                    <input type="date" value={form.life?.deathDate || ''} onChange={e => updateSection('life', 'deathDate', e.target.value)} disabled={mode === 'view' || !form.life?.dead} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Notes</label>
+                    <input value={form.life?.deathNote || ''} onChange={e => updateSection('life', 'deathNote', e.target.value)} placeholder="Reason / notes" disabled={mode === 'view' || !form.life?.dead} className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white" />
+                  </div>
+                </div>
+                {form.life?.dead && form.life?.deathDate && (
+                  <div className="mt-2 text-sm text-red-700">This pet will be marked as Expired. Date: {formatLocalDate(form.life.deathDate)}</div>
+                )}
+              </section>
+
+              {/* Radiology Records (view mode) */}
+              {mode === 'view' && (() => {
+                const current = rows.find(r => (r.id === currentId || r._id === currentId)) || {}
+                let records = Array.isArray(current?.details?.radiology) ? [...current.details.radiology] : []
+                if (!records.length) {
+                  try {
+                    const local = JSON.parse(localStorage.getItem('radiology_records') || '[]')
+                    records = local.filter(r => (r.patientId || '') === (current?.id || ''))
+                  } catch { }
+                }
+                if (!records.length) return null
+                records.sort((a, b) => new Date(b.testDate || b.createdAt || 0) - new Date(a.testDate || a.createdAt || 0))
+                return (
+                  <section className="rounded-xl p-4 bg-gradient-to-br from-rose-50 to-white ring-1 ring-rose-200/70">
+                    <div className="font-semibold text-slate-800 mb-3">Radiology Records</div>
+                    <div className="space-y-3">
+                      {records.map((rec, idx) => (
+                        <div key={idx} className="border border-rose-200 rounded-lg p-3">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="px-2 py-1 rounded-full text-xs font-semibold bg-rose-100 text-rose-700">{rec.testType || 'Imaging'}</span>
+                            <span className="text-xs text-slate-500">{new Date(rec.testDate || rec.createdAt || Date.now()).toLocaleDateString()}</span>
+                          </div>
+                          <div className="text-sm text-slate-600">
+                            {rec.bodyPart && <div><span className="font-medium">Body Part:</span> {rec.bodyPart}</div>}
+                            {rec.findings && <div className="mt-1"><span className="font-medium">Findings:</span> {rec.findings}</div>}
+                          </div>
+                          {Array.isArray(rec.images) && rec.images.length > 0 && (
+                            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mt-2">
+                              {rec.images.slice(0, 5).map((img, i) => (
+                                <img key={i} src={img.data} alt={`img-${i}`} className="w-full h-20 object-cover rounded border" />
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                )
+              })()}
+
+              {mode !== 'view' && (
+                <div className="flex items-center gap-2">
+                  <button className="px-4 h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-sm cursor-pointer">Save Registration</button>
+                  {currentId && (
+                    <button type="button" onClick={(e) => { e.preventDefault(); openReceiptDialog() }} className="px-4 h-10 rounded-lg bg-slate-700 hover:bg-slate-800 text-white shadow-sm cursor-pointer">Print Receipt</button>
+                  )}
+                </div>
               )}
-            </div>
-          )}
-        </form>
+            </form>
           </div>
         </div>
       ) : null}
@@ -2706,20 +2706,20 @@ export default function ReceptionPets(){
       {/* Receipt Dialog */}
       {receiptOpen ? (
         <div className="fixed inset-0 z-[60] flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/40" onClick={()=>setReceiptOpen(false)}></div>
+          <div className="absolute inset-0 bg-black/40" onClick={() => setReceiptOpen(false)}></div>
           <div className="relative w-[95%] max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl bg-white shadow-xl ring-1 ring-slate-200 p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="font-semibold text-slate-800">Registration Receipt</div>
-              <button className="text-slate-500 hover:text-slate-700 cursor-pointer" onClick={()=>setReceiptOpen(false)}>Close</button>
+              <button className="text-slate-500 hover:text-slate-700 cursor-pointer" onClick={() => setReceiptOpen(false)}>Close</button>
             </div>
             {/* Compact hospital header */}
             <div className="mb-4 text-center">
               {hospital.logo && (
                 <div className="mb-3 flex justify-center">
                   <div className="w-20 h-20 bg-gradient-to-br from-sky-50 to-blue-50 rounded-xl border-2 border-sky-200 flex items-center justify-center p-2 shadow-sm">
-                    <img 
-                      src={hospital.logo} 
-                      alt={hospital.name + ' Logo'} 
+                    <img
+                      src={hospital.logo}
+                      alt={hospital.name + ' Logo'}
                       className="max-h-full max-w-full object-contain"
                       onError={(e) => {
                         e.target.style.display = 'none'
@@ -2772,12 +2772,12 @@ export default function ReceptionPets(){
               System-generated receipt • {new Date().toLocaleDateString()}
             </div>
             <div className="mt-6 flex items-center gap-3 justify-center">
-              <button onClick={()=>setReceiptOpen(false)} className="px-6 h-12 rounded-xl bg-gradient-to-r from-slate-600 to-gray-600 hover:from-slate-700 hover:to-gray-700 text-white font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
+              <button onClick={() => setReceiptOpen(false)} className="px-6 h-12 rounded-xl bg-gradient-to-r from-slate-600 to-gray-600 hover:from-slate-700 hover:to-gray-700 text-white font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
                 OK
               </button>
-              <button onClick={() => printReceipt(receipt)} className="px-6 h-12 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clipRule="evenodd"/></svg>
+              <button onClick={() => printReceipt(receipt)} className="px-6 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clipRule="evenodd" /></svg>
                 Print Receipt
               </button>
             </div>
@@ -2787,10 +2787,10 @@ export default function ReceptionPets(){
 
       {/* Enhanced Registered Pets List (suspended while dialogs are open for speed) */}
       {(!isOpen && !receiptOpen) && (
-        <div className="rounded-3xl bg-gradient-to-br from-white via-emerald-50 to-teal-50 shadow-2xl ring-1 ring-emerald-200 border border-emerald-100 p-8">
+        <div className="rounded-3xl bg-gradient-to-br from-white via-blue-50 to-sky-50 shadow-2xl ring-1 ring-blue-200 border border-blue-100 p-8">
           <div className="mb-6 flex items-center justify-between gap-3 flex-nowrap min-w-0">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-11 h-11 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shrink-0">
+              <div className="w-11 h-11 bg-gradient-to-br from-blue-500 to-sky-600 rounded-xl flex items-center justify-center shrink-0">
                 <FiHeart className="w-5 h-5 text-white" />
               </div>
               <div className="min-w-0 flex items-baseline gap-2">
@@ -2806,7 +2806,7 @@ export default function ReceptionPets(){
                   value={query}
                   onChange={e => setQuery(e.target.value)}
                   placeholder="Search..."
-                  className="h-10 pl-10 pr-3 rounded-xl border border-slate-200 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 bg-white w-full shadow-md transition-all duration-200 text-sm"
+                  className="h-10 pl-10 pr-3 rounded-xl border border-slate-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 bg-white w-full shadow-md transition-all duration-200 text-sm"
                 />
               </div>
 
@@ -2861,141 +2861,141 @@ export default function ReceptionPets(){
             </div>
           </div>
           <div className="grid gap-6">
-          {filtered.map(r => (
-            <div key={r.id} className="group">
-              <div className="rounded-3xl border-2 border-slate-200 bg-gradient-to-br from-white via-slate-50 to-emerald-50 hover:from-emerald-50 hover:to-teal-50 hover:border-emerald-300 transition-all duration-300 shadow-lg hover:shadow-2xl p-6 group-hover:-translate-y-1">
-                <div className="flex items-start justify-between gap-6">
-                  <div className="flex items-start gap-4 flex-1">
-                    {/* Pet Avatar */}
-                    <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center shrink-0">
-                      <span className="text-2xl font-bold text-white">
-                        {r.petName ? r.petName.charAt(0).toUpperCase() : '🐾'}
-                      </span>
+            {filtered.map(r => (
+              <div key={r.id} className="group">
+                <div className="rounded-3xl border-2 border-slate-200 bg-gradient-to-br from-white via-slate-50 to-blue-50 hover:from-blue-50 hover:to-sky-50 hover:border-blue-300 transition-all duration-300 shadow-lg hover:shadow-2xl p-6 group-hover:-translate-y-1">
+                  <div className="flex items-start justify-between gap-6">
+                    <div className="flex items-start gap-4 flex-1">
+                      {/* Pet Avatar */}
+                      <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-sky-500 rounded-2xl flex items-center justify-center shrink-0">
+                        <span className="text-2xl font-bold text-white">
+                          {r.petName ? r.petName.charAt(0).toUpperCase() : '🐾'}
+                        </span>
+                      </div>
+
+                      {/* Pet Information */}
+                      <div className="flex-1 min-w-0">
+                        {/* Pet ID Badge */}
+                        <div className="flex items-center gap-3 mb-3">
+                          <button
+                            title="Click to copy Pet ID"
+                            onClick={() => {
+                              navigator.clipboard?.writeText(r.id);
+                              // Show copied feedback
+                              const btn = event.target;
+                              const original = btn.textContent;
+                              btn.textContent = 'Copied!';
+                              btn.className = btn.className.replace('bg-indigo-100', 'bg-green-100').replace('text-indigo-700', 'text-green-700');
+                              setTimeout(() => {
+                                btn.textContent = original;
+                                btn.className = btn.className.replace('bg-green-100', 'bg-indigo-100').replace('text-green-700', 'text-indigo-700');
+                              }, 1200);
+                            }}
+                            className="px-3 py-2 text-sm font-mono bg-indigo-100 text-indigo-700 hover:bg-indigo-200 rounded-xl border border-indigo-200 cursor-pointer transition-all duration-200 flex items-center gap-2 shadow-sm"
+                          >
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                              <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+                            </svg>
+                            {r.id}
+                          </button>
+                          <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-lg">Click ID to copy</span>
+                        </div>
+
+                        {/* Pet Details */}
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-2xl font-bold text-slate-900">{r.petName}</h3>
+                            {(r.status === 'Expired' || r.status === 'Deceased') && (
+                              <span className="px-2 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
+                                Expired{r.dateOfDeath ? (' • ' + formatLocalDate(r.dateOfDeath)) : ''}
+                              </span>
+                            )}
+                            <span className="text-slate-400">•</span>
+                            <span className="text-lg font-semibold text-blue-600">{r.type}</span>
+                            <span className="text-slate-400">•</span>
+                            <span className="text-lg text-slate-600">{r.breed}</span>
+                          </div>
+
+                          <div className="flex items-center gap-4 text-sm text-slate-600">
+                            <div className="flex items-center gap-1">
+                              <span className="font-semibold">Gender:</span>
+                              <span className="bg-slate-100 px-2 py-1 rounded-lg">{r.gender || 'Unknown'}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <span className="font-semibold">Age:</span>
+                              <span className="bg-slate-100 px-2 py-1 rounded-lg">{r.age || 'Unknown'}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 text-sm">
+                            <span className="font-semibold text-slate-700">Owner:</span>
+                            <span className="text-slate-900 font-medium">{r.ownerName}</span>
+                            <span className="text-slate-400">•</span>
+                            <span className="text-slate-600">{r.ownerContact}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    
-                    {/* Pet Information */}
-                    <div className="flex-1 min-w-0">
-                      {/* Pet ID Badge */}
-                      <div className="flex items-center gap-3 mb-3">
-                        <button 
-                          title="Click to copy Pet ID" 
-                          onClick={()=>{ 
-                            navigator.clipboard?.writeText(r.id); 
-                            // Show copied feedback
-                            const btn = event.target;
-                            const original = btn.textContent;
-                            btn.textContent = 'Copied!';
-                            btn.className = btn.className.replace('bg-emerald-100', 'bg-green-100').replace('text-emerald-700', 'text-green-700');
-                            setTimeout(() => {
-                              btn.textContent = original;
-                              btn.className = btn.className.replace('bg-green-100', 'bg-emerald-100').replace('text-green-700', 'text-emerald-700');
-                            }, 1200);
-                          }} 
-                          className="px-3 py-2 text-sm font-mono bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-xl border border-emerald-200 cursor-pointer transition-all duration-200 flex items-center gap-2 shadow-sm"
-                        >
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/>
-                            <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"/>
-                          </svg>
-                          {r.id}
-                        </button>
-                        <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-lg">Click ID to copy</span>
-                      </div>
-                      
-                      {/* Pet Details */}
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-2xl font-bold text-slate-900">{r.petName}</h3>
-                          {(r.status==='Expired'||r.status==='Deceased') && (
-                            <span className="px-2 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
-                              Expired{r.dateOfDeath ? (' • ' + formatLocalDate(r.dateOfDeath)) : ''}
-                            </span>
-                          )}
-                          <span className="text-slate-400">•</span>
-                          <span className="text-lg font-semibold text-emerald-600">{r.type}</span>
-                          <span className="text-slate-400">•</span>
-                          <span className="text-lg text-slate-600">{r.breed}</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-4 text-sm text-slate-600">
-                          <div className="flex items-center gap-1">
-                            <span className="font-semibold">Gender:</span>
-                            <span className="bg-slate-100 px-2 py-1 rounded-lg">{r.gender || 'Unknown'}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <span className="font-semibold">Age:</span>
-                            <span className="bg-slate-100 px-2 py-1 rounded-lg">{r.age || 'Unknown'}</span>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center gap-2 text-sm">
-                          <span className="font-semibold text-slate-700">Owner:</span>
-                          <span className="text-slate-900 font-medium">{r.ownerName}</span>
-                          <span className="text-slate-400">•</span>
-                          <span className="text-slate-600">{r.ownerContact}</span>
-                        </div>
-                      </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-col gap-3 shrink-0">
+                      <button
+                        onClick={() => openView(r)}
+                        className="px-6 py-3 rounded-xl border-2 border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 text-slate-700 font-semibold cursor-pointer transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md"
+                      >
+                        <FiUser className="w-4 h-4" />
+                        View
+                      </button>
+                      <button
+                        onClick={() => openEdit(r)}
+                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold cursor-pointer transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
+                      >
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                        </svg>
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => askDelete(r)}
+                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white font-semibold cursor-pointer transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
+                      >
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                        Delete
+                      </button>
                     </div>
                   </div>
-                  
-                  {/* Action Buttons */}
-                  <div className="flex flex-col gap-3 shrink-0">
-                    <button 
-                      onClick={()=>openView(r)} 
-                      className="px-6 py-3 rounded-xl border-2 border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 text-slate-700 font-semibold cursor-pointer transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md"
-                    >
-                      <FiUser className="w-4 h-4" />
-                      View
-                    </button>
-                    <button 
-                      onClick={()=>openEdit(r)} 
-                      className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold cursor-pointer transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
-                    >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
-                      </svg>
-                      Edit
-                    </button>
-                    <button 
-                      onClick={()=>askDelete(r)} 
-                      className="px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white font-semibold cursor-pointer transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
-                    >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd"/>
-                      </svg>
-                      Delete
-                    </button>
-                  </div>
+                  {r.details && (
+                    <div className="mt-2 text-xs text-slate-600">
+                      <div className="flex flex-wrap gap-y-1 gap-x-3">
+                        <span>Vaccination: <span className="font-medium">{r.details.pet?.vaccinationStatus || 'Unknown'}</span></span>
+                        <span>•</span>
+                        <span>Deworming: <span className="font-medium">{r.details.pet?.dewormingStatus || 'Unknown'}</span></span>
+                      </div>
+                      {Array.isArray(r.details.vaccines) && r.details.vaccines.some(v => v.nextDue) && (
+                        <div className="mt-1 text-slate-500">Next Due: {r.details.vaccines.filter(v => v.nextDue).map(v => `${v.name}: ${v.nextDue}`).join(' • ')}</div>
+                      )}
+                      {r.details?.deworming?.nextDue && (
+                        <div className="mt-1 text-slate-500">Deworming Next Due: {r.details.deworming.nextDue}</div>
+                      )}
+                    </div>
+                  )}
                 </div>
-                {r.details && (
-                  <div className="mt-2 text-xs text-slate-600">
-                    <div className="flex flex-wrap gap-y-1 gap-x-3">
-                      <span>Vaccination: <span className="font-medium">{r.details.pet?.vaccinationStatus || 'Unknown'}</span></span>
-                      <span>•</span>
-                      <span>Deworming: <span className="font-medium">{r.details.pet?.dewormingStatus || 'Unknown'}</span></span>
-                    </div>
-                    {Array.isArray(r.details.vaccines) && r.details.vaccines.some(v=>v.nextDue) && (
-                      <div className="mt-1 text-slate-500">Next Due: {r.details.vaccines.filter(v=>v.nextDue).map(v=>`${v.name}: ${v.nextDue}`).join(' • ')}</div>
-                    )}
-                    {r.details?.deworming?.nextDue && (
-                      <div className="mt-1 text-slate-500">Deworming Next Due: {r.details.deworming.nextDue}</div>
-                    )}
-                  </div>
-                )}
               </div>
-            </div>
-          ))}
-          {filtered.length===0 && (
-            <div className="py-16 text-center">
-              <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FiHeart className="w-10 h-10 text-slate-400" />
+            ))}
+            {filtered.length === 0 && (
+              <div className="py-16 text-center">
+                <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FiHeart className="w-10 h-10 text-slate-400" />
+                </div>
+                <div className="text-slate-500 text-xl font-medium">No pets found</div>
+                <div className="text-slate-400 text-sm mt-1">Try adjusting your search or register a new pet</div>
               </div>
-              <div className="text-slate-500 text-xl font-medium">No pets found</div>
-              <div className="text-slate-400 text-sm mt-1">Try adjusting your search or register a new pet</div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
       )}
 
       {/* Delete Confirmation Modal */}
@@ -3027,8 +3027,8 @@ export default function ReceptionPets(){
             <div className="text-lg font-bold text-slate-900 mb-2">{confirmDialog.title}</div>
             <div className="text-slate-600 whitespace-pre-line mb-5">{confirmDialog.message}</div>
             <div className="flex justify-end gap-3">
-              <button onClick={()=>setConfirmDialog(d=>({ ...d, open:false }))} className="px-4 h-10 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 cursor-pointer">{confirmDialog.cancelText || 'Cancel'}</button>
-              <button onClick={()=>{ const fn = confirmDialog.onConfirm; if (typeof fn === 'function') fn(); }} className="px-4 h-10 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer">{confirmDialog.confirmText || 'Confirm'}</button>
+              <button onClick={() => setConfirmDialog(d => ({ ...d, open: false }))} className="px-4 h-10 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 cursor-pointer">{confirmDialog.cancelText || 'Cancel'}</button>
+              <button onClick={() => { const fn = confirmDialog.onConfirm; if (typeof fn === 'function') fn(); }} className="px-4 h-10 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer">{confirmDialog.confirmText || 'Confirm'}</button>
             </div>
           </div>
         </div>
@@ -3037,18 +3037,18 @@ export default function ReceptionPets(){
       {quickAdd.open && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[90]">
           <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 ring-1 ring-slate-200/70">
-            <div className="text-lg font-bold text-slate-900 mb-2">Add {quickAdd.type==='vaccine' ? 'Vaccine' : 'Deworming Item'}</div>
+            <div className="text-lg font-bold text-slate-900 mb-2">Add {quickAdd.type === 'vaccine' ? 'Vaccine' : 'Deworming Item'}</div>
             <div className="space-y-3">
               <input
                 autoFocus
                 value={quickAdd.value}
-                onChange={e=>setQuickAdd(prev=>({ ...prev, value: e.target.value }))}
-                onKeyDown={e=>{ if(e.key==='Enter') saveQuickAdd() }}
-                placeholder={quickAdd.type==='vaccine' ? 'e.g., Rabies' : 'e.g., Albendazole'}
+                onChange={e => setQuickAdd(prev => ({ ...prev, value: e.target.value }))}
+                onKeyDown={e => { if (e.key === 'Enter') saveQuickAdd() }}
+                placeholder={quickAdd.type === 'vaccine' ? 'e.g., Rabies' : 'e.g., Albendazole'}
                 className="w-full h-11 px-3 rounded-lg border border-slate-300"
               />
               <div className="flex justify-end gap-3">
-                <button onClick={()=>setQuickAdd({ open:false, type:'', value:'', targetIndex:-1 })} className="px-4 h-10 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 cursor-pointer">Cancel</button>
+                <button onClick={() => setQuickAdd({ open: false, type: '', value: '', targetIndex: -1 })} className="px-4 h-10 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 cursor-pointer">Cancel</button>
                 <button onClick={saveQuickAdd} className="px-4 h-10 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer">Save</button>
               </div>
             </div>

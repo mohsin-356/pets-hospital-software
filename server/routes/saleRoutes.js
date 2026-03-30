@@ -6,6 +6,7 @@ import { postShopSale } from '../utils/accountingService.js';
 import dayGuard from '../middleware/dayGuard.js';
 import Receivable from '../models/Receivable.js';
 import DailyLog from '../models/DailyLog.js';
+import { adjustInventoryQuantity, upsertInventoryForProduct } from '../utils/inventoryLinking.js';
 
 const router = express.Router();
 
@@ -142,10 +143,20 @@ router.post('/', dayGuard('shop'), async (req, res) => {
 
     // Update product stock
     for (const item of items) {
-      await Product.findByIdAndUpdate(
+      const updated = await Product.findByIdAndUpdate(
         item.productId,
-        { $inc: { quantity: -item.quantity } }
+        { $inc: { quantity: -item.quantity } },
+        { new: true }
       );
+      try {
+        const inv = await upsertInventoryForProduct(updated?.toObject ? updated.toObject() : updated);
+        if (inv && inv._id) {
+          if (updated && String(updated.inventoryItemId || '') !== String(inv._id)) {
+            await Product.findByIdAndUpdate(updated._id, { $set: { inventoryItemId: inv._id } });
+          }
+          await adjustInventoryQuantity({ inventoryItemId: inv._id, delta: -Math.abs(Number(item.quantity || 0)) });
+        }
+      } catch {}
     }
 
     // Update customer record if contact provided
@@ -201,10 +212,20 @@ router.delete('/:id', dayGuard('shop'), async (req, res) => {
 
     // Restore stock
     for (const item of sale.items) {
-      await Product.findByIdAndUpdate(
+      const updated = await Product.findByIdAndUpdate(
         item.productId,
-        { $inc: { quantity: item.quantity } }
+        { $inc: { quantity: item.quantity } },
+        { new: true }
       );
+      try {
+        const inv = await upsertInventoryForProduct(updated?.toObject ? updated.toObject() : updated);
+        if (inv && inv._id) {
+          if (updated && String(updated.inventoryItemId || '') !== String(inv._id)) {
+            await Product.findByIdAndUpdate(updated._id, { $set: { inventoryItemId: inv._id } });
+          }
+          await adjustInventoryQuantity({ inventoryItemId: inv._id, delta: Math.abs(Number(item.quantity || 0)) });
+        }
+      } catch {}
     }
 
     await Sale.findByIdAndDelete(req.params.id);

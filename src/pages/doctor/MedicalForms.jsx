@@ -9,7 +9,7 @@ const DEFAULT_TRANSFUSION_PURPOSES = ['Severe anemia', 'Blood loss', 'Clotting d
 export default function DoctorMedicalForms() {
   const { settings, save } = useSettings()
   const hospital = useMemo(() => ({
-    name: settings.companyName || 'Abbottabad Pet Hospital',
+    name: settings.companyName || 'Pet Matrix',
     address: settings.address || '',
     phone: settings.phone || '',
     logo: settings.companyLogo || ''
@@ -513,7 +513,7 @@ export default function DoctorMedicalForms() {
       <div className="border-b-2 border-blue-600 pb-4 mb-4 print-header">
         <div className="flex items-start justify-between">
           <div className="text-left">
-            <h1 className="text-2xl font-bold text-blue-600">Abbottabad Pet Hospital</h1>
+            <h1 className="text-2xl font-bold text-blue-600">Pet Matrix</h1>
             {hospital.address && <p className="text-sm text-slate-600 mt-1">{hospital.address}</p>}
             {hospital.phone && <p className="text-sm text-slate-600">{hospital.phone}</p>}
           </div>
@@ -777,7 +777,7 @@ export default function DoctorMedicalForms() {
             <div style={{ width: '64px', height: '64px' }}></div>
           )}
           <div className="flex-1 text-center">
-            <h1 className="text-2xl font-bold text-blue-600">Abbottabad Pet Hospital</h1>
+            <h1 className="text-2xl font-bold text-blue-600">Pet Matrix</h1>
             {hospital.address && <p className="text-sm text-slate-600 mt-1">{hospital.address}</p>}
             {hospital.phone && <p className="text-sm text-slate-600">{hospital.phone}</p>}
           </div>
@@ -955,7 +955,7 @@ export default function DoctorMedicalForms() {
                   <td className="border border-slate-800 p-1 w-24"><input value={r.doseRate||''} onChange={e=>updateMedRow(i,'doseRate',e.target.value)} className="w-full border-b border-slate-300"/></td>
                   <td className="border border-slate-800 p-1 w-20"><input value={r.perMl||''} onChange={e=>updateMedRow(i,'perMl',e.target.value)} className="w-full border-b border-slate-300"/></td>
                   <td className="border border-slate-800 p-1 w-16"><input value={r.unit||'ml'} onChange={e=>updateMedRow(i,'unit',e.target.value)} className="w-full border-b border-slate-300"/></td>
-                  <td className="border border-slate-800 p-1 font-semibold text-emerald-700">{r.dosage||''}</td>
+                  <td className="border border-slate-800 p-1 font-semibold text-blue-700">{r.dosage||''}</td>
                   <td className="border border-slate-800 p-1"><input value={r.frequency||''} onChange={e=>updateMedRow(i,'frequency',e.target.value)} className="w-full border-b border-slate-300"/></td>
                   <td className="border border-slate-800 p-1 w-24"><input value={r.duration||''} onChange={e=>updateMedRow(i,'duration',e.target.value)} className="w-full border-b border-slate-300"/></td>
                   <td className="border border-slate-800 p-1 text-center print:hidden"><button onClick={()=>removeMedRow(i)} className="px-2 py-1 bg-red-50 hover:bg-red-100 text-red-600 rounded">×</button></td>
@@ -997,7 +997,7 @@ export default function DoctorMedicalForms() {
                   placeholder="Enter custom purpose"
                   className="h-9 px-2 rounded-lg border border-slate-300 bg-white text-xs min-w-[240px]"
                 />
-                <button onClick={addCustomPurpose} className="h-9 px-3 rounded bg-emerald-600 hover:bg-emerald-700 text-white text-xs">Add & Select</button>
+                <button onClick={addCustomPurpose} className="h-9 px-3 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs">Add & Select</button>
                 <button onClick={() => { setAddingCustomPurpose(false); setNewPurposeText('') }} className="h-9 px-3 rounded border border-slate-300 text-slate-600 text-xs">Cancel</button>
               </div>
             )}
@@ -1058,14 +1058,14 @@ export default function DoctorMedicalForms() {
             <div className="text-center">
               <div className="mb-4">
                 {modalMessage.includes('✅') ? (
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                    <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                    <svg className="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
                 ) : (
-                  <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto">
-                    <svg className="w-10 h-10 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                    <svg className="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                   </div>
@@ -1075,7 +1075,7 @@ export default function DoctorMedicalForms() {
                 {modalMessage.includes('✅') ? 'Success!' : 'Attention'}
               </h3>
               <p className="text-slate-600 mb-6 text-lg">{modalMessage.replace('✅', '').replace('⚠️', '')}</p>
-              <button onClick={() => setShowModal(false)} className="w-full h-12 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold text-lg cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl">OK</button>
+              <button onClick={() => setShowModal(false)} className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold text-lg cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl">OK</button>
             </div>
           </div>
         </div>
@@ -1110,15 +1110,15 @@ export default function DoctorMedicalForms() {
       )}
 
       <div className="text-center print:hidden">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Medical Forms</h1>
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Medical Forms</h1>
         <p className="text-slate-500 mt-1">Select and fill out medical forms for patients</p>
       </div>
 
-      <div className="rounded-2xl bg-gradient-to-br from-white to-purple-50 shadow-xl ring-1 ring-purple-200/50 p-6 border border-purple-100 print:hidden">
+      <div className="rounded-2xl bg-gradient-to-br from-white to-blue-50 shadow-xl ring-1 ring-blue-200/50 p-6 border border-blue-100 print:hidden">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 flex-1">
-            <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/></svg>
-            <input value={petId} onChange={e => setPetId(e.target.value)} placeholder="🔍 Enter Pet ID to auto-fill patient information" className="flex-1 h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 transition-all duration-200 bg-white shadow-sm font-mono" />
+            <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/></svg>
+            <input value={petId} onChange={e => setPetId(e.target.value)} placeholder="🔍 Enter Pet ID to auto-fill patient information" className="flex-1 h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-200 bg-white shadow-sm font-mono" />
           </div>
         </div>
       </div>
@@ -1129,7 +1129,7 @@ export default function DoctorMedicalForms() {
             <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd"/></svg>
             Treatment Chart
           </button>
-          <button onClick={() => setSelectedForm('blood')} className="h-32 rounded-2xl bg-gradient-to-br from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-bold text-xl cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex flex-col items-center justify-center gap-3">
+          <button onClick={() => setSelectedForm('blood')} className="h-32 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold text-xl cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex flex-col items-center justify-center gap-3">
             <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd"/></svg>
             Blood Transfusion
           </button>
@@ -1143,7 +1143,7 @@ export default function DoctorMedicalForms() {
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd"/></svg>
               Back
             </button>
-            <button onClick={() => setShowPrintDialog(true)} className="h-10 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold cursor-pointer transition-all duration-200 flex items-center gap-2">
+            <button onClick={() => setShowPrintDialog(true)} className="h-10 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold cursor-pointer transition-all duration-200 flex items-center gap-2">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clipRule="evenodd"/></svg>
               Print
             </button>
@@ -1151,13 +1151,13 @@ export default function DoctorMedicalForms() {
           {selectedForm === 'treatment' && (
             <>
               {regimens.length > 0 && (
-                <div className="rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-100 shadow-xl ring-1 ring-purple-200/50 p-6 border border-purple-100 mb-6 print:hidden">
+                <div className="rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-100 shadow-xl ring-1 ring-blue-200/50 p-6 border border-blue-100 mb-6 print:hidden">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
-                      <div className="text-purple-800 font-bold text-lg">Quick Add Medicines</div>
+                      <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+                      <div className="text-blue-800 font-bold text-lg">Quick Add Medicines</div>
                     </div>
-                    <button onClick={() => setShowMedicineButtons(!showMedicineButtons)} className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm transition-all duration-200">
+                    <button onClick={() => setShowMedicineButtons(!showMedicineButtons)} className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-all duration-200">
                       {showMedicineButtons ? 'Hide' : 'Show'} Medicines
                     </button>
                   </div>
@@ -1171,7 +1171,7 @@ export default function DoctorMedicalForms() {
                       ))}
                     </div>
                   )}
-                  <p className="text-xs text-purple-700 mt-3">💡 Tip: Enter patient body weight first, then click a condition to auto-calculate and add medicines</p>
+                  <p className="text-xs text-blue-700 mt-3">💡 Tip: Enter patient body weight first, then click a condition to auto-calculate and add medicines</p>
                 </div>
               )}
               <div className="doctor-medical-forms-print-area">
@@ -1183,13 +1183,13 @@ export default function DoctorMedicalForms() {
           {selectedForm === 'blood' && (
             <>
               {regimens.length > 0 && (
-                <div className="rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-100 shadow-xl ring-1 ring-purple-200/50 p-6 border border-purple-100 mb-6 print:hidden">
+                <div className="rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-100 shadow-xl ring-1 ring-blue-200/50 p-6 border border-blue-100 mb-6 print:hidden">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
-                      <div className="text-purple-800 font-bold text-lg">Quick Add Medicines</div>
+                      <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+                      <div className="text-blue-800 font-bold text-lg">Quick Add Medicines</div>
                     </div>
-                    <button onClick={() => setShowMedicineButtons(!showMedicineButtons)} className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm transition-all duration-200">
+                    <button onClick={() => setShowMedicineButtons(!showMedicineButtons)} className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-all duration-200">
                       {showMedicineButtons ? 'Hide' : 'Show'} Medicines
                     </button>
                   </div>
@@ -1203,7 +1203,7 @@ export default function DoctorMedicalForms() {
                       ))}
                     </div>
                   )}
-                  <p className="text-xs text-purple-700 mt-3">💡 Tip: Enter patient body weight first, then click a condition to auto-calculate and add medicines</p>
+                  <p className="text-xs text-blue-700 mt-3">💡 Tip: Enter patient body weight first, then click a condition to auto-calculate and add medicines</p>
                 </div>
               )}
               <div className="doctor-medical-forms-print-area">

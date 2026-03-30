@@ -438,7 +438,7 @@ export default function AdminClients() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-[hsl(var(--pm-primary))]">
             Clients Directory
           </h1>
           <p className="text-slate-600 mt-1">Manage client information and track their pets</p>
@@ -446,14 +446,14 @@ export default function AdminClients() {
       </div>
 
       {/* Date Range Filter */}
-      <div className="rounded-2xl bg-gradient-to-br from-white via-indigo-50 to-purple-50 shadow-xl ring-1 ring-indigo-200 border border-indigo-100 p-6">
+      <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiCalendar className="w-6 h-6 text-white" />
             </div>
             <div>
-              <div className="text-sm font-semibold text-indigo-600">Filter by Registration Date</div>
+              <div className="text-sm font-semibold text-[hsl(var(--pm-primary))]">Filter by Registration Date</div>
               <div className="text-lg font-bold text-slate-800">
                 {dateRange.fromDate === dateRange.toDate 
                   ? new Date(dateRange.fromDate).toLocaleDateString()
@@ -477,9 +477,9 @@ export default function AdminClients() {
 
       {/* Summary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 shadow-sm">
+        <div className="bg-[hsl(var(--pm-surface))] rounded-xl p-6 ring-1 ring-[hsl(var(--pm-border))] shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiUsers className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -513,9 +513,9 @@ export default function AdminClients() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200 shadow-sm">
+        <div className="bg-[hsl(var(--pm-surface))] rounded-xl p-6 ring-1 ring-[hsl(var(--pm-border))] shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiDollarSign className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -535,7 +535,7 @@ export default function AdminClients() {
             placeholder="Search by Client ID, name, contact, email, or pet name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 focus:ring-2 focus:ring-[hsl(var(--pm-primary))] focus:border-[hsl(var(--pm-primary))]"
           />
         </div>
         <div className="mt-3 text-sm text-slate-600">
@@ -547,7 +547,7 @@ export default function AdminClients() {
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         {false ? (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--pm-primary))]"></div>
             <span className="ml-3 text-slate-600">Loading clients...</span>
           </div>
         ) : filteredClients.length === 0 ? (
@@ -628,7 +628,7 @@ export default function AdminClients() {
                     <td className="px-6 py-4 text-center">
                       <button
                         onClick={() => handleViewClient(client)}
-                        className="inline-flex items-center px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors text-sm font-medium"
+                        className="inline-flex items-center px-3 py-1.5 rounded-lg bg-[hsl(var(--pm-primary))]/10 text-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary))]/20 transition-colors text-sm font-medium"
                       >
                         <FiEye className="w-4 h-4 mr-1" />
                         View
@@ -705,7 +705,7 @@ export default function AdminClients() {
 
               {/* All Modules Financial Summary (Unified) */}
               {finSummary && finSummary.totals && (
-                <div className="rounded-xl border border-indigo-200 bg-indigo-50 p-4">
+                <div className="rounded-xl border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-primary-soft))] p-4">
                   <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
                     <div>
                       <div className="text-slate-600 text-xs">Total Billed</div>

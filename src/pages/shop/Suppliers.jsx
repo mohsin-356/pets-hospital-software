@@ -18,9 +18,13 @@ export default function Suppliers() {
     supplierName: '',
     contactPerson: '',
     phone: '',
+    isWhatsApp: false,
     email: '',
     address: '',
+    city: '',
     category: '',
+    suppliedCategories: '',
+    suppliedProducts: '',
     notes: ''
   });
 
@@ -137,9 +141,13 @@ export default function Suppliers() {
         supplierName: supplier.supplierName,
         contactPerson: supplier.contactPerson || '',
         phone: supplier.phone || '',
+        isWhatsApp: supplier.isWhatsApp === true,
         email: supplier.email || '',
         address: supplier.address || '',
+        city: supplier.city || '',
         category: supplier.category || '',
+        suppliedCategories: supplier.suppliedCategories || '',
+        suppliedProducts: supplier.suppliedProducts || '',
         notes: supplier.notes || ''
       });
     } else {
@@ -148,9 +156,13 @@ export default function Suppliers() {
         supplierName: '',
         contactPerson: '',
         phone: '',
+        isWhatsApp: false,
         email: '',
         address: '',
+        city: '',
         category: '',
+        suppliedCategories: '',
+        suppliedProducts: '',
         notes: ''
       });
     }
@@ -277,6 +289,11 @@ export default function Suppliers() {
                     {supplier.category}
                   </span>
                 )}
+                {supplier.isWhatsApp && supplier.phone && (
+                  <span className="inline-block mt-2 px-2 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    WhatsApp
+                  </span>
+                )}
               </div>
               <div className="flex gap-1">
                 <button
@@ -301,11 +318,17 @@ export default function Suppliers() {
               {supplier.phone && (
                 <p><strong>Phone:</strong> {supplier.phone}</p>
               )}
+              {supplier.city && (
+                <p><strong>City:</strong> {supplier.city}</p>
+              )}
               {supplier.email && (
                 <p><strong>Email:</strong> {supplier.email}</p>
               )}
               {supplier.address && (
                 <p><strong>Address:</strong> {supplier.address}</p>
+              )}
+              {supplier.suppliedCategories && (
+                <p><strong>Supplies:</strong> {supplier.suppliedCategories}</p>
               )}
             </div>
 
@@ -404,7 +427,7 @@ export default function Suppliers() {
                     required
                     value={formData.supplierName}
                     onChange={(e) => setFormData({...formData, supplierName: e.target.value})}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
@@ -416,7 +439,7 @@ export default function Suppliers() {
                     type="text"
                     value={formData.contactPerson}
                     onChange={(e) => setFormData({...formData, contactPerson: e.target.value})}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
@@ -428,8 +451,22 @@ export default function Suppliers() {
                     type="text"
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="WhatsApp preferred number"
                   />
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <input
+                    id="shop_supplier_is_whatsapp"
+                    type="checkbox"
+                    checked={formData.isWhatsApp === true}
+                    onChange={(e) => setFormData({ ...formData, isWhatsApp: e.target.checked })}
+                    className="h-4 w-4"
+                  />
+                  <label htmlFor="shop_supplier_is_whatsapp" className="text-sm text-slate-700 select-none">
+                    WhatsApp number
+                  </label>
                 </div>
 
                 <div>
@@ -440,7 +477,7 @@ export default function Suppliers() {
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
@@ -452,8 +489,47 @@ export default function Suppliers() {
                     type="text"
                     value={formData.category}
                     onChange={(e) => setFormData({...formData, category: e.target.value})}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="e.g., Pet Food, Accessories"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.city}
+                    onChange={(e) => setFormData({...formData, city: e.target.value})}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., Lahore"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Supplied Categories
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.suppliedCategories}
+                    onChange={(e) => setFormData({...formData, suppliedCategories: e.target.value})}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., Food, Accessories, Medicine"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Supplied Products
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.suppliedProducts}
+                    onChange={(e) => setFormData({...formData, suppliedProducts: e.target.value})}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., Royal Canin, Leash, Shampoo"
                   />
                 </div>
               </div>
@@ -466,7 +542,7 @@ export default function Suppliers() {
                   value={formData.address}
                   onChange={(e) => setFormData({...formData, address: e.target.value})}
                   rows="2"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -478,7 +554,7 @@ export default function Suppliers() {
                   value={formData.notes}
                   onChange={(e) => setFormData({...formData, notes: e.target.value})}
                   rows="3"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -492,7 +568,7 @@ export default function Suppliers() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg"
+                  className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
                 >
                   {editingSupplier ? 'Update Supplier' : 'Add Supplier'}
                 </button>
@@ -525,7 +601,7 @@ export default function Suppliers() {
                       required
                       value={purchaseData.productId}
                       onChange={handleProductSelect}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="">Choose a product</option>
                       {products.map(product => (
@@ -544,7 +620,7 @@ export default function Suppliers() {
                       min="1"
                       value={purchaseData.quantity}
                       onChange={(e) => setPurchaseData({...purchaseData, quantity: Number(e.target.value)})}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
@@ -556,7 +632,7 @@ export default function Suppliers() {
                       min="0"
                       value={purchaseData.unitPrice}
                       onChange={(e) => setPurchaseData({...purchaseData, unitPrice: Number(e.target.value)})}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
@@ -566,7 +642,7 @@ export default function Suppliers() {
                       type="text"
                       value={purchaseData.invoiceNumber}
                       onChange={(e) => setPurchaseData({...purchaseData, invoiceNumber: e.target.value})}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 

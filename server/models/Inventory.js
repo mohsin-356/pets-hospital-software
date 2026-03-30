@@ -6,6 +6,16 @@ const inventorySchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  company: {
+    type: String,
+    default: '',
+    trim: true
+  },
+  barcode: {
+    type: String,
+    default: '',
+    trim: true
+  },
   itemName: {
     type: String,
     required: true,
@@ -70,6 +80,8 @@ const inventorySchema = new mongoose.Schema({
 
 // Indexes for faster queries
 inventorySchema.index({ id: 1 });
+inventorySchema.index({ department: 1, company: 1, barcode: 1 });
+inventorySchema.index({ department: 1, barcode: 1 });
 inventorySchema.index({ itemName: 1 });
 inventorySchema.index({ category: 1 });
 inventorySchema.index({ status: 1 });

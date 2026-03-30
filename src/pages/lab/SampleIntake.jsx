@@ -231,10 +231,10 @@ export default function SampleIntake(){
       )}
       <div className="flex items-center justify-between no-print">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Sample Intake</h1>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Sample Intake</h1>
           <p className="text-slate-500">Create intake for ordered tests; results will be added from Add Report</p>
         </div>
-        <button onClick={open} className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white"><FiPlus/> Sample Intake</button>
+        <button onClick={open} className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white"><FiPlus/> Sample Intake</button>
       </div>
 
       <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-4 no-print">
@@ -271,7 +271,7 @@ export default function SampleIntake(){
                   <td className="py-2 px-4">
                     <Link
                       to={`/lab/add-report?intakeId=${encodeURIComponent(r.id || r._id || r.testId)}`}
-                      className="text-emerald-700 hover:text-emerald-900 underline"
+                      className="text-blue-700 hover:text-blue-900 underline"
                       title="Open Add Report prefilled"
                     >
                       {r.testId || r.id}
@@ -282,7 +282,7 @@ export default function SampleIntake(){
                   <td className="py-2 px-4">{r.priority}</td>
                   <td className="py-2 px-4">{r.requestDate} {r.requestTime}</td>
                   <td className="py-2 px-4">
-                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ${r.status==='Pending'?'bg-amber-50 text-amber-700 border border-amber-200':'bg-emerald-50 text-emerald-700 border border-emerald-200'}`}>
+                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ${r.status==='Pending'?'bg-amber-50 text-amber-700 border border-amber-200':'bg-blue-50 text-blue-700 border border-blue-200'}`}>
                       <FiCheckCircle/> {r.status}
                     </span>
                   </td>
@@ -315,7 +315,7 @@ export default function SampleIntake(){
             </div>
             <div className="sticky bottom-0 bg-slate-50 border-t border-slate-200 px-6 py-4 flex justify-end gap-2">
               <button type="button" onClick={()=>setShowStickerDialog(false)} className="h-10 px-4 rounded-lg bg-slate-600 hover:bg-slate-700 text-white">OK</button>
-              <button type="button" onClick={()=>{ setShowStickerDialog(false); setTimeout(()=>{ window.print() }, 20) }} className="h-10 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white">Print</button>
+              <button type="button" onClick={()=>{ setShowStickerDialog(false); setTimeout(()=>{ window.print() }, 20) }} className="h-10 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">Print</button>
             </div>
           </div>
         </div>
@@ -444,7 +444,7 @@ export default function SampleIntake(){
             </div>
             <div className="sticky bottom-0 bg-slate-50 border-t border-slate-200 px-6 py-4 flex justify-end gap-2">
               <button type="button" onClick={close} className="h-10 px-4 rounded-lg border border-slate-300">Cancel</button>
-              <button className="h-10 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white">Save Intake</button>
+              <button className="h-10 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">Save Intake</button>
             </div>
           </form>
         </div>
@@ -472,7 +472,7 @@ export default function SampleIntake(){
               <div className="flex items-center justify-between"><span className="text-slate-500">Status</span><span className="text-slate-800">{viewData?.status || '-'}</span></div>
             </div>
             <div className="sticky bottom-0 bg-slate-50 border-t border-slate-200 px-6 py-4 flex justify-end">
-              <button type="button" onClick={()=>setShowView(false)} className="h-10 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white">Close</button>
+              <button type="button" onClick={()=>setShowView(false)} className="h-10 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">Close</button>
             </div>
           </div>
         </div>

@@ -243,7 +243,7 @@ export default function DoctorPrescription(){
                 perMl: r.perMl || '',
                 dose: r.dose || '',
                 unit: r.unit || '',
-                description: [m.condition? `Cond: ${m.condition}`: '', r.route? `${r.route}`:'', (r.dose||r.unit)? `${r.dose||''}${r.unit||''}`:'', r.instructions||''].filter(Boolean).join(' â€¢ '),
+                description: [m.condition? `Cond: ${m.condition}`: '', r.route? `${r.route}`:'', (r.dose||r.unit)? `${r.dose||''}${r.unit||''}`:'', r.instructions||''].filter(Boolean).join(' • '),
               })
             })
           } else if (m && (m.name || m.dosage || m.description)){
@@ -272,7 +272,7 @@ export default function DoctorPrescription(){
                   perMl: r.perMl || '',
                   dose: r.dose || '',
                   unit: r.unit || '',
-                  description: [m.condition? `Cond: ${m.condition}`: '', r.route? `${r.route}`:'', (r.dose||r.unit)? `${r.dose||''}${r.unit||''}`:'', r.instructions||''].filter(Boolean).join(' â€¢ '),
+                  description: [m.condition? `Cond: ${m.condition}`: '', r.route? `${r.route}`:'', (r.dose||r.unit)? `${r.dose||''}${r.unit||''}`:'', r.instructions||''].filter(Boolean).join(' • '),
                 })
               })
             } else if (m && (m.name || m.dosage || m.description)){
@@ -492,7 +492,7 @@ export default function DoctorPrescription(){
       dose: r.dose || '',
       unit: r.unit || '',
       condition: cond.condition || '',
-      description: [cond.condition? `Cond: ${cond.condition}`: '', r.route? `${r.route}`:'', (r.dose||r.unit)? `${r.dose||''}${r.unit||''}`:'', r.instructions||''].filter(Boolean).join(' â€¢ '),
+      description: [cond.condition? `Cond: ${cond.condition}`: '', r.route? `${r.route}`:'', (r.dose||r.unit)? `${r.dose||''}${r.unit||''}`:'', r.instructions||''].filter(Boolean).join(' • '),
       instructions: r.instructions || '',
       useDehydration: false
     }))
@@ -785,7 +785,7 @@ export default function DoctorPrescription(){
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">Create Prescription</h1>
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Create Prescription</h1>
         <p className="text-slate-500 mt-1">Generate professional prescriptions for your patients</p>
       </div>
 
@@ -793,25 +793,25 @@ export default function DoctorPrescription(){
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <div className="md:col-span-2">
             <label className="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
-              <svg className="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/></svg>
+              <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/></svg>
               Patient ID / Search
             </label>
-            <input className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 w-full transition-all duration-200 bg-white shadow-sm" placeholder="Enter Patient ID (e.g., PET-...) or name/contact" value={patientId} onChange={e=>setPatientId(e.target.value)} onKeyDown={e=>{ if(e.key==='Enter'){ e.preventDefault(); setPatientId(v=>v.trim()) } }} />
+            <input className="h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 w-full transition-all duration-200 bg-white shadow-sm" placeholder="Enter Patient ID (e.g., PET-...) or name/contact" value={patientId} onChange={e=>setPatientId(e.target.value)} onKeyDown={e=>{ if(e.key==='Enter'){ e.preventDefault(); setPatientId(v=>v.trim()) } }} />
           </div>
           <div className="flex items-end">
-            <button type="button" onClick={()=>{ try{ setAllPatients(JSON.parse(localStorage.getItem('reception_pets')||'[]')) }catch(e){}; setPatientId(v=>v.trim()) }} className="h-12 px-6 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2">
+            <button type="button" onClick={()=>{ try{ setAllPatients(JSON.parse(localStorage.getItem('reception_pets')||'[]')) }catch(e){}; setPatientId(v=>v.trim()) }} className="h-12 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd"/></svg>
               Fetch
             </button>
           </div>
           <div className="md:col-span-2 text-sm text-slate-600 flex items-center">
-            {patient ? `${patient.petName} â€¢ ${patient.species} â€¢ Owner: ${patient.ownerName} â€¢ ${patient.appointment}` : (notFound || 'Patient will appear if ID matches.')}
+            {patient ? `${patient.petName} • ${patient.species} • Owner: ${patient.ownerName} • ${patient.appointment}` : (notFound || 'Patient will appear if ID matches.')}
           </div>
         </div>
       </div>
 
       {patient && (
-        <div className="rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-100 shadow-xl ring-1 ring-blue-200/50 p-6 border border-blue-100">
+        <div className="rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-100 shadow-xl ring-1 ring-blue-200/50 p-6 border border-blue-100">
           <div className="flex items-center gap-2 mb-4">
             <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/></svg>
             <div className="text-blue-800 font-bold text-lg">Patient Details</div>
@@ -929,16 +929,16 @@ export default function DoctorPrescription(){
           {/* Advice */}
           <div className="mt-6">
             <div className="text-slate-700 font-medium mb-2">Advice</div>
-            <div className="rounded-xl p-4 bg-gradient-to-br from-emerald-50 to-white ring-1 ring-emerald-200/70">
+            <div className="rounded-xl p-4 bg-gradient-to-br from-blue-50 to-white ring-1 ring-blue-200/70">
               <div className="flex flex-wrap gap-2 mb-3">
                 {(notes.advice||[]).map((a,i)=> (
-                  <span key={`adv${i}`} className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs">
+                  <span key={`adv${i}`} className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs">
                     {a}
-                    <button onClick={()=>setNotes(n=>({ ...n, advice: n.advice.filter((_,idx)=>idx!==i) }))} className="ml-1 text-emerald-700 hover:text-emerald-900">×</button>
+                    <button onClick={()=>setNotes(n=>({ ...n, advice: n.advice.filter((_,idx)=>idx!==i) }))} className="ml-1 text-blue-700 hover:text-blue-900">×</button>
                   </span>
                 ))}
               </div>
-              <button type="button" onClick={()=>openAddOption('advice')} className="text-xs px-3 h-9 rounded-lg border border-emerald-300 text-emerald-700 hover:bg-emerald-50">+ Add New</button>
+              <button type="button" onClick={()=>openAddOption('advice')} className="text-xs px-3 h-9 rounded-lg border border-blue-300 text-blue-700 hover:bg-blue-50">+ Add New</button>
             </div>
           </div>
 
@@ -962,7 +962,7 @@ export default function DoctorPrescription(){
 
           {/* Patient Prescription History */}
           <div className="mt-6">
-            <button onClick={()=>setShowHistory(!showHistory)} className="w-full flex items-center justify-between px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg disabled:opacity-70" disabled={historyLoading}>
+            <button onClick={()=>setShowHistory(!showHistory)} className="w-full flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg disabled:opacity-70" disabled={historyLoading}>
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"/></svg>
                 <span>Prescription History {historyLoading? '(loading...)' : `(${patientHistory.length} records)`}</span>
@@ -972,26 +972,26 @@ export default function DoctorPrescription(){
             {showHistory && (
               <div className="mt-4 space-y-3 max-h-96 overflow-y-auto">
                 {historyLoading && (
-                  <div className="text-center py-6 text-amber-600">Loading history...</div>
+                  <div className="text-center py-6 text-blue-600">Loading history...</div>
                 )}
                 {!historyLoading && patientHistory.length===0 && (
-                  <div className="text-center py-12 text-purple-400">
+                  <div className="text-center py-12 text-blue-400">
                     <svg className="w-16 h-16 mx-auto mb-4 opacity-50" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/></svg>
                     <div className="text-lg font-semibold mb-1">No prescription history</div>
                     <div className="text-sm">This patient hasn't received any prescriptions yet</div>
                   </div>
                 )}
                 {!historyLoading && patientHistory.map((prx, idx)=> (
-                    <div key={prx.id||idx} className="bg-white rounded-xl border-2 border-amber-200 p-4 hover:shadow-lg transition-all">
+                    <div key={prx.id||idx} className="bg-white rounded-xl border-2 border-blue-200 p-4 hover:shadow-lg transition-all">
                       <div className="flex items-start justify-between mb-3">
                         <div>
                           <div className="font-bold text-slate-800 flex items-center gap-2">
-                            <svg className="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"/></svg>
+                            <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"/></svg>
                             {new Date(prx.when).toLocaleString()}
                           </div>
                           <div className="text-xs text-slate-500 mt-1">Doctor: {prx.doctor?.name || prx.doctor?.username || 'N/A'}</div>
                         </div>
-                        <div className="text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded-full font-semibold">
+                        <div className="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold">
                           {prx.items?.length || 0} medicines
                         </div>
                       </div>
@@ -1000,9 +1000,9 @@ export default function DoctorPrescription(){
                       {(prx.notes?.hx?.length || prx.notes?.oe?.length || prx.notes?.dx?.length || prx.notes?.advice?.length || prx.notes?.tests?.length) ? (
                         <div className="mb-3 p-3 bg-slate-50 rounded-lg text-xs">
                           {prx.notes.hx?.length > 0 && <div><b className="text-blue-700">Hx:</b> {prx.notes.hx.join(', ')}</div>}
-                          {prx.notes.oe?.length > 0 && <div><b className="text-green-700">O/E:</b> {prx.notes.oe.join(', ')}</div>}
-                          {prx.notes.dx?.length > 0 && <div><b className="text-rose-700">Dx:</b> {prx.notes.dx.join(', ')}</div>}
-                          {prx.notes.advice?.length > 0 && <div><b className="text-emerald-700">Advice:</b> {prx.notes.advice.join(', ')}</div>}
+                          {prx.notes.oe?.length > 0 && <div><b className="text-blue-700">O/E:</b> {prx.notes.oe.join(', ')}</div>}
+                          {prx.notes.dx?.length > 0 && <div><b className="text-blue-700">Dx:</b> {prx.notes.dx.join(', ')}</div>}
+                          {prx.notes.advice?.length > 0 && <div><b className="text-blue-700">Advice:</b> {prx.notes.advice.join(', ')}</div>}
                           {prx.notes.tests?.length > 0 && <div><b className="text-cyan-700">Tests:</b> {prx.notes.tests.join(', ')}</div>}
                         </div>
                       ) : null}
@@ -1047,17 +1047,17 @@ export default function DoctorPrescription(){
                           }
                           
                           return (
-                            <div key={i} className="flex items-start gap-2 text-sm border-l-2 border-amber-400 pl-3 py-1">
+                            <div key={i} className="flex items-start gap-2 text-sm border-l-2 border-blue-400 pl-3 py-1">
                               <div className="flex-1">
                                 <div className="font-semibold text-slate-800">{med.name}</div>
                                 <div className="text-xs text-slate-600 flex flex-wrap gap-1">
-                                  {med.route && <span className="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">• {med.route}</span>}
-                                  {displayDose && displayDose !== '-' && displayDose !== '—' && <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-semibold">• Dose: {displayDose} {med.unit||'ml'}</span>}
+                                  {med.route && <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded">• {med.route}</span>}
+                                  {displayDose && displayDose !== '-' && displayDose !== '—' && <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-semibold">• Dose: {displayDose} {med.unit||'ml'}</span>}
                                 </div>
                               </div>
                               <div className="text-right min-w-[120px]">
                                 <div className="text-xs text-slate-500 mb-1">Calculated Dose</div>
-                                <div className={`font-bold text-lg ${displayDose && displayDose!=='-' && displayDose!=='—'? 'text-emerald-700':'text-slate-400'}`}>{displayDose && displayDose!=='-' && displayDose!=='—'? `${displayDose} ${med.unit||'ml'}` : '—'}</div>
+                                <div className={`font-bold text-lg ${displayDose && displayDose!=='-' && displayDose!=='—'? 'text-blue-700':'text-slate-400'}`}>{displayDose && displayDose!=='-' && displayDose!=='—'? `${displayDose} ${med.unit||'ml'}` : '—'}</div>
                               </div>
                             </div>
                           )
@@ -1089,7 +1089,7 @@ export default function DoctorPrescription(){
                               }
                             }, 100)
                           }} 
-                          className="flex-1 h-9 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-sm font-semibold transition-all flex items-center justify-center gap-2"
+                          className="flex-1 h-9 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white text-sm font-semibold transition-all flex items-center justify-center gap-2"
                         >
                           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
                           Edit
@@ -1110,26 +1110,26 @@ export default function DoctorPrescription(){
         </div>
       )}
 
-      <div className="rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-100 shadow-xl ring-1 ring-purple-200/50 p-6 border border-purple-100">
+      <div className="rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-100 shadow-xl ring-1 ring-blue-200/50 p-6 border border-blue-100">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
-            <div className="text-purple-800 font-bold text-lg">Medicine Suggestions</div>
+            <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+            <div className="text-blue-800 font-bold text-lg">Medicine Suggestions</div>
           </div>
           <div className="flex items-center gap-2">
-            <button type="button" onClick={()=>{ setManualOpen(v=>!v) }} className="h-9 px-4 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-sm font-semibold shadow-md hover:shadow-lg">
+            <button type="button" onClick={()=>{ setManualOpen(v=>!v) }} className="h-9 px-4 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white text-sm font-semibold shadow-md hover:shadow-lg">
               + Add Manual Medicine
             </button>
           </div>
         </div>
         {manualOpen && (
-          <div className="mb-3 bg-white/70 border border-purple-200 rounded-lg p-3">
+          <div className="mb-3 bg-white/70 border border-blue-200 rounded-lg p-3">
             <div className="flex items-center gap-3">
               <select
                 value={selectedManualId}
                 onChange={(e)=>{ const v=e.target.value; setSelectedManualId(v); if(v){ addManualFromPharmacy(v); } setTimeout(()=>setSelectedManualId(''), 0) }}
                 disabled={pharmacyLoading}
-                className="flex-1 h-11 px-3 rounded-lg border-2 border-slate-300 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 bg-white"
+                className="flex-1 h-11 px-3 rounded-lg border-2 border-slate-300 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 bg-white"
               >
                 <option value="">{pharmacyLoading? 'Loading medicines…' : 'Select medicine from Pharmacy…'}</option>
                 {pharmacyMeds.map(m => (
@@ -1155,7 +1155,7 @@ export default function DoctorPrescription(){
           </div>
         )}
         {regimens.length===0 && (
-          <div className="text-center py-8 text-purple-400">
+          <div className="text-center py-8 text-blue-400">
             <svg className="w-12 h-12 mx-auto mb-2 opacity-50" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
             <div className="text-sm font-medium">No medicine regimens available</div>
             <div className="text-xs">Add regimens in Medicines page first</div>
@@ -1163,29 +1163,29 @@ export default function DoctorPrescription(){
         )}
       </div>
 
-      <div className="prescription-form-section rounded-2xl bg-gradient-to-br from-emerald-50 to-green-100 shadow-xl ring-1 ring-emerald-200/50 p-6 border border-emerald-100">
+      <div className="prescription-form-section rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-100 shadow-xl ring-1 ring-blue-200/50 p-6 border border-blue-100">
         <div className="flex items-center gap-2 mb-4">
-          <svg className="w-5 h-5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/></svg>
-          <div className="text-emerald-800 font-bold text-lg">Prescription Items</div>
+          <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/></svg>
+          <div className="text-blue-800 font-bold text-lg">Prescription Items</div>
         </div>
         <div className="space-y-4">
           {items.map(x=> {
             const computed = x.useDehydration ? (Number.isFinite(Number(fluidMl))? Number(fluidMl) : null) : calcDose(x, patient?.weightKg)
             return (
-              <div key={x.id} className="group relative rounded-2xl border-2 border-slate-200 hover:border-emerald-400 bg-white shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
+              <div key={x.id} className="group relative rounded-2xl border-2 border-slate-200 hover:border-blue-400 bg-white shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
                 {/* Header with medicine name and route */}
-                <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-4 flex items-center justify-between">
+                <div className="bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-4 flex items-center justify-between">
                   <div className="flex items-center gap-3 flex-1">
                     <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
                       <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1z"/></svg>
                     </div>
                     <div className="flex-1">
-                      <label className="block text-xs font-medium text-emerald-50 mb-1">Medicine Name</label>
+                      <label className="block text-xs font-medium text-blue-50 mb-1">Medicine Name</label>
                       <input list="mednames" className="w-full h-10 px-3 rounded-lg bg-white/95 backdrop-blur-sm border-0 text-slate-800 font-semibold text-base placeholder-slate-400 focus:ring-2 focus:ring-white/50 transition-all" placeholder="Enter medicine name" value={x.name} onChange={e=>{ updateItem(x.id,'name',e.target.value); tryAttachMedicine(x.id, e.target.value) }} />
                     </div>
                   </div>
                   <div className="ml-4">
-                    <label className="block text-xs font-medium text-emerald-50 mb-1">Type/Route</label>
+                    <label className="block text-xs font-medium text-blue-50 mb-1">Type/Route</label>
                     <input className="w-32 h-10 px-3 rounded-lg bg-white/95 backdrop-blur-sm border-0 text-slate-800 font-medium placeholder-slate-400 focus:ring-2 focus:ring-white/50 transition-all" placeholder="Injection" value={x.route||''} onChange={e=>updateItem(x.id,'route',e.target.value)} />
                   </div>
                   <button onClick={()=>removeItem(x.id)} className="ml-3 w-8 h-8 rounded-lg bg-red-500/20 hover:bg-red-500 text-white/80 hover:text-white transition-all flex items-center justify-center group/del">
@@ -1201,7 +1201,7 @@ export default function DoctorPrescription(){
                       <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd"/></svg>
                       <label className="text-xs font-bold text-blue-700 uppercase tracking-wide">Dosage Calculation</label>
                       <div className="ml-auto">
-                        <button type="button" onClick={()=>toggleDehydration(x.id)} className={`h-8 px-3 rounded-md text-xs font-semibold transition-all ${x.useDehydration? 'bg-emerald-600 text-white hover:bg-emerald-700':'bg-white text-emerald-700 border border-emerald-300 hover:bg-emerald-50'}`}>
+                        <button type="button" onClick={()=>toggleDehydration(x.id)} className={`h-8 px-3 rounded-md text-xs font-semibold transition-all ${x.useDehydration? 'bg-blue-600 text-white hover:bg-blue-700':'bg-white text-blue-700 border border-blue-300 hover:bg-blue-50'}`}>
                           {x.useDehydration? 'Dehydration: ON' : 'Apply Dehydration'}
                         </button>
                       </div>
@@ -1220,11 +1220,11 @@ export default function DoctorPrescription(){
                         <input className="w-full h-10 px-3 rounded-lg border-2 border-slate-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 bg-white text-slate-700 text-sm placeholder-slate-400 transition-all" placeholder="ml" value={x.unit||''} onChange={e=>updateItem(x.id,'unit',e.target.value)} />
                       </div>
                       <div>
-                        <label className="block text-xs font-semibold text-emerald-700 mb-1.5 flex items-center gap-1">
+                        <label className="block text-xs font-semibold text-blue-700 mb-1.5 flex items-center gap-1">
                           <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>
                           Calculated Dose
                         </label>
-                        <div className={`w-full h-10 px-3 rounded-lg border-2 flex items-center font-bold text-sm transition-all ${computed!=null? 'border-emerald-400 bg-emerald-50 text-emerald-700':'border-slate-300 bg-slate-100 text-slate-500'}`}>
+                        <div className={`w-full h-10 px-3 rounded-lg border-2 flex items-center font-bold text-sm transition-all ${computed!=null? 'border-blue-400 bg-blue-50 text-blue-700':'border-slate-300 bg-slate-100 text-slate-500'}`}>
                           {computed!=null? `${computed.toFixed(2)} ${x.unit||'ml'}` : '—'}
                         </div>
                       </div>
@@ -1236,7 +1236,7 @@ export default function DoctorPrescription(){
                           <>
                             <span className="font-semibold text-blue-700">Formula (Dehydration Fluid):</span> Fluid = (Dehydration% × Body Weight × 10)
                             {computed!=null && (
-                              <div className="mt-1 text-emerald-700 font-semibold">
+                              <div className="mt-1 text-blue-700 font-semibold">
                                 = {(Number.isFinite(getDehydrationPct())? getDehydrationPct() : 0)}% × {(num(patient?.weightKg)||0)} kg × 10 = <span className="text-base">{computed.toFixed(2)} {x.unit||'ml'}</span>
                               </div>
                             )}
@@ -1245,7 +1245,7 @@ export default function DoctorPrescription(){
                           <>
                             <span className="font-semibold text-blue-700">Formula:</span> Dose = (Dose Rate × Body Weight) ÷ Composition per ml
                             {computed!=null && (
-                              <div className="mt-1 text-emerald-700 font-semibold">
+                              <div className="mt-1 text-blue-700 font-semibold">
                                 = {(num(x.doseRate)||0)} × {(num(patient?.weightKg)||0)} kg ÷ {(num(x.perMl)||0)} = <span className="text-base">{computed.toFixed(2)} {x.unit||'ml'}</span>
                               </div>
                             )}
@@ -1258,10 +1258,10 @@ export default function DoctorPrescription(){
                   {/* Instructions Section */}
                   <div>
                     <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide mb-2 flex items-center gap-2">
-                      <svg className="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/></svg>
+                      <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/></svg>
                       Instructions
                     </label>
-                    <textarea className="w-full h-20 px-4 py-3 rounded-lg border-2 border-slate-200 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 bg-white text-slate-700 placeholder-slate-400 resize-none transition-all" placeholder="e.g., Administer 1 ml twice daily for 5 days" value={x.instructions||''} onChange={e=>updateItem(x.id,'instructions',e.target.value)} />
+                    <textarea className="w-full h-20 px-4 py-3 rounded-lg border-2 border-slate-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 bg-white text-slate-700 placeholder-slate-400 resize-none transition-all" placeholder="e.g., Administer 1 ml twice daily for 5 days" value={x.instructions||''} onChange={e=>updateItem(x.id,'instructions',e.target.value)} />
                   </div>
                 </div>
               </div>
@@ -1274,7 +1274,7 @@ export default function DoctorPrescription(){
           </datalist>
             </div>
           {items.length===0 && (
-            <div className="rounded-2xl border-2 border-dashed border-emerald-300 text-emerald-400 p-12 text-center">
+            <div className="rounded-2xl border-2 border-dashed border-blue-300 text-blue-400 p-12 text-center">
               <svg className="w-16 h-16 mx-auto mb-4 opacity-50" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/></svg>
               <div className="text-lg font-semibold mb-1">No prescription items yet</div>
               <div className="text-sm">Click a condition above to add medicines</div>
@@ -1282,7 +1282,7 @@ export default function DoctorPrescription(){
           )}
         
         <div className="mt-6 flex gap-3">
-          <button onClick={save} disabled={!canSave} className={`px-6 h-12 rounded-xl font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2 ${canSave?'bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white':'bg-slate-300 text-slate-500 cursor-not-allowed'}`}>
+          <button onClick={save} disabled={!canSave} className={`px-6 h-12 rounded-xl font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2 ${canSave?'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white':'bg-slate-300 text-slate-500 cursor-not-allowed'}`}>
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
             Save Prescription
           </button>

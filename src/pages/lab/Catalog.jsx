@@ -233,7 +233,7 @@ export default function LabTestCatalog(){
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Test Catalog</h1>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Test Catalog</h1>
           <p className="text-slate-500 mt-1 flex items-center gap-2">
             <FiSearch className="w-4 h-4" />
             Manage available laboratory tests
@@ -241,7 +241,7 @@ export default function LabTestCatalog(){
         </div>
         <button
           onClick={()=>{setShowForm(true); setEditingId(''); setForm(emptyForm)}}
-          className="px-6 h-12 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center gap-2 cursor-pointer font-semibold"
+          className="px-6 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center gap-2 cursor-pointer font-semibold"
         >
           <FiPlus className="w-5 h-5" /> Add New Test
           <span className="ml-2 px-2 py-1 rounded-lg bg-white/20 text-sm font-bold">
@@ -255,7 +255,7 @@ export default function LabTestCatalog(){
         <div className="relative flex-1">
           <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
           <input
-            className="h-12 pl-12 pr-4 w-full rounded-xl border-2 border-slate-200 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 transition-all bg-white shadow-sm"
+            className="h-12 pl-12 pr-4 w-full rounded-xl border-2 border-slate-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all bg-white shadow-sm"
             placeholder="Search tests by name, category, or specimen..."
             value={q}
             onChange={e=>setQ(e.target.value)}
@@ -264,7 +264,7 @@ export default function LabTestCatalog(){
         <select
           value={categoryFilter}
           onChange={e=>setCategoryFilter(e.target.value)}
-          className="h-12 px-4 rounded-xl border-2 border-amber-300 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 font-semibold shadow-sm hover:shadow-md transition-all cursor-pointer"
+          className="h-12 px-4 rounded-xl border-2 border-blue-300 bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 font-semibold shadow-sm hover:shadow-md transition-all cursor-pointer"
         >
           {categories.map(c => (<option key={c}>{c}</option>))}
         </select>
@@ -275,11 +275,11 @@ export default function LabTestCatalog(){
           <div className="absolute inset-0 bg-black/50" onClick={()=>{ setShowForm(false); reset() }}></div>
           <form onSubmit={save} className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
             {/* Modal Header */}
-            <div className="sticky top-0 z-10 px-8 py-6 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-t-3xl">
+            <div className="sticky top-0 z-10 px-8 py-6 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-t-3xl">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-bold text-white">{editingId? 'Edit Test' : 'Add New Test'}</h2>
-                  <p className="text-emerald-100 text-sm mt-1">Fill in the test details below</p>
+                  <p className="text-blue-100 text-sm mt-1">Fill in the test details below</p>
                 </div>
                 <button 
                   type="button" 
@@ -298,7 +298,7 @@ export default function LabTestCatalog(){
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-2 flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-md bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white text-xs">1</span>
+                    <span className="w-6 h-6 rounded-md bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-xs">1</span>
                     Test Name
                   </label>
                   <div className="flex items-center gap-2">
@@ -312,7 +312,7 @@ export default function LabTestCatalog(){
                         if (t) onChange('price', t.price)
                         if (!form.category) onChange('category','Test')
                       }}
-                      className="h-12 px-4 rounded-xl border-2 border-slate-300 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 w-full transition-all bg-white shadow-sm font-medium"
+                      className="h-12 px-4 rounded-xl border-2 border-slate-300 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 w-full transition-all bg-white shadow-sm font-medium"
                       required
                     >
                       <option value="">Select Test</option>
@@ -325,9 +325,9 @@ export default function LabTestCatalog(){
                     </select>
                   </div>
                   {showTemplateAdder && (
-                    <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-2 p-3 rounded-lg border-2 border-emerald-200 bg-emerald-50">
-                      <input value={newTemplate.name} onChange={e=>setNewTemplate(p=>({...p, name:e.target.value}))} placeholder="New test name" className="h-11 px-3 rounded-lg border border-emerald-300" />
-                      <input type="number" value={newTemplate.price} onChange={e=>setNewTemplate(p=>({...p, price:e.target.value}))} placeholder="Price" className="h-11 px-3 rounded-lg border border-emerald-300" />
+                    <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-2 p-3 rounded-lg border-2 border-blue-200 bg-blue-50">
+                      <input value={newTemplate.name} onChange={e=>setNewTemplate(p=>({...p, name:e.target.value}))} placeholder="New test name" className="h-11 px-3 rounded-lg border border-blue-300" />
+                      <input type="number" value={newTemplate.price} onChange={e=>setNewTemplate(p=>({...p, price:e.target.value}))} placeholder="Price" className="h-11 px-3 rounded-lg border border-blue-300" />
                       <div className="flex gap-2">
                         <button type="button" onClick={()=>{
                           const nm = (newTemplate.name||'').trim(); const pr = Number(newTemplate.price||0)
@@ -338,7 +338,7 @@ export default function LabTestCatalog(){
                           if (!form.category) onChange('category','Test')
                           setShowTemplateAdder(false)
                           setNewTemplate({ name:'', price:'' })
-                        }} className="px-4 h-11 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white">Use</button>
+                        }} className="px-4 h-11 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">Use</button>
                         <button type="button" onClick={()=>{ setShowTemplateAdder(false); setNewTemplate({ name:'', price:'' }) }} className="px-4 h-11 rounded-lg border border-slate-300">Cancel</button>
                       </div>
                     </div>
@@ -369,7 +369,7 @@ export default function LabTestCatalog(){
                   onChange={e=>onChange('notes', e.target.value)} 
                   placeholder="Enter test notes or special instructions..." 
                   rows="3"
-                  className="w-full px-4 py-3 rounded-xl border-2 border-slate-300 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 transition-all bg-white shadow-sm font-medium resize-none" 
+                  className="w-full px-4 py-3 rounded-xl border-2 border-slate-300 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all bg-white shadow-sm font-medium resize-none" 
                 />
               </div>
             </div>
@@ -393,7 +393,7 @@ export default function LabTestCatalog(){
                       value={form.price} 
                       onChange={e=>onChange('price', e.target.value)} 
                       placeholder="0" 
-                      className="h-12 pl-14 pr-4 rounded-xl border-2 border-amber-300 focus:border-amber-500 focus:ring-4 focus:ring-amber-100 w-full transition-all bg-white shadow-sm font-bold text-lg" 
+                      className="h-12 pl-14 pr-4 rounded-xl border-2 border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 w-full transition-all bg-white shadow-sm font-bold text-lg" 
                     />
                   </div>
                 </div>
@@ -402,7 +402,7 @@ export default function LabTestCatalog(){
                   <select 
                     value={form.specimen} 
                     onChange={e=>onChange('specimen', e.target.value)} 
-                    className="h-12 px-4 rounded-xl border-2 border-amber-300 focus:border-amber-500 focus:ring-4 focus:ring-amber-100 w-full transition-all bg-white shadow-sm font-medium"
+                    className="h-12 px-4 rounded-xl border-2 border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 w-full transition-all bg-white shadow-sm font-medium"
                   >
                     <option>Blood</option>
                     <option>Urine</option>
@@ -419,7 +419,7 @@ export default function LabTestCatalog(){
                   id="fasting" 
                   checked={form.fasting} 
                   onChange={e=>onChange('fasting', e.target.checked)} 
-                  className="w-5 h-5 rounded border-2 border-amber-400 text-amber-600 focus:ring-2 focus:ring-amber-200 cursor-pointer" 
+                  className="w-5 h-5 rounded border-2 border-blue-400 text-blue-600 focus:ring-2 focus:ring-blue-200 cursor-pointer" 
                 />
                 <label htmlFor="fasting" className="text-sm font-semibold text-slate-700 cursor-pointer flex items-center gap-2">
                   <FiClock className="w-4 h-4 text-amber-600" />
@@ -561,10 +561,10 @@ export default function LabTestCatalog(){
               </div>
             </div>
             {/* Reference Ranges Section (Species-based) */}
-            <div className="rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 p-5 border-2 border-green-200">
+            <div className="rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 p-5 border-2 border-blue-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                     </svg>
@@ -574,7 +574,7 @@ export default function LabTestCatalog(){
                     <div className="text-xs text-slate-500">Species-wise normal values</div>
                   </div>
                 </div>
-                <button type="button" onClick={addSpecies} className="px-4 h-10 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold">Add Species</button>
+                <button type="button" onClick={addSpecies} className="px-4 h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold">Add Species</button>
               </div>
               {(form.speciesRanges||[]).length>0 && (
                 <div className="grid grid-cols-12 gap-3 mb-2 px-2">
@@ -587,10 +587,10 @@ export default function LabTestCatalog(){
                 {(form.speciesRanges||[]).map((s, idx) => (
                   <div key={idx} className="grid grid-cols-12 gap-3 items-center">
                     <div className="col-span-4">
-                      <input value={s.species} onChange={e=>updateSpecies(idx,'species',e.target.value)} placeholder="e.g., Cat" className="h-11 px-4 rounded-lg border-2 border-slate-300 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 w-full bg-white transition-all" />
+                      <input value={s.species} onChange={e=>updateSpecies(idx,'species',e.target.value)} placeholder="e.g., Cat" className="h-11 px-4 rounded-lg border-2 border-slate-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 w-full bg-white transition-all" />
                     </div>
                     <div className="col-span-7">
-                      <input value={s.range} onChange={e=>updateSpecies(idx,'range',e.target.value)} placeholder="e.g., 3.5-5.0" className="h-11 px-4 rounded-lg border-2 border-slate-300 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 w-full bg-white transition-all" />
+                      <input value={s.range} onChange={e=>updateSpecies(idx,'range',e.target.value)} placeholder="e.g., 3.5-5.0" className="h-11 px-4 rounded-lg border-2 border-slate-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 w-full bg-white transition-all" />
                     </div>
                     <div className="col-span-1">
                       <button type="button" onClick={()=>removeSpecies(idx)} className="h-11 w-11 rounded-lg bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white shadow-md flex items-center justify-center" title="Remove species">×</button>
@@ -601,7 +601,7 @@ export default function LabTestCatalog(){
             </div>
             <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
               <button type="button" onClick={()=>{ setShowForm(false); reset() }} className="px-6 h-11 rounded-xl border-2 border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold transition-all cursor-pointer">Cancel</button>
-              <button className="px-6 h-11 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl font-semibold transition-all cursor-pointer">{editingId? 'Update Test' : 'Add Test'}</button>
+              <button className="px-6 h-11 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg hover:shadow-xl font-semibold transition-all cursor-pointer">{editingId? 'Update Test' : 'Add Test'}</button>
             </div>
             </div>
           </form>
@@ -620,7 +620,7 @@ export default function LabTestCatalog(){
               </h3>
 
               {/* Price */}
-              <div className="mb-4 p-4 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 shadow-md">
+              <div className="mb-4 p-4 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 shadow-md">
                 <div className="flex items-baseline justify-between">
                   <span className="text-white/90 text-xs font-medium uppercase tracking-wider">Price</span>
                   <div className="flex items-baseline gap-1">
@@ -685,7 +685,7 @@ export default function LabTestCatalog(){
         <div className="fixed top-4 right-4 z-[100] animate-slide-in">
           <div className={`rounded-xl shadow-2xl p-4 min-w-[320px] flex items-start gap-3 ${
             notification.type === 'success' 
-              ? 'bg-gradient-to-r from-emerald-500 to-teal-500' 
+              ? 'bg-gradient-to-r from-blue-600 to-cyan-600' 
               : 'bg-gradient-to-r from-red-500 to-rose-500'
           }`}>
             <div className="flex-shrink-0">

@@ -15,7 +15,7 @@ import Settings from '../models/Settings.js';
 
 // Sample localStorage data structure (you'll need to export this from your browser)
 // Instructions:
-// 1. Open your browser console on the Pet Hospital app
+// 1. Open your browser console on the Pet Matrix app
 // 2. Run: console.log(JSON.stringify(localStorage))
 // 3. Copy the output and save it to a file named 'localStorage-export.json'
 // 4. Place the file in the same directory as this script
@@ -38,7 +38,7 @@ const migrateData = async () => {
     } catch (error) {
       console.log('⚠️  No localStorage-export.json found. Using empty data.\n');
       console.log('To migrate existing data:');
-      console.log('1. Open browser console on your Pet Hospital app');
+      console.log('1. Open browser console on your Pet Matrix app');
       console.log('2. Run: copy(JSON.stringify(localStorage))');
       console.log('3. Save to server/utils/localStorage-export.json');
       console.log('4. Run this script again\n');

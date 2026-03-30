@@ -1,10 +1,15 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { createHashRouter, RouterProvider } from 'react-router-dom'
+import { createHashRouter, RouterProvider, Navigate, redirect } from 'react-router-dom'
 import App from './App'
 import './style.css'
 import { SettingsProvider } from './context/SettingsContext'
 import { ActivityProvider } from './context/ActivityContext'
+import { ModuleAccessProvider } from './context/ModuleAccessContext'
+import { AccessRoleProvider } from './context/AccessRoleContext'
+import SuperAdminLogin, { getLocalLicenseState, setLocalLicenseState, clearLocalLicenseState } from './pages/SuperAdminLogin'
+import SuperAdminModules from './pages/SuperAdminModules'
+import { licenseAPI } from './services/api'
 
 import Home from './pages/Home'
 import AdminLogin from './pages/AdminLogin'
@@ -13,8 +18,8 @@ import PharmacyLogin from './pages/PharmacyLogin'
 import LabLogin from './pages/LabLogin'
 import ShopLogin from './pages/ShopLogin'
 import DoctorLogin from './pages/DoctorLogin'
+import PortalRouteGuard from './components/PortalRouteGuard'
 
-import AdminDashboard from './pages/dashboards/AdminDashboard'
 import ReceptionDashboard from './pages/dashboards/ReceptionDashboard'
 import PharmacyDashboard from './pages/dashboards/PharmacyDashboard'
 import LabDashboard from './pages/dashboards/LabDashboard'
@@ -74,6 +79,7 @@ import ShopDashboardPage from './pages/shop/ShopDashboard'
 import Products from './pages/shop/Products'
 import POS from './pages/shop/POS'
 import ShopSuppliers from './pages/shop/Suppliers'
+import ShopDistributors from './pages/shop/Distributors'
 import SalesReports from './pages/shop/SalesReports'
 import ShopSettings from './pages/shop/Settings'
 import PharmacyLayout from './layouts/PharmacyLayout'
@@ -85,10 +91,80 @@ import PharmacyReports from './pages/pharmacy/Reports'
 import PharmacySuppliers from './pages/pharmacy/Suppliers'
 import PharmacySettings from './pages/pharmacy/Settings'
 
+function isExpired(expiresAtIso) {
+  if (!expiresAtIso) return false
+  const t = new Date(expiresAtIso).getTime()
+  if (!Number.isFinite(t)) return false
+  return Date.now() >= t
+}
+
+function shouldWarnExpiresSoon(expiresAtIso) {
+  if (!expiresAtIso) return false
+  const t = new Date(expiresAtIso).getTime()
+  if (!Number.isFinite(t)) return false
+  const diffMs = t - Date.now()
+  const oneDayMs = 24 * 60 * 60 * 1000
+  return diffMs > 0 && diffMs <= oneDayMs
+}
+
+async function ensureLicenseOrThrowRedirect() {
+  // 1) Check local cache first
+  const local = getLocalLicenseState()
+  if (local?.status === 'active' && !isExpired(local.expiresAt)) {
+    // Special rule: lifetime must be verified on every app launch
+    if (local.duration === 'lifetime') {
+      try {
+        const verified = sessionStorage.getItem('pmx_lifetime_verified_v1')
+        if (verified !== '1') throw new Error('Lifetime not verified in this session')
+      } catch {
+        throw redirect('/super-admin')
+      }
+    }
+
+    // Soft warning: 1 day before expiry
+    if (shouldWarnExpiresSoon(local.expiresAt)) {
+      try { alert('Trial/subscription will end within 1 day. Please renew from Super Admin login.') } catch {}
+    }
+    return true
+  }
+
+  // 2) If local says expired or missing, verify with server
+  try {
+    const res = await licenseAPI.status()
+    const s = res?.data
+    if (s?.status === 'active' && !isExpired(s.expiresAt)) {
+      setLocalLicenseState({
+        status: s.status,
+        duration: s.duration,
+        activatedAt: s.activatedAt,
+        expiresAt: s.expiresAt,
+      })
+      if (shouldWarnExpiresSoon(s.expiresAt)) {
+        try { alert('Trial/subscription will end within 1 day. Please renew from Super Admin login.') } catch {}
+      }
+      return true
+    }
+  } catch {
+    // If API is unavailable, we fail closed (show super-admin)
+  }
+
+  clearLocalLicenseState()
+  throw redirect('/super-admin')
+}
+
 const router = createHashRouter([
+  {
+    path: '/super-admin',
+    element: <SuperAdminLogin />,
+  },
+  {
+    path: '/super-admin/modules',
+    element: <SuperAdminModules />,
+  },
   {
     path: '/',
     element: <App />,
+    loader: ensureLicenseOrThrowRedirect,
     children: [
       { index: true, element: <Home /> },
       { path: 'admin-login', element: <AdminLogin /> },
@@ -103,12 +179,47 @@ const router = createHashRouter([
       { path: 'shop/login', element: <ShopLogin /> },
       { path: 'doctor-login', element: <DoctorLogin /> },
       { path: 'doctor/login', element: <DoctorLogin /> },
-      { path: 'admin/dashboard', element: <AdminDashboard /> },
-      { path: 'reception/dashboard', element: <ReceptionPortalDashboard /> },
-      { path: 'pharmacy/dashboard', element: <PharmacyDashboardNew /> },
-      { path: 'lab/dashboard', element: <LabDashboard /> },
-      { path: 'shop/dashboard', element: <ShopDashboard /> },
-      { path: 'doctor/dashboard', element: <DoctorDashboard /> },
+      { path: 'admin/dashboard', element: <Navigate to="/admin" replace /> },
+      {
+        path: 'reception/dashboard',
+        element: (
+          <PortalRouteGuard portal="reception" submodule="dashboard">
+            <ReceptionPortalDashboard />
+          </PortalRouteGuard>
+        ),
+      },
+      {
+        path: 'pharmacy/dashboard',
+        element: (
+          <PortalRouteGuard portal="pharmacy" submodule="dashboard">
+            <PharmacyDashboardNew />
+          </PortalRouteGuard>
+        ),
+      },
+      {
+        path: 'lab/dashboard',
+        element: (
+          <PortalRouteGuard portal="lab" submodule="dashboard">
+            <LabDashboard />
+          </PortalRouteGuard>
+        ),
+      },
+      {
+        path: 'shop/dashboard',
+        element: (
+          <PortalRouteGuard portal="shop" submodule="dashboard">
+            <ShopDashboard />
+          </PortalRouteGuard>
+        ),
+      },
+      {
+        path: 'doctor/dashboard',
+        element: (
+          <PortalRouteGuard portal="doctor" submodule="dashboard">
+            <DoctorDashboard />
+          </PortalRouteGuard>
+        ),
+      },
 
       {
         path: 'admin',
@@ -188,6 +299,7 @@ const router = createHashRouter([
           { path: 'products', element: <Products /> },
           { path: 'pos', element: <POS /> },
           { path: 'suppliers', element: <ShopSuppliers /> },
+          { path: 'distributors', element: <ShopDistributors /> },
           { path: 'reports', element: <SalesReports /> },
           { path: 'settings', element: <ShopSettings /> },
         ],
@@ -212,9 +324,13 @@ const router = createHashRouter([
 createRoot(document.getElementById('app')).render(
   <React.StrictMode>
     <SettingsProvider>
-      <ActivityProvider>
-        <RouterProvider router={router} />
-      </ActivityProvider>
+      <ModuleAccessProvider>
+        <AccessRoleProvider>
+          <ActivityProvider>
+            <RouterProvider router={router} />
+          </ActivityProvider>
+        </AccessRoleProvider>
+      </ModuleAccessProvider>
     </SettingsProvider>
   </React.StrictMode>
 )

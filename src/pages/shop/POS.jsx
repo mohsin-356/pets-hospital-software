@@ -541,7 +541,7 @@ export default function POS() {
               : `<div style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(to bottom right, #10b981, #2563eb); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 700;">AH</div>`
             }
           </div>
-          <div class="hospital-name">Abbottabad Pet Hospital</div>
+          <div class="hospital-name">Pet Matrix</div>
           <div class="hospital-info">
             ${hospitalSettings?.address || 'Main Boulevard, Gulshan-e-Iqbal, Karachi'}<br>
             <span class="hospital-phone">Phone: ${hospitalSettings?.phone || '+92-21-1234567'}</span>
@@ -1112,7 +1112,7 @@ export default function POS() {
             </div>
             <div ref={receiptRef} className="p-4 text-sm">
               <div className="text-center mb-3">
-                <div className="font-bold text-lg">{hospitalSettings?.companyName || 'Abbottabad Pet Hospital'}</div>
+                <div className="font-bold text-lg">{hospitalSettings?.companyName || 'Pet Matrix'}</div>
                 <div className="text-slate-500">{hospitalSettings?.address || 'Main Boulevard, Gulshan-e-Iqbal, Karachi'}</div>
                 <div className="text-slate-500">{hospitalSettings?.phone ? `Phone: ${hospitalSettings.phone}` : ''}</div>
               </div>

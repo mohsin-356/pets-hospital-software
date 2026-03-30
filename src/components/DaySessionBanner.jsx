@@ -106,9 +106,9 @@ export default function DaySessionBanner({ portal = 'admin', userName = '' }) {
   return (
     <div className="mb-3">
       {/* Banner */}
-      <div className={`rounded-xl border ${isOpen ? 'border-emerald-200 bg-emerald-50' : 'border-amber-200 bg-amber-50'} p-3 flex items-center justify-between gap-3`}>
+      <div className="rounded-xl border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-surface))] p-3 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          {isOpen ? <FiUnlock className="text-emerald-600" /> : <FiLock className="text-amber-600" />}
+          {isOpen ? <FiUnlock className="text-[hsl(var(--pm-primary))]" /> : <FiLock className="text-[hsl(var(--pm-warning))]" />}
           <div className="text-sm">
             <div className="font-semibold text-slate-800">{portal.toUpperCase()} Day {isOpen ? 'Open' : 'Closed'}</div>
             <div className="text-slate-600 text-xs">
@@ -122,12 +122,12 @@ export default function DaySessionBanner({ portal = 'admin', userName = '' }) {
         </div>
         <div className="flex items-center gap-2">
           {!isOpen && (
-            <button onClick={()=>setShowOpen(true)} className="px-3 py-1.5 text-xs rounded-md bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-60" disabled={loading}>
+            <button onClick={()=>setShowOpen(true)} className="px-3 py-1.5 text-xs rounded-md bg-[hsl(var(--pm-primary))] text-white hover:bg-[hsl(var(--pm-primary-hover))] disabled:opacity-60" disabled={loading}>
               Open Day
             </button>
           )}
           {isOpen && (
-            <button onClick={()=>setShowClose(true)} className="px-3 py-1.5 text-xs rounded-md bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-60" disabled={loading}>
+            <button onClick={()=>setShowClose(true)} className="px-3 py-1.5 text-xs rounded-md bg-[hsl(var(--pm-primary))] text-white hover:bg-[hsl(var(--pm-primary-hover))] disabled:opacity-60" disabled={loading}>
               Close Day
             </button>
           )}
@@ -165,7 +165,7 @@ export default function DaySessionBanner({ portal = 'admin', userName = '' }) {
               </div>
               <div className="flex items-center justify-end gap-2">
                 <button onClick={()=>setShowOpen(false)} className="px-3 py-1.5 text-xs rounded-md border">Cancel</button>
-                <button onClick={openDay} className="px-3 py-1.5 text-xs rounded-md bg-indigo-600 text-white">Open</button>
+                <button onClick={openDay} className="px-3 py-1.5 text-xs rounded-md bg-[hsl(var(--pm-primary))] text-white hover:bg-[hsl(var(--pm-primary-hover))]">Open</button>
               </div>
             </div>
           </div>
@@ -248,7 +248,7 @@ export default function DaySessionBanner({ portal = 'admin', userName = '' }) {
             </div>
             <div className="flex items-center justify-end gap-2 mt-3">
               <button onClick={()=>setShowClose(false)} className="px-3 py-1.5 text-xs rounded-md border">Cancel</button>
-              <button onClick={closeDay} className="px-3 py-1.5 text-xs rounded-md bg-purple-600 text-white">Close Day</button>
+              <button onClick={closeDay} className="px-3 py-1.5 text-xs rounded-md bg-[hsl(var(--pm-primary))] text-white hover:bg-[hsl(var(--pm-primary-hover))]">Close Day</button>
             </div>
           </div>
         </div>

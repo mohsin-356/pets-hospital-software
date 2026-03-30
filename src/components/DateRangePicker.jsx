@@ -57,7 +57,7 @@ export default function DateRangePicker({
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      <div className="flex items-center gap-2 bg-white rounded-xl border border-slate-200 px-4 py-2 shadow-sm">
+      <div className="flex items-center gap-2 bg-[hsl(var(--pm-surface))] rounded-xl border border-[hsl(var(--pm-border))] px-4 py-2 shadow-sm">
         <FiCalendar className="w-4 h-4 text-slate-500" />
         <span className="text-sm font-medium text-slate-600">From:</span>
         <input
@@ -70,7 +70,7 @@ export default function DateRangePicker({
       
       <div className="text-slate-400">—</div>
       
-      <div className="flex items-center gap-2 bg-white rounded-xl border border-slate-200 px-4 py-2 shadow-sm">
+      <div className="flex items-center gap-2 bg-[hsl(var(--pm-surface))] rounded-xl border border-[hsl(var(--pm-border))] px-4 py-2 shadow-sm">
         <FiCalendar className="w-4 h-4 text-slate-500" />
         <span className="text-sm font-medium text-slate-600">To:</span>
         <input
@@ -84,7 +84,7 @@ export default function DateRangePicker({
       {showTodayButton && (
         <button
           onClick={handleTodayClick}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors text-sm font-medium shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 bg-[hsl(var(--pm-primary))] text-white rounded-xl hover:bg-[hsl(var(--pm-primary-hover))] transition-colors text-sm font-medium shadow-sm"
         >
           <FiRefreshCw className="w-4 h-4" />
           Today
@@ -94,7 +94,7 @@ export default function DateRangePicker({
       {showAllButton && (
         <button
           onClick={handleAllClick}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-xl hover:bg-slate-800 transition-colors text-sm font-medium shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl hover:bg-black transition-colors text-sm font-medium shadow-sm"
         >
           All
         </button>

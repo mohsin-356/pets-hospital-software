@@ -6,6 +6,15 @@ const productSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  inventoryItemId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Inventory'
+  },
+  company: {
+    type: String,
+    default: '',
+    trim: true
+  },
   category: {
     type: String,
     required: true,
@@ -13,8 +22,7 @@ const productSchema = new mongoose.Schema({
   },
   barcode: {
     type: String,
-    unique: true,
-    sparse: true
+    trim: true
   },
   quantity: {
     type: Number,
@@ -53,6 +61,15 @@ const productSchema = new mongoose.Schema({
 });
 
 // Index for faster searches
-productSchema.index({ itemName: 'text', category: 'text', barcode: 'text' });
+productSchema.index({ itemName: 'text', category: 'text', barcode: 'text', supplier: 'text', company: 'text' });
+productSchema.index(
+  { company: 1, barcode: 1 },
+  {
+    unique: true,
+    partialFilterExpression: {
+      barcode: { $type: 'string', $ne: '' }
+    }
+  }
+);
 
 export default mongoose.model('Product', productSchema);

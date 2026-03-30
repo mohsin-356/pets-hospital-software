@@ -6,7 +6,7 @@ const router = express.Router();
 // Get all users
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find().sort({ createdAt: -1 });
+    const users = await User.find().populate('accessRoleId').sort({ createdAt: -1 });
     res.json({ success: true, data: users });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 // Get user by username
 router.get('/:username', async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.params.username }).select('-password');
+    const user = await User.findOne({ username: req.params.username }).populate('accessRoleId').select('-password');
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
@@ -45,7 +45,7 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     
     // Find user by username only
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }).populate('accessRoleId');
     
     if (!user) {
       return res.status(401).json({ success: false, message: 'Invalid username or password' });
@@ -81,7 +81,7 @@ router.put('/:username', async (req, res) => {
       { username: req.params.username },
       req.body,
       { new: true, runValidators: true }
-    ).select('-password');
+    ).populate('accessRoleId').select('-password');
     
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found' });

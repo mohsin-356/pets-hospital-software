@@ -77,6 +77,17 @@ const petSchema = new mongoose.Schema({
   deathNote: {
     type: String,
     trim: true
+  },
+  visitCount: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  nextVisitDiscountPercent: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 100
   }
 }, {
   timestamps: true,

@@ -278,14 +278,14 @@ export default function HospitalInventory() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-[hsl(var(--pm-primary))]">
             Hospital Inventory Management
           </h1>
           <p className="text-slate-600 mt-1">Manage hospital equipment, furniture, and infrastructure</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200"
         >
           <FiPlus className="w-5 h-5" />
           Add Item
@@ -293,14 +293,14 @@ export default function HospitalInventory() {
       </div>
 
       {/* Date Range Filter */}
-      <div className="rounded-2xl bg-gradient-to-br from-white via-indigo-50 to-purple-50 shadow-xl ring-1 ring-indigo-200 border border-indigo-100 p-6">
+      <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiCalendar className="w-6 h-6 text-white" />
             </div>
             <div>
-              <div className="text-sm font-semibold text-indigo-600">Filter by Purchase Date</div>
+              <div className="text-sm font-semibold text-[hsl(var(--pm-primary))]">Filter by Purchase Date</div>
               <div className="text-lg font-bold text-slate-800">
                 {dateRange.fromDate === dateRange.toDate 
                   ? new Date(dateRange.fromDate).toLocaleDateString()
@@ -320,10 +320,10 @@ export default function HospitalInventory() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 shadow-sm">
+        <div className="bg-[hsl(var(--pm-surface))] rounded-xl p-6 border border-[hsl(var(--pm-border))] shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
-              <FiPackage className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-blue-50 text-blue-700 ring-1 ring-blue-200/70 rounded-xl flex items-center justify-center">
+              <FiPackage className="w-6 h-6" />
             </div>
             <div>
               <div className="text-2xl font-bold text-slate-800">{filteredItems.length}</div>
@@ -332,10 +332,10 @@ export default function HospitalInventory() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200 shadow-sm">
+        <div className="bg-[hsl(var(--pm-surface))] rounded-xl p-6 border border-[hsl(var(--pm-border))] shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
-              <FiHome className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/70 rounded-xl flex items-center justify-center">
+              <FiHome className="w-6 h-6" />
             </div>
             <div>
               <div className="text-2xl font-bold text-slate-800">{totalItems}</div>
@@ -344,9 +344,9 @@ export default function HospitalInventory() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-6 border border-purple-200 shadow-sm">
+        <div className="bg-[hsl(var(--pm-primary-soft))] rounded-xl p-6 border border-[hsl(var(--pm-border))] shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <MdLocalHospital className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -356,10 +356,10 @@ export default function HospitalInventory() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl p-6 border border-orange-200 shadow-sm">
+        <div className="bg-[hsl(var(--pm-surface))] rounded-xl p-6 border border-[hsl(var(--pm-border))] shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
-              <FiDollarSign className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-amber-50 text-amber-700 ring-1 ring-amber-200/70 rounded-xl flex items-center justify-center">
+              <FiDollarSign className="w-6 h-6" />
             </div>
             <div>
               <div className="text-2xl font-bold text-slate-800">Rs. {totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
@@ -380,14 +380,14 @@ export default function HospitalInventory() {
                 placeholder="Search items..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/20 focus:border-[hsl(var(--pm-primary))]"
               />
             </div>
             
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/20 focus:border-[hsl(var(--pm-primary))]"
             >
               <option value="all">All Categories</option>
               {CATEGORIES.map(cat => (
@@ -398,7 +398,7 @@ export default function HospitalInventory() {
             <select
               value={filterCondition}
               onChange={(e) => setFilterCondition(e.target.value)}
-              className="px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/20 focus:border-[hsl(var(--pm-primary))]"
             >
               <option value="all">All Conditions</option>
               {CONDITIONS.map(cond => (
@@ -689,7 +689,7 @@ export default function HospitalInventory() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-200 disabled:opacity-50"
+                  className="flex-1 bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white py-3 rounded-lg font-semibold hover:shadow-sm transition-all duration-200 disabled:opacity-50"
                 >
                   {loading ? 'Saving...' : (editingId ? 'Update Item' : 'Add Item')}
                 </button>

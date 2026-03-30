@@ -7,14 +7,16 @@ const SettingsContext = createContext(null)
 const normalizeCompanyName = (name) => {
   if (!name) return name
   const lower = String(name).trim().toLowerCase()
-  if (lower === 'abbottabad pet hospital management system') {
-    return 'Abbottabad Pet Hospital'
-  }
+  if (lower === 'petmatrix management system') return 'Pet Matrix'
+  if (lower === 'pet matrix management system') return 'Pet Matrix'
+  if (lower === 'abbottabad pet hospital') return 'Pet Matrix'
+  if (lower === 'pet hospital') return 'Pet Matrix'
+  if (lower === 'pet hospital management system') return 'Pet Matrix'
   return name
 }
 
 const DEFAULTS = {
-  companyName: 'Abbottabad Pet Hospital',
+  companyName: 'Pet Matrix',
   phone: '',
   address: '',
   companyLogo: '', // data URL saved from Settings page

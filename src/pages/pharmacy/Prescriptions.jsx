@@ -276,19 +276,19 @@ export default function PharmacyPrescriptions() {
     <div className="space-y-6">
       {/* Toast Notification */}
       {toast && (
-        <div className="fixed top-4 right-4 bg-purple-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in">
+        <div className="fixed top-4 right-4 bg-[hsl(var(--pm-primary))] text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in">
           {toast}
         </div>
       )}
 
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl shadow-lg p-6 text-white">
-        <h1 className="text-2xl font-bold mb-2">Prescriptions</h1>
-        <p className="text-purple-100">Search and send prescriptions to POS</p>
+      <div className="rounded-xl shadow-sm ring-1 ring-[hsl(var(--pm-border))] bg-[hsl(var(--pm-surface))] p-6">
+        <h1 className="text-2xl font-bold mb-2 text-[hsl(var(--pm-primary))]">Prescriptions</h1>
+        <p className="text-slate-600">Search and send prescriptions to POS</p>
       </div>
 
       {/* Search Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+      <div className="bg-[hsl(var(--pm-surface))] rounded-xl shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
         <div className="space-y-4">
           {/* Search Type Toggle */}
           <div className="flex gap-4">
@@ -296,7 +296,7 @@ export default function PharmacyPrescriptions() {
               onClick={() => setSearchType('petId')}
               className={`flex-1 px-4 py-3 rounded-lg font-medium transition-all ${
                 searchType === 'petId'
-                  ? 'bg-purple-600 text-white shadow-md'
+                  ? 'bg-[hsl(var(--pm-primary))] text-white shadow-sm'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
@@ -307,7 +307,7 @@ export default function PharmacyPrescriptions() {
               onClick={() => setSearchType('ownerName')}
               className={`flex-1 px-4 py-3 rounded-lg font-medium transition-all ${
                 searchType === 'ownerName'
-                  ? 'bg-purple-600 text-white shadow-md'
+                  ? 'bg-[hsl(var(--pm-primary))] text-white shadow-sm'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
@@ -326,13 +326,13 @@ export default function PharmacyPrescriptions() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
               />
             </div>
             <button
               onClick={handleSearch}
               disabled={loading}
-              className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-3 bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Searching...' : 'Search'}
             </button>
@@ -342,9 +342,9 @@ export default function PharmacyPrescriptions() {
 
       {/* Pet Details Card */}
       {petDetails && (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div className="bg-[hsl(var(--pm-surface))] rounded-xl shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
           <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-            <MdPets className="w-6 h-6 text-purple-600" />
+            <MdPets className="w-6 h-6 text-[hsl(var(--pm-primary))]" />
             Pet Details
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -370,9 +370,9 @@ export default function PharmacyPrescriptions() {
 
       {/* Prescriptions List */}
       {petDetails && prescriptions.length > 0 && (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div className="bg-[hsl(var(--pm-surface))] rounded-xl shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
           <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-            <FiFileText className="w-6 h-6 text-purple-600" />
+            <FiFileText className="w-6 h-6 text-[hsl(var(--pm-primary))]" />
             Prescriptions ({prescriptions.length})
           </h3>
 
@@ -388,11 +388,11 @@ export default function PharmacyPrescriptions() {
                       <h4 className="font-bold text-slate-800">
                         {prescription.notes?.dx?.[0] || prescription.medicines?.condition || 'General Prescription'}
                       </h4>
-                      <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+                      <span className="px-2 py-1 border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] text-xs rounded-full">
                         {prescription.id || prescription._id}
                       </span>
                       <span className={`px-2 py-1 text-xs rounded-full ${
-                        prescription.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                        prescription.status === 'Active' ? 'border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))]' : 'bg-gray-100 text-gray-700'
                       }`}>
                         {prescription.status || 'Active'}
                       </span>
@@ -410,7 +410,7 @@ export default function PharmacyPrescriptions() {
                   </div>
                   <button
                     onClick={() => sendToPOS(prescription)}
-                    className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white rounded-lg transition-colors"
                   >
                     <FiSend className="w-4 h-4" />
                     Send to POS
@@ -427,7 +427,7 @@ export default function PharmacyPrescriptions() {
                     <div className="space-y-2">
                       {prescription.items.map((item, idx) => (
                         <div key={idx} className="flex items-start gap-3 text-sm">
-                          <span className="flex-shrink-0 w-6 h-6 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-xs font-bold">
+                          <span className="flex-shrink-0 w-6 h-6 border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] rounded-full flex items-center justify-center text-xs font-bold">
                             {idx + 1}
                           </span>
                           <div className="flex-1">
@@ -473,7 +473,7 @@ export default function PharmacyPrescriptions() {
                     <div className="space-y-2">
                       {prescription.medicines.rows.map((med, idx) => (
                         <div key={idx} className="flex items-start gap-3 text-sm">
-                          <span className="flex-shrink-0 w-6 h-6 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-xs font-bold">
+                          <span className="flex-shrink-0 w-6 h-6 border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] rounded-full flex items-center justify-center text-xs font-bold">
                             {idx + 1}
                           </span>
                           <div className="flex-1">

@@ -13,20 +13,20 @@ export default function AdminTopbar({ adminName = 'Main Admin', onLogout, onTogg
   let auth
   try { auth = JSON.parse(localStorage.getItem('admin_auth') || '{}') } catch {}
   return (
-    <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-slate-200">
+    <header className="sticky top-0 z-30 bg-[hsl(var(--pm-surface))]/80 backdrop-blur border-b border-[hsl(var(--pm-border))]">
       <div className="px-3 md:px-5 py-2">
-        <div className="h-12 w-full rounded-full border border-indigo-100 bg-indigo-50/60 shadow-sm flex items-center justify-between px-2">
+        <div className="h-12 w-full rounded-full border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-surface))] shadow-sm flex items-center justify-between px-2">
           <div className="flex items-center gap-2">
             <Link
               to="/"
-              className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-white text-slate-600 hover:text-slate-800 border border-slate-200"
+              className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-[hsl(var(--pm-surface))] text-[hsl(var(--pm-text-muted))] hover:text-[hsl(var(--pm-text))] border border-[hsl(var(--pm-border))]"
               aria-label="Back to modules"
             >
               <FiArrowLeft className="h-5 w-5" />
             </Link>
             <button
               onClick={onToggle}
-              className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-white text-slate-600 hover:text-slate-800 border border-slate-200"
+              className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-[hsl(var(--pm-surface))] text-[hsl(var(--pm-text-muted))] hover:text-[hsl(var(--pm-text))] border border-[hsl(var(--pm-border))]"
               aria-label="Toggle sidebar"
             >
               <FiMenu className="h-5 w-5" />
@@ -37,15 +37,15 @@ export default function AdminTopbar({ adminName = 'Main Admin', onLogout, onTogg
                 <img src={settings.companyLogo} alt="Logo" className="h-7 w-7 rounded-md object-contain ring-1 ring-slate-200" />
               )}
               <div className="text-sm md:text-base font-semibold tracking-wide text-slate-800 truncate">
-                {settings.companyName || 'Abbottabad Pet Hospital'}
-                <span className="ml-2 text-xs font-medium text-indigo-600 align-middle">Admin</span>
+                {settings.companyName || 'Pet Matrix'}
+                <span className="ml-2 text-xs font-medium text-[hsl(var(--pm-primary))] align-middle">Admin</span>
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-2 relative">
             <div className="relative">
-              <button onClick={()=>{setShowNotif(s=>!s); setShowProfile(false)}} className="inline-flex items-center gap-2 h-9 px-3 rounded-full bg-white border border-slate-200 text-slate-600 hover:text-slate-800 cursor-pointer">
+              <button onClick={()=>{setShowNotif(s=>!s); setShowProfile(false)}} className="inline-flex items-center gap-2 h-9 px-3 rounded-full bg-[hsl(var(--pm-surface))] border border-[hsl(var(--pm-border))] text-[hsl(var(--pm-text-muted))] hover:text-[hsl(var(--pm-text))] cursor-pointer">
                 <FiBell className="h-4 w-4" />
               </button>
               {showNotif && (
@@ -61,18 +61,18 @@ export default function AdminTopbar({ adminName = 'Main Admin', onLogout, onTogg
                     {logs.length===0 && <li className="py-2 text-slate-500">No notifications</li>}
                   </ul>
                   <div className="mt-2 text-right">
-                    <Link to="/admin/logs" className="text-indigo-600 text-sm hover:underline" onClick={()=>setShowNotif(false)}>View all logs</Link>
+                    <Link to="/admin/logs" className="text-[hsl(var(--pm-primary))] text-sm hover:underline" onClick={()=>setShowNotif(false)}>View all logs</Link>
                   </div>
                 </div>
               )}
             </div>
             <div className="relative">
-              <button onClick={()=>{setShowProfile(s=>!s); setShowNotif(false)}} className="inline-flex items-center gap-2 h-9 px-3 rounded-full bg-white border border-slate-200 text-slate-600 hover:text-slate-800 cursor-pointer">
+              <button onClick={()=>{setShowProfile(s=>!s); setShowNotif(false)}} className="inline-flex items-center gap-2 h-9 px-3 rounded-full bg-[hsl(var(--pm-surface))] border border-[hsl(var(--pm-border))] text-[hsl(var(--pm-text-muted))] hover:text-[hsl(var(--pm-text))] cursor-pointer">
                 <FiUser className="h-4 w-4" /> <span className="hidden sm:inline text-sm">Profile</span>
               </button>
               {showProfile && (
                 <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl ring-1 ring-slate-200 p-4 z-50">
-                  <div className="text-base font-bold text-slate-900 truncate">{settings.companyName || 'Abbottabad Pet Hospital'}</div>
+                  <div className="text-base font-bold text-slate-900 truncate">{settings.companyName || 'Pet Matrix'}</div>
                   <div className="mt-3 space-y-2 text-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-slate-500">Role</span>
@@ -95,7 +95,7 @@ export default function AdminTopbar({ adminName = 'Main Admin', onLogout, onTogg
             </div>
             <button
               onClick={onLogout}
-              className="inline-flex items-center gap-2 h-9 px-3 rounded-full bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 cursor-pointer"
+              className="inline-flex items-center gap-2 h-9 px-3 rounded-full bg-[hsl(var(--pm-surface))] border border-rose-200 text-rose-600 hover:bg-rose-50 cursor-pointer"
             >
               <FiLogOut className="h-4 w-4" /> <span className="hidden sm:inline text-sm">Logout</span>
             </button>

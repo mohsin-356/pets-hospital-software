@@ -71,7 +71,7 @@ export default function DoctorSettings() {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-fuchsia-600 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
           <FiSettings /> Doctor Settings
         </h1>
         <p className="text-slate-600 text-lg">Backup, restore, and manage Doctor portal data</p>
@@ -86,23 +86,23 @@ export default function DoctorSettings() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 grid place-items-center"><FiDownload /></div>
+            <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 grid place-items-center"><FiDownload /></div>
             <div className="font-semibold">Export Doctor Data</div>
           </div>
           <p className="text-sm text-slate-600 mb-4">Download doctor profiles and prescriptions as JSON.</p>
-          <button disabled={busy} onClick={handleExport} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm disabled:opacity-60">
+          <button disabled={busy} onClick={handleExport} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm disabled:opacity-60">
             <FiDownload className="w-4 h-4"/> Export JSON
           </button>
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 grid place-items-center"><FiUpload /></div>
+            <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 grid place-items-center"><FiUpload /></div>
             <div className="font-semibold">Import Doctor Data</div>
           </div>
           <p className="text-sm text-slate-600 mb-3">Select a previously exported JSON file to restore.</p>
           <input type="file" accept="application/json" onChange={(e)=>setImportFile(e.target.files?.[0]||null)} className="block w-full text-sm mb-3" />
-          <button disabled={busy || !importFile} onClick={handleImport} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm disabled:opacity-60">
+          <button disabled={busy || !importFile} onClick={handleImport} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm disabled:opacity-60">
             <FiUpload className="w-4 h-4"/> Import JSON
           </button>
         </div>

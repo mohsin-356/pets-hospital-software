@@ -430,7 +430,7 @@ export default function ReceptionClients() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-[hsl(var(--pm-primary))]">
             Clients Directory
           </h1>
           <p className="text-slate-600 mt-1">View and manage client information</p>
@@ -438,14 +438,14 @@ export default function ReceptionClients() {
       </div>
 
       {/* Date Range Picker */}
-      <div className="rounded-2xl bg-gradient-to-br from-white via-emerald-50 to-teal-50 shadow-xl ring-1 ring-emerald-200 border border-emerald-100 p-6">
+      <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiCalendar className="w-6 h-6 text-white" />
             </div>
             <div>
-              <div className="text-sm font-semibold text-emerald-600">Filter by Date</div>
+              <div className="text-sm font-semibold text-[hsl(var(--pm-primary))]">Filter by Date</div>
               <div className="text-lg font-bold text-slate-800">
                 {dateRange.fromDate === dateRange.toDate
                   ? new Date(dateRange.fromDate).toLocaleDateString()
@@ -464,9 +464,9 @@ export default function ReceptionClients() {
 
       {/* Summary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-6 border border-emerald-200 shadow-sm">
+        <div className="bg-[hsl(var(--pm-surface))] rounded-xl p-6 border border-[hsl(var(--pm-border))] shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiUsers className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -476,9 +476,9 @@ export default function ReceptionClients() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 shadow-sm">
+        <div className="bg-[hsl(var(--pm-surface))] rounded-xl p-6 border border-[hsl(var(--pm-border))] shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiHeart className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -488,9 +488,9 @@ export default function ReceptionClients() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-200 shadow-sm">
+        <div className="bg-[hsl(var(--pm-surface))] rounded-xl p-6 border border-[hsl(var(--pm-border))] shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiDollarSign className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -500,9 +500,9 @@ export default function ReceptionClients() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200 shadow-sm">
+        <div className="bg-[hsl(var(--pm-surface))] rounded-xl p-6 border border-[hsl(var(--pm-border))] shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiDollarSign className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -522,7 +522,7 @@ export default function ReceptionClients() {
             placeholder="Search by Client ID, name, contact, email, or pet name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            className="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-300 focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
           />
         </div>
         <div className="mt-3 text-sm text-slate-600">
@@ -534,7 +534,7 @@ export default function ReceptionClients() {
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         {false ? (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--pm-primary))]"></div>
             <span className="ml-3 text-slate-600">Loading clients...</span>
           </div>
         ) : filteredClients.length === 0 ? (
@@ -585,7 +585,7 @@ export default function ReceptionClients() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))]">
                         {client.totalPets} pet{client.totalPets !== 1 ? 's' : ''}
                       </span>
                     </td>
@@ -597,7 +597,7 @@ export default function ReceptionClients() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <span className="font-semibold text-green-600">
+                      <span className="font-semibold text-[hsl(var(--pm-primary))]">
                         Rs. {(clientPayments[client.clientId] || 0).toLocaleString()}
                       </span>
                     </td>
@@ -607,7 +607,7 @@ export default function ReceptionClients() {
                     <td className="px-6 py-4 text-center">
                       <button
                         onClick={() => handleViewClient(client)}
-                        className="inline-flex items-center px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors text-sm font-medium"
+                        className="inline-flex items-center px-3 py-1.5 rounded-lg bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-soft))]/80 transition-colors text-sm font-medium border border-[hsl(var(--pm-border))]"
                       >
                         <FiEye className="w-4 h-4 mr-1" />
                         View
@@ -644,18 +644,18 @@ export default function ReceptionClients() {
               {/* Unified Client Summary (from fullRecord) */}
               {(fullRecord && (fullRecord.totals || finSummary)) && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                  <div className="bg-[hsl(var(--pm-primary-soft))] rounded-xl p-4 border border-[hsl(var(--pm-border))]">
                     <div className="text-slate-600 text-sm">Prescriptions</div>
-                    <div className="text-2xl font-bold text-blue-700">{fullRecord.totals.prescriptions}</div>
+                    <div className="text-2xl font-bold text-[hsl(var(--pm-primary))]">{fullRecord.totals.prescriptions}</div>
                   </div>
-                  <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-200">
+                  <div className="bg-[hsl(var(--pm-primary-soft))] rounded-xl p-4 border border-[hsl(var(--pm-border))]">
                     <div className="text-slate-600 text-sm">Pharmacy Total</div>
-                    <div className="text-2xl font-bold text-emerald-700">Rs. {Number(fullRecord.totals.pharmacyTotal||0).toLocaleString()}</div>
+                    <div className="text-2xl font-bold text-[hsl(var(--pm-primary))]">Rs. {Number(fullRecord.totals.pharmacyTotal||0).toLocaleString()}</div>
                     <div className="text-xs text-slate-600">Paid: Rs. {Number(fullRecord.totals.pharmacyPaid||0).toLocaleString()} | Due: Rs. {Number(fullRecord.totals.pharmacyDue||0).toLocaleString()}</div>
                   </div>
-                  <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
+                  <div className="bg-[hsl(var(--pm-primary-soft))] rounded-xl p-4 border border-[hsl(var(--pm-border))]">
                     <div className="text-slate-600 text-sm">Consultation Fees</div>
-                    <div className="text-2xl font-bold text-amber-700">Rs. {(() => {
+                    <div className="text-2xl font-bold text-[hsl(var(--pm-primary))]">Rs. {(() => {
                       try {
                         const moduleAmt = Number(((finSummary && finSummary.modules && finSummary.modules.consultant && finSummary.modules.consultant.amount) || 0))
                         const petsAmt = Array.isArray(finSummary?.pets) ? finSummary.pets.reduce((s,p)=> s + Number(p?.modules?.consultant?.amount || 0), 0) : 0
@@ -674,7 +674,7 @@ export default function ReceptionClients() {
 
               {/* All Modules Financial Summary (Unified) */}
               {finSummary && finSummary.totals && (
-                <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+                <div className="rounded-xl border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-primary-soft))] p-4">
                   <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
                     <div>
                       <div className="text-slate-600 text-xs">Total Billed</div>
@@ -682,11 +682,11 @@ export default function ReceptionClients() {
                     </div>
                     <div>
                       <div className="text-slate-600 text-xs">Total Received</div>
-                      <div className="text-lg font-bold text-green-700">Rs. {Number(finSummary.totals.totalReceived||0).toLocaleString()}</div>
+                      <div className="text-lg font-bold text-[hsl(var(--pm-primary))]">Rs. {Number(finSummary.totals.totalReceived||0).toLocaleString()}</div>
                     </div>
                     <div>
                       <div className="text-slate-600 text-xs">Total Receivable (Balance)</div>
-                      <div className="text-lg font-bold text-amber-700">Rs. {Number(finSummary.totals.totalPending||0).toLocaleString()}</div>
+                      <div className="text-lg font-bold text-red-700">Rs. {Number(finSummary.totals.totalPending||0).toLocaleString()}</div>
                     </div>
                     <div>
                       <div className="text-slate-600 text-xs">Current Due</div>

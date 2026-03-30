@@ -9,6 +9,8 @@ export default function Products() {
   const [suppliers, setSuppliers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCompany, setSelectedCompany] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -31,6 +33,13 @@ export default function Products() {
   const [importing, setImporting] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [clearing, setClearing] = useState(false);
+
+  const [showJsonImport, setShowJsonImport] = useState(false);
+  const jsonFileRef = useRef(null);
+  const [jsonCompany, setJsonCompany] = useState('Basit');
+  const [companyOptions, setCompanyOptions] = useState(['Basit', 'Remu', 'Royal']);
+  const [showAddCompany, setShowAddCompany] = useState(false);
+  const [newCompany, setNewCompany] = useState('');
 
   useEffect(() => {
     if (showScanner) {
@@ -64,7 +73,11 @@ export default function Products() {
 
   useEffect(() => {
     filterProducts();
-  }, [searchQuery, selectedCategory, products]);
+  }, [searchQuery, selectedCategory, selectedCompany, products]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCategory, selectedCompany]);
 
   const fetchProducts = async () => {
     try {
@@ -72,7 +85,9 @@ export default function Products() {
       console.log('Fetching products...');
       const response = await productsAPI.getAll();
       console.log('Products API response:', response);
-      setProducts(response.data || []);
+      const list = response.data || [];
+      setProducts(list);
+      setCompanyOptions(buildCompanyOptions(list));
       console.log('Products set:', response.data?.length || 0);
     } catch (error) {
       showToast('Error fetching products');
@@ -80,6 +95,99 @@ export default function Products() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const pickJsonFile = () => {
+    try { jsonFileRef.current?.click(); } catch {}
+  };
+
+  const toNum = (v, def = 0) => {
+    if (v === undefined || v === null || String(v).trim() === '') return def;
+    const n = Number(String(v).toString().replace(/[^0-9.\-]/g,''));
+    return Number.isFinite(n) ? n : def;
+  };
+
+  const parseJsonRowsToProducts = (rows, companyName) => {
+    const out = [];
+    for (const r of rows || []) {
+      if (!r || typeof r !== 'object') continue;
+      const itemName = String(r.itemName || r.item_name || r.product || r.name || '').trim();
+      if (!itemName) continue;
+
+      const category = String(r.category || r.section || r.description || 'Other').trim() || 'Other';
+      const barcode = r.barcode != null ? String(r.barcode).trim() : (r.code != null ? String(r.code).trim() : '');
+
+      const quantity = toNum(r.quantity, 0);
+      const purchasePrice = toNum(r.purchasePrice ?? r.purchase_price ?? r.wholesale_price ?? r.wholesalePrice ?? r.rate ?? 0, 0);
+      const salePrice = toNum(r.salePrice ?? r.sale_price ?? r.retail_price ?? r.retailPrice ?? r.rate ?? 0, 0);
+
+      const supplier = String(r.supplier || r.vendor || '').trim();
+      const description = String(r.description || r.brand || '').trim();
+
+      out.push({
+        itemName,
+        company: String(companyName || '').trim(),
+        category,
+        barcode,
+        quantity,
+        purchasePrice,
+        salePrice,
+        supplier,
+        description,
+        lowStockThreshold: toNum(r.lowStockThreshold ?? r.low_stock_threshold ?? 10, 10)
+      });
+    }
+    return out;
+  };
+
+  const handleJsonImportFile = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    try {
+      if (!file) return;
+      const ext = (file.name.split('.').pop() || '').toLowerCase();
+      if (ext !== 'json') {
+        showToast('Invalid file. Please upload .json');
+        return;
+      }
+      const companyName = (jsonCompany || '').trim();
+      if (!companyName) {
+        showToast('Please select a company');
+        return;
+      }
+      setImporting(true);
+      const text = await file.text();
+      let json;
+      try { json = JSON.parse(text); } catch { throw new Error('Invalid JSON'); }
+      const rows = Array.isArray(json) ? json : (Array.isArray(json?.data) ? json.data : []);
+      const items = parseJsonRowsToProducts(rows, companyName);
+      if (!items.length) {
+        showToast('No valid products found in JSON');
+        return;
+      }
+      const res = await productsAPI.bulkUpsert(items);
+      const serverCount = (res && (res.count != null ? res.count : (Array.isArray(res.data) ? res.data.length : items.length))) || items.length;
+      showToast(`Imported ${serverCount} products (${companyName})`);
+      setShowJsonImport(false);
+      await fetchProducts();
+    } catch (err) {
+      console.error(err);
+      showToast(err?.message || 'JSON import failed');
+    } finally {
+      setImporting(false);
+      try { if (jsonFileRef.current) jsonFileRef.current.value = ''; } catch {}
+    }
+  };
+
+  const confirmAddCompany = () => {
+    const val = (newCompany || '').trim();
+    if (!val) { showToast('Enter company name'); return; }
+    const existing = (companyOptions || []).find(c => c.toLowerCase() === val.toLowerCase());
+    const chosen = existing || val;
+    setCompanyOptions(prev => Array.from(new Set([...(prev || []), chosen])).sort());
+    setJsonCompany(chosen);
+    setNewCompany('');
+    setShowAddCompany(false);
+    showToast('Company added');
   };
 
   const handleClearAll = async () => {
@@ -181,6 +289,10 @@ export default function Products() {
   const filterProducts = () => {
     let filtered = products;
 
+    if (selectedCompany !== 'All') {
+      filtered = filtered.filter(p => (p.company || '') === selectedCompany);
+    }
+
     if (selectedCategory !== 'All') {
       filtered = filtered.filter(p => p.category === selectedCategory);
     }
@@ -190,11 +302,63 @@ export default function Products() {
       filtered = filtered.filter(p =>
         p.itemName?.toLowerCase().includes(query) ||
         p.barcode?.toLowerCase().includes(query) ||
-        p.supplier?.toLowerCase().includes(query)
+        p.supplier?.toLowerCase().includes(query) ||
+        p.company?.toLowerCase().includes(query)
       );
     }
 
     setFilteredProducts(filtered);
+  };
+
+  const PAGE_SIZE = 50;
+  const totalPages = Math.max(1, Math.ceil((filteredProducts?.length || 0) / PAGE_SIZE));
+  const safePage = Math.min(Math.max(1, currentPage), totalPages);
+  const pageStart = (safePage - 1) * PAGE_SIZE;
+  const pageEnd = pageStart + PAGE_SIZE;
+  const paginatedProducts = (filteredProducts || []).slice(pageStart, pageEnd);
+
+  const parseTags = (value) => {
+    const s = String(value ?? '').trim();
+    if (!s) return [];
+    const parts = s
+      .split(/[\n,|>/]+/g)
+      .map(x => String(x || '').trim())
+      .filter(Boolean);
+    if (parts.length > 1) return parts;
+    return [s];
+  };
+
+  const CategoryTags = ({ value }) => {
+    const tags = parseTags(value);
+    const visible = tags.slice(0, 2);
+    const remaining = tags.length - visible.length;
+    return (
+      <div className="flex flex-wrap items-start gap-1 min-w-0 max-w-full">
+        {visible.map((t, i) => (
+          <span
+            key={`${t}-${i}`}
+            title={t}
+            className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 whitespace-nowrap max-w-full truncate"
+          >
+            {t}
+          </span>
+        ))}
+        {remaining > 0 && (
+          <span
+            title={tags.join(', ')}
+            className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 whitespace-nowrap"
+          >
+            +{remaining}
+          </span>
+        )}
+      </div>
+    );
+  };
+
+  const buildCompanyOptions = (list) => {
+    const base = ['Basit', 'Remu', 'Royal'];
+    const fromProducts = Array.isArray(list) ? list.map(p => p.company).filter(Boolean) : [];
+    return Array.from(new Set([ ...base, ...fromProducts ])).sort();
   };
 
   const findByBarcode = (code) => {
@@ -524,12 +688,26 @@ export default function Products() {
         </div>
         <div className="flex items-center gap-2">
           <input
+            ref={jsonFileRef}
+            type="file"
+            accept="application/json,.json"
+            onChange={handleJsonImportFile}
+            className="hidden"
+          />
+          <input
             ref={importFileRef}
             type="file"
             accept=".xlsx,.csv"
             onChange={handleImportFile}
             className="hidden"
           />
+          <button
+            onClick={() => setShowJsonImport(true)}
+            disabled={importing}
+            className={`flex items-center gap-2 px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors ${importing ? 'opacity-60 cursor-not-allowed' : ''}`}
+          >
+            <FiUpload /> Import JSON
+          </button>
           <button
             onClick={handleImportClick}
             disabled={importing}
@@ -584,6 +762,16 @@ export default function Products() {
             />
           </div>
           <select
+            value={selectedCompany}
+            onChange={(e) => setSelectedCompany(e.target.value)}
+            className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="All">All Companies</option>
+            {(companyOptions || []).map(c => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+          <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
             className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -595,6 +783,79 @@ export default function Products() {
           </select>
         </div>
       </div>
+
+      {/* JSON Import Modal */}
+      {showJsonImport && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-4">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg">
+            <div className="border-b border-slate-200 px-5 py-3 flex items-center justify-between">
+              <div className="font-semibold">Import Products (JSON)</div>
+              <button onClick={() => setShowJsonImport(false)} className="text-slate-400 hover:text-slate-600">
+                <FiX className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-5 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Company</label>
+                  <select
+                    value={jsonCompany}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      if (v === '__add__') {
+                        setShowAddCompany(true);
+                        return;
+                      }
+                      setJsonCompany(v);
+                    }}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    {(companyOptions || []).map(c => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                    <option value="__add__">Add Company</option>
+                  </select>
+                </div>
+                <div className="flex items-end justify-end">
+                  <button
+                    onClick={pickJsonFile}
+                    disabled={importing}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold disabled:opacity-60"
+                  >
+                    <FiUpload className="w-4 h-4" /> Upload JSON
+                  </button>
+                </div>
+              </div>
+
+              {showAddCompany && (
+                <div className="rounded-xl border border-slate-200 p-4 bg-slate-50">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">New Company Name</label>
+                  <div className="flex gap-2">
+                    <input
+                      value={newCompany}
+                      onChange={(e) => setNewCompany(e.target.value)}
+                      className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="e.g. ABC Traders"
+                    />
+                    <button onClick={confirmAddCompany} className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold">
+                      Add
+                    </button>
+                    <button onClick={() => { setShowAddCompany(false); setNewCompany(''); }} className="px-4 py-2 rounded-lg bg-slate-600 hover:bg-slate-700 text-white font-semibold">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <div className="text-sm text-slate-600">
+                - Select company first, then upload JSON.
+                <br />
+                - JSON can be an array of objects (like your Basit/Remu/Royal files).
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Products Table */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
@@ -609,11 +870,24 @@ export default function Products() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full table-fixed">
+              <colgroup>
+                <col className="w-12" />
+                <col />
+                <col className="w-32" />
+                <col className="w-44" />
+                <col className="w-36" />
+                <col className="w-20" />
+                <col className="w-36" />
+                <col className="w-32" />
+                <col className="w-40" />
+                <col className="w-28" />
+              </colgroup>
               <thead className="bg-slate-50 border-b border-slate-200">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">#</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Product</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Company</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Category</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Barcode</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Stock</th>
@@ -624,9 +898,9 @@ export default function Products() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">
-                {filteredProducts.map((product, idx) => (
+                {paginatedProducts.map((product, idx) => (
                   <tr key={product._id} className="hover:bg-slate-50">
-                    <td className="px-4 py-4 text-slate-500">{idx + 1}</td>
+                    <td className="px-4 py-4 text-slate-500">{pageStart + idx + 1}</td>
                     <td className="px-6 py-4">
                       <div>
                         <p className="font-medium text-slate-800">{product.itemName}</p>
@@ -635,10 +909,9 @@ export default function Products() {
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-4">
-                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                        {product.category}
-                      </span>
+                    <td className="px-6 py-4 text-slate-600">{product.company || '-'}</td>
+                    <td className="px-6 py-4 align-top">
+                      <CategoryTags value={product.category} />
                     </td>
                     <td className="px-6 py-4 text-slate-600">{product.barcode || '-'}</td>
                     <td className="px-6 py-4">
@@ -676,6 +949,33 @@ export default function Products() {
           </div>
         )}
       </div>
+
+      {filteredProducts.length > 0 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="text-sm text-slate-600">
+            Showing {Math.min(pageStart + 1, filteredProducts.length)}-{Math.min(pageEnd, filteredProducts.length)} of {filteredProducts.length}
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={safePage <= 1}
+              className="px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <div className="text-sm font-medium text-slate-700">
+              Page {safePage} / {totalPages}
+            </div>
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={safePage >= totalPages}
+              className="px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Add/Edit Modal */}
       {showModal && (

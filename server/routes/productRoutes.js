@@ -2,6 +2,7 @@ import express from 'express';
 import Product from '../models/Product.js';
 import mongoose from 'mongoose';
 import Supplier from '../models/Supplier.js';
+import { adjustInventoryQuantity, upsertInventoryForProduct } from '../utils/inventoryLinking.js';
 
 const router = express.Router();
 
@@ -35,6 +36,8 @@ router.get('/search/:query', async (req, res) => {
       $or: [
         { itemName: { $regex: query, $options: 'i' } },
         { category: { $regex: query, $options: 'i' } },
+        { company: { $regex: query, $options: 'i' } },
+        { supplier: { $regex: query, $options: 'i' } },
         { barcode: query }
       ]
     });
@@ -73,6 +76,14 @@ router.get('/:id', async (req, res) => {
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
+
+    try {
+      const inv = await upsertInventoryForProduct(product.toObject());
+      if (inv && inv._id && String(product.inventoryItemId || '') !== String(inv._id)) {
+        await Product.findByIdAndUpdate(product._id, { $set: { inventoryItemId: inv._id } });
+        product.inventoryItemId = inv._id;
+      }
+    } catch {}
     res.json({ success: true, data: product });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -84,6 +95,14 @@ router.post('/', async (req, res) => {
   try {
     const product = new Product(req.body);
     await product.save();
+
+    try {
+      const inv = await upsertInventoryForProduct(product.toObject());
+      if (inv && inv._id && String(product.inventoryItemId || '') !== String(inv._id)) {
+        product.inventoryItemId = inv._id;
+        await product.save();
+      }
+    } catch {}
 
     // If a supplier is selected, create a corresponding purchase record
     try {
@@ -204,16 +223,30 @@ router.patch('/:id/stock', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
+    const q = Number(quantity || 0);
     if (operation === 'add') {
-      product.quantity += quantity;
+      product.quantity += q;
     } else if (operation === 'subtract') {
-      if (product.quantity < quantity) {
+      if (product.quantity < q) {
         return res.status(400).json({ success: false, message: 'Insufficient stock' });
       }
-      product.quantity -= quantity;
+      product.quantity -= q;
     }
 
     await product.save();
+
+    try {
+      const inv = await upsertInventoryForProduct(product.toObject());
+      if (inv && inv._id) {
+        if (String(product.inventoryItemId || '') !== String(inv._id)) {
+          product.inventoryItemId = inv._id;
+          await product.save();
+        }
+        const delta = operation === 'add' ? Math.abs(q) : -Math.abs(q);
+        await adjustInventoryQuantity({ inventoryItemId: inv._id, delta });
+      }
+    } catch {}
+
     res.json({ success: true, data: product });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
@@ -229,9 +262,11 @@ router.post('/bulk', async (req, res) => {
     const results = [];
     for (const raw of payload) {
       const itemName = String(raw.itemName || raw.item_name || '').trim();
+      const company = raw.company ? String(raw.company).trim() : '';
       const category = String(raw.category || '').trim() || 'Other';
       const barcodeRaw = raw.barcode == null ? '' : String(raw.barcode).trim();
-      const barcode = barcodeRaw || undefined;
+      const barcodeClean = (barcodeRaw || '').trim();
+      const barcode = barcodeClean && barcodeClean.toLowerCase() !== 'null' && barcodeClean.toLowerCase() !== 'undefined' ? barcodeClean : undefined;
       const quantity = Number(raw.quantity ?? 0) || 0;
       const purchasePrice = Number(raw.purchasePrice ?? 0) || 0;
       const salePrice = Number(raw.salePrice ?? 0) || 0;
@@ -242,8 +277,8 @@ router.post('/bulk', async (req, res) => {
       // we insert a new document (handled below).
       const doc = {
         itemName,
+        company,
         category,
-        barcode,
         quantity,
         purchasePrice,
         salePrice,
@@ -251,19 +286,34 @@ router.post('/bulk', async (req, res) => {
         description,
         lowStockThreshold,
       };
+      if (barcode) doc.barcode = barcode;
       // If no barcode is provided, treat as a new product (do not merge by name)
       if (!barcode) {
         const created = await Product.create(doc);
+        try {
+          const inv = await upsertInventoryForProduct(created.toObject());
+          if (inv && inv._id) {
+            created.inventoryItemId = inv._id;
+            await created.save();
+          }
+        } catch {}
         results.push(created);
         continue;
       }
       // With a barcode, upsert by barcode to avoid duplicates of the same coded item
-      const filter = { barcode };
+      const filter = { barcode, company };
       const updated = await Product.findOneAndUpdate(
         filter,
         { $set: doc },
         { upsert: true, new: true, setDefaultsOnInsert: true }
       );
+      try {
+        const inv = await upsertInventoryForProduct(updated.toObject());
+        if (inv && inv._id && String(updated.inventoryItemId || '') !== String(inv._id)) {
+          updated.inventoryItemId = inv._id;
+          await updated.save();
+        }
+      } catch {}
       results.push(updated);
     }
     res.json({ success: true, count: results.length, data: results });

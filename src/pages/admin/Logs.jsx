@@ -52,19 +52,19 @@ export default function Logs(){
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="rounded-2xl p-6 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-500 text-white shadow-lg">
+      <div className="rounded-2xl p-6 bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))]">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-2xl font-extrabold tracking-tight flex items-center gap-2">
-              <FiActivity className="w-6 h-6" /> System Logs
+            <h1 className="text-2xl font-extrabold tracking-tight flex items-center gap-2 text-slate-900">
+              <FiActivity className="w-6 h-6 text-[hsl(var(--pm-primary))]" /> System Logs
             </h1>
-            <p className="text-sm/6 opacity-90 mt-1">Monitor all system activities and events</p>
+            <p className="text-sm/6 text-slate-600 mt-1">Monitor all system activities and events</p>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-white/20 hover:bg-white/30 text-white font-semibold backdrop-blur-md border border-white/30 transition-all">
+            <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white font-semibold border border-[hsl(var(--pm-border))] transition-colors">
               <FiDownload className="h-4 w-4" /> Export CSV
             </button>
-            <button onClick={clear} className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-white font-semibold backdrop-blur-md border border-red-400/30 transition-all">
+            <button onClick={clear} className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold border border-red-700/30 transition-colors">
               <FiTrash2 className="h-4 w-4" /> Clear All
             </button>
           </div>
@@ -72,14 +72,14 @@ export default function Logs(){
       </div>
 
       {/* Date Range Filter */}
-      <div className="rounded-2xl bg-gradient-to-br from-white via-indigo-50 to-purple-50 shadow-xl ring-1 ring-indigo-200 border border-indigo-100 p-6">
+      <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiCalendar className="w-6 h-6 text-white" />
             </div>
             <div>
-              <div className="text-sm font-semibold text-indigo-600">Filter by Log Date</div>
+              <div className="text-sm font-semibold text-[hsl(var(--pm-primary))]">Filter by Log Date</div>
               <div className="text-lg font-bold text-slate-800">
                 {dateRange.fromDate === dateRange.toDate 
                   ? new Date(dateRange.fromDate).toLocaleDateString()
@@ -99,14 +99,14 @@ export default function Logs(){
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100 shadow-md ring-1 ring-indigo-200/70 p-5">
+        <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-5">
           <div className="flex items-center justify-between">
             <div>
               <div className="text-xs text-slate-600">Total Logs</div>
               <div className="mt-1 text-2xl font-bold text-slate-900">{logs.length}</div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-indigo-200 flex items-center justify-center">
-              <FiActivity className="w-6 h-6 text-indigo-600" />
+            <div className="w-12 h-12 rounded-xl bg-[hsl(var(--pm-primary))]/10 ring-1 ring-[hsl(var(--pm-border))] flex items-center justify-center">
+              <FiActivity className="w-6 h-6 text-[hsl(var(--pm-primary))]" />
             </div>
           </div>
         </div>
@@ -142,12 +142,12 @@ export default function Logs(){
               value={q}
               onChange={e=>setQ(e.target.value)}
               placeholder="Search text or time..."
-              className="w-full h-11 pl-11 pr-4 rounded-lg border-2 border-slate-200 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 transition-all"
+              className="w-full h-11 pl-11 pr-4 rounded-lg border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 transition-all"
             />
           </div>
           <div className="relative">
             <FiFilter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-            <select value={portal} onChange={e=>setPortal(e.target.value)} className="w-full h-11 pl-11 pr-4 rounded-lg border-2 border-slate-200 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 transition-all appearance-none bg-white">
+            <select value={portal} onChange={e=>setPortal(e.target.value)} className="w-full h-11 pl-11 pr-4 rounded-lg border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 transition-all appearance-none bg-white">
               <option>All</option>
               <option>Admin</option>
               <option>Reception</option>
@@ -162,16 +162,16 @@ export default function Logs(){
         <div className="space-y-2">
           {filtered.map((l, idx) => {
             const portalColors = {
-              'Admin': 'from-purple-50 to-purple-100 border-purple-200',
-              'Reception': 'from-indigo-50 to-indigo-100 border-indigo-200',
-              'Pharmacy': 'from-violet-50 to-violet-100 border-violet-200',
-              'Lab': 'from-cyan-50 to-cyan-100 border-cyan-200',
-              'Shop': 'from-emerald-50 to-emerald-100 border-emerald-200',
-              'Doctor': 'from-blue-50 to-blue-100 border-blue-200',
+              'Admin': 'bg-[hsl(var(--pm-primary-soft))] border-[hsl(var(--pm-border))]',
+              'Reception': 'bg-[hsl(var(--pm-primary-soft))] border-[hsl(var(--pm-border))]',
+              'Pharmacy': 'bg-[hsl(var(--pm-primary-soft))] border-[hsl(var(--pm-border))]',
+              'Lab': 'bg-cyan-50 border-cyan-200',
+              'Shop': 'bg-emerald-50 border-emerald-200',
+              'Doctor': 'bg-blue-50 border-blue-200',
             }
-            const bgClass = portalColors[l.user] || 'from-slate-50 to-slate-100 border-slate-200'
+            const bgClass = portalColors[l.user] || 'bg-slate-50 border-slate-200'
             return (
-              <div key={l.id} className={`rounded-xl bg-gradient-to-r ${bgClass} border p-4 hover:shadow-md transition-all`}>
+              <div key={l.id} className={`rounded-xl ${bgClass} border p-4 hover:shadow-md transition-all`}>
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-start gap-3 flex-1">
                     <div className="h-10 w-10 rounded-lg bg-white/80 shadow-sm grid place-items-center flex-shrink-0">

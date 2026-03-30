@@ -1,14 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import LoginForm from '../components/LoginForm'
 import { useActivity } from '../context/ActivityContext'
 import { usersAPI } from '../services/api'
+import { useModuleAccess } from '../context/ModuleAccessContext'
 
 export default function LabLogin() {
   const navigate = useNavigate()
+  const { isPortalEnabled } = useModuleAccess()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { addActivity } = useActivity()
+
+  useEffect(() => {
+    if (!isPortalEnabled('lab')) {
+      navigate('/', { replace: true })
+    }
+  }, [isPortalEnabled, navigate])
   
   const handleSubmit = async ({ username, password }) => {
     try {
@@ -25,7 +33,8 @@ export default function LabLogin() {
           localStorage.setItem('lab_auth', JSON.stringify({ 
             username: user.username,
             name: user.name,
-            role: user.role
+            role: user.role,
+            accessRoleId: user.accessRoleId
           }))
           try { addActivity({ user: 'Lab', text: `Login successful: ${user.username}` }) } catch {}
           navigate('/lab')
@@ -43,5 +52,5 @@ export default function LabLogin() {
     }
   }
   
-  return <LoginForm title="Laboratory Portal" onSubmit={handleSubmit} error={error} loading={loading} />
+  return <LoginForm title="Laboratory Portal" onSubmit={handleSubmit} error={error} loading={loading} illustrationSrc="/receptioist.webp" illustrationAlt="Laboratory portal illustration" />
 }

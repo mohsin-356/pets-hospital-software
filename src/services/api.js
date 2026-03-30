@@ -61,6 +61,13 @@ export const usersAPI = {
   delete: (username) => apiCall(`/users/${username}`, 'DELETE'),
 };
 
+export const accessRolesAPI = {
+  getAll: () => apiCall('/access-roles'),
+  create: (roleData) => apiCall('/access-roles', 'POST', roleData),
+  update: (id, roleData) => apiCall(`/access-roles/${id}`, 'PUT', roleData),
+  delete: (id) => apiCall(`/access-roles/${id}`, 'DELETE'),
+};
+
 // Pets API
 export const petsAPI = {
   getAll: () => apiCall('/pets'),
@@ -365,6 +372,19 @@ export const suppliersAPI = {
   addPurchase: (id, data) => apiCall(`/suppliers/${id}/purchase`, 'POST', data),
 };
 
+// Distributors API
+export const distributorsAPI = {
+  getAll: (portal = '') => {
+    const qs = portal && portal !== 'all' ? `?portal=${encodeURIComponent(portal)}` : ''
+    return apiCall(`/distributors${qs}`)
+  },
+  getById: (id) => apiCall(`/distributors/${id}`),
+  create: (data) => apiCall('/distributors', 'POST', data),
+  update: (id, data) => apiCall(`/distributors/${id}`, 'PUT', data),
+  delete: (id) => apiCall(`/distributors/${id}`, 'DELETE'),
+  addDispatch: (id, data) => apiCall(`/distributors/${id}/dispatch`, 'POST', data),
+};
+
 // Shop Customers API
 export const shopCustomersAPI = {
   getAll: () => apiCall('/shop-customers'),
@@ -565,6 +585,19 @@ export const staffAdvancesAPI = {
   adjust: (id, portal, payload) => apiCall(`/staff-advances/${encodeURIComponent(id)}/adjust`, 'POST', { portal, ...payload }),
 };
 
+// Module Access API (Super Admin Modules Offering)
+export const moduleAccessAPI = {
+  get: () => apiCall('/module-access'),
+  save: (config) => apiCall('/module-access', 'PUT', config),
+};
+
+// License API (Super Admin)
+export const licenseAPI = {
+  status: () => apiCall('/license/status'),
+  activate: (payload) => apiCall('/license/activate', 'POST', payload),
+  deactivate: (payload) => apiCall('/license/deactivate', 'POST', payload),
+};
+
 export default {
   users: usersAPI,
   pets: petsAPI,
@@ -582,6 +615,7 @@ export default {
   products: productsAPI,
   sales: salesAPI,
   suppliers: suppliersAPI,
+  distributors: distributorsAPI,
   shopCustomers: shopCustomersAPI,
   expenses: expensesAPI,
   hospitalInventory: hospitalInventoryAPI,
@@ -592,6 +626,8 @@ export default {
   payables: payablesAPI,
   vendorPayments: vendorPaymentsAPI,
   staffAdvances: staffAdvancesAPI,
+  moduleAccess: moduleAccessAPI,
+  license: licenseAPI,
   procedureCatalog: procedureCatalogAPI,
   fullRecord: fullRecordAPI,
   financialSummary: financialSummaryAPI,

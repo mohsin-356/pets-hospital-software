@@ -105,7 +105,7 @@ export default function PrintPrescription({
           <div class="print-header-layout">
             ${settings?.companyLogo ? `<img src="${esc(settings.companyLogo)}" alt="logo" class="print-logo-left"/>` : '<div style="width:80px"></div>'}
             <div class="print-header-center">
-              <div class="hospital-name">${esc(settings?.companyName || 'Abbottabad Pet Hospital')}</div>
+              <div class="hospital-name">${esc(settings?.companyName || 'Pet Matrix')}</div>
               <div style="font-size:11px;color:#b91c1c;font-weight:700;margin-top:2px;">Note: Not Valid For Court</div>
               ${settings?.address ? `<div style="font-size:11px;color:#000;margin-top:4px;">${esc(settings.address)}</div>`:''}
               ${settings?.phone ? `<div style="font-size:11px;color:#000;">${esc(settings.phone)}</div>`:''}
@@ -295,7 +295,7 @@ export default function PrintPrescription({
                 <div className="print-header-spacer" />
               )}
               <div className="text-center print-header-center" style={{justifySelf:'center', width:'max-content'}}>
-                <div className="text-xl font-bold text-sky-600 hospital-name">{settings?.companyName || 'Abbottabad Pet Hospital'}</div>
+                <div className="text-xl font-bold text-sky-600 hospital-name">{settings?.companyName || 'Pet Matrix'}</div>
                 <div className="text-xs font-semibold text-red-700 mt-1">Note: Not Valid For Court</div>
                 {settings?.address && <div className="text-xs text-slate-600 mt-1">{settings.address}</div>}
                 {settings?.phone && <div className="text-xs text-slate-600">{settings.phone}</div>}

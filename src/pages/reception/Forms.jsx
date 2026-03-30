@@ -109,7 +109,7 @@ const DEFAULT_ANESTHESIA_PROCEDURES = [
 export default function ReceptionForms() {
   const { settings } = useSettings()
   const hospital = useMemo(() => ({
-    name: settings.companyName || 'Abbottabad Pet Hospital',
+    name: settings.companyName || 'Pet Matrix',
     address: settings.address || '',
     phone: settings.phone || '',
     logo: settings.companyLogo || ''
@@ -788,16 +788,16 @@ export default function ReceptionForms() {
   const renderTreatmentChart = () => (
     <div className="bg-white p-8 rounded-xl shadow-lg print:shadow-none">
       {/* Header */}
-      <div className="border-b-2 border-blue-600 pb-4 mb-4">
+      <div className="border-b-2 border-[hsl(var(--pm-primary))] pb-4 mb-4">
         <div className="flex items-start justify-between">
           <div className="text-left">
-            <h1 className="text-2xl font-bold text-blue-600">Abbottabad Pet Hospital</h1>
+            <h1 className="text-2xl font-bold text-[hsl(var(--pm-primary))]">Pet Matrix</h1>
             {hospital.address && <p className="text-sm text-slate-600 mt-1">{hospital.address}</p>}
             {hospital.phone && <p className="text-sm text-slate-600">{hospital.phone}</p>}
           </div>
           {hospital.logo && <img src={hospital.logo} alt="Hospital Logo" className="h-16" />}
         </div>
-        <h3 className="text-lg font-bold text-red-600 mt-3 text-center">Treatment Chart</h3>
+        <h3 className="text-lg font-bold text-[hsl(var(--pm-primary))] mt-3 text-center">Treatment Chart</h3>
       </div>
 
       {/* Patient Info Grid */}
@@ -914,10 +914,10 @@ export default function ReceptionForms() {
   const renderBloodTransfusion = () => (
     <div className="bg-white p-8 rounded-xl shadow-lg print:shadow-none">
       {/* Header */}
-      <div className="border-b-2 border-blue-600 pb-4 mb-4">
+      <div className="border-b-2 border-[hsl(var(--pm-primary))] pb-4 mb-4">
         <div className="flex items-start justify-between">
           <div className="text-left">
-            <h1 className="text-2xl font-bold text-blue-600">Abbottabad Pet Hospital</h1>
+            <h1 className="text-2xl font-bold text-[hsl(var(--pm-primary))]">Pet Matrix</h1>
             {hospital.address && <p className="text-sm text-slate-600 mt-1">{hospital.address}</p>}
             {hospital.phone && <p className="text-sm text-slate-600">{hospital.phone}</p>}
           </div>
@@ -1018,7 +1018,7 @@ export default function ReceptionForms() {
         {/* Right Column - Rx */}
         <div>
           <div className="font-bold text-lg mb-3">Rx</div>
-          <div className="bg-yellow-300 text-center font-bold py-1 mb-3">BLOOD</div>
+          <div className="bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] text-center font-bold py-1 mb-3">BLOOD</div>
           
           <div className="mb-4">
             <div className="font-bold mb-2">Whole Blood</div>
@@ -1052,7 +1052,7 @@ export default function ReceptionForms() {
       <div className="border-b border-slate-400 pb-2 mb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1 text-center">
-            <h1 className="text-2xl font-extrabold text-blue-700 tracking-wide">Abbottabad Pet Hospital</h1>
+            <h1 className="text-2xl font-extrabold text-[hsl(var(--pm-primary))] tracking-wide">Pet Matrix</h1>
             {hospital.address && <p className="text-xs mt-1">{hospital.address}</p>}
             {hospital.phone && <p className="text-xs">{hospital.phone}</p>}
             <h2 className="mt-3 text-base font-bold underline">Anesthesia Consent Form</h2>
@@ -1154,7 +1154,7 @@ export default function ReceptionForms() {
           <button
             type="button"
             onClick={handleAddProcedure}
-            className="px-2 py-0.5 text-[11px] border border-blue-500 text-blue-600 rounded hover:bg-blue-50"
+            className="px-2 py-0.5 text-[11px] border border-[hsl(var(--pm-primary))] text-[hsl(var(--pm-primary))] rounded hover:bg-[hsl(var(--pm-primary-soft))]"
           >
             Add New
           </button>
@@ -1186,7 +1186,7 @@ export default function ReceptionForms() {
         <h3 className="text-center font-bold mt-2">ACKNOWLEDGEMENT AND CONSENT OF SURGICAL RISKS</h3>
         <p>
           I certify that I am the owner or authorized agent for the owner of the animal described above and that I have the
-          authority to execute this consent. I hereby give my consent to Abbottabad Pet Hospital to perform the procedure described
+          authority to execute this consent. I hereby give my consent to Pet Matrix to perform the procedure described
           above and to administer such anesthetics as are necessary.
         </p>
         <p>
@@ -1199,7 +1199,7 @@ export default function ReceptionForms() {
         </p>
         <div className="space-y-1">
           <p>
-            _____ I give the Abbottabad Pet Hospital staff permission to complete any procedures deemed medically necessary to
+            _____ I give the Pet Matrix staff permission to complete any procedures deemed medically necessary to
             preserve the health of my animal. Furthermore, I agree to pay the additional associated costs.
           </p>
           <p>
@@ -1213,7 +1213,7 @@ export default function ReceptionForms() {
             pet, except for eating, for 10-14 days. I agree to monitor my pet closely to ensure he/she does not find a way to
             damage the incision or area protected by the E-collar. Failure to follow discharge instructions could result in
             self-inflicted injuries to my pet due to excess movement, licking, biting, or otherwise damage to the incision or
-            treatment area. Abbottabad Pet Hospital is not responsible for any costs incurred for failure to follow.
+            treatment area. Pet Matrix is not responsible for any costs incurred for failure to follow.
           </p>
         </div>
       </div>
@@ -1248,10 +1248,10 @@ export default function ReceptionForms() {
   const renderDischarge = () => (
     <div className="bg-white p-8 rounded-xl shadow-lg print:shadow-none">
       {/* Header */}
-      <div className="border-b-2 border-blue-600 pb-4 mb-6">
+      <div className="border-b-2 border-[hsl(var(--pm-primary))] pb-4 mb-6">
         <div className="flex items-start justify-between">
           <div className="text-left">
-            <h1 className="text-3xl font-bold text-blue-600">Abbottabad Pet Hospital</h1>
+            <h1 className="text-3xl font-bold text-[hsl(var(--pm-primary))]">Pet Matrix</h1>
             {hospital.address && <p className="text-sm text-slate-600 mt-2">{hospital.address}</p>}
             {hospital.phone && <p className="text-sm text-slate-600">{hospital.phone}</p>}
           </div>
@@ -1520,14 +1520,14 @@ export default function ReceptionForms() {
             <div className="text-center">
               <div className="mb-4">
                 {modalMessage.includes('✅') ? (
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                    <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-16 h-16 bg-[hsl(var(--pm-primary-soft))] rounded-full flex items-center justify-center mx-auto">
+                    <svg className="w-10 h-10 text-[hsl(var(--pm-primary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
                 ) : (
-                  <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto">
-                    <svg className="w-10 h-10 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-16 h-16 bg-[hsl(var(--pm-primary-soft))] rounded-full flex items-center justify-center mx-auto">
+                    <svg className="w-10 h-10 text-[hsl(var(--pm-primary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                   </div>
@@ -1539,7 +1539,7 @@ export default function ReceptionForms() {
               <p className="text-slate-600 mb-6 text-lg">{modalMessage.replace('✅', '').replace('⚠️', '')}</p>
               <button
                 onClick={() => setShowModal(false)}
-                className="w-full h-12 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold text-lg cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="w-full h-12 rounded-xl bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white font-bold text-lg cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 OK
               </button>
@@ -1571,7 +1571,7 @@ export default function ReceptionForms() {
               <button onClick={() => setShowPrintDialog(false)} className="flex-1 px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-semibold">OK</button>
               <button
                 onClick={() => { setShowPrintDialog(false); setTimeout(() => handlePrint(), 10) }}
-                className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-2 bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white rounded-lg font-semibold flex items-center justify-center gap-2"
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clipRule="evenodd"/></svg>
                 Print
@@ -1583,20 +1583,20 @@ export default function ReceptionForms() {
 
       {/* Header - Hide on print */}
       <div className="text-center print:hidden">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Medical Forms</h1>
+        <h1 className="text-3xl font-bold text-[hsl(var(--pm-primary))]">Medical Forms</h1>
         <p className="text-slate-500 mt-1">Select and fill out medical forms for patients</p>
       </div>
 
       {/* Pet ID Search - Hide on print */}
-      <div className="rounded-2xl bg-gradient-to-br from-white to-purple-50 shadow-xl ring-1 ring-purple-200/50 p-6 border border-purple-100 print:hidden">
+      <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6 print:hidden">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 flex-1">
-            <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/></svg>
+            <svg className="w-5 h-5 text-[hsl(var(--pm-primary))]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/></svg>
             <input 
               value={petId} 
               onChange={e => setPetId(e.target.value)} 
               placeholder="🔍 Enter Pet ID to auto-fill patient information" 
-              className="flex-1 h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 transition-all duration-200 bg-white shadow-sm font-mono" 
+              className="flex-1 h-12 px-4 rounded-xl border-2 border-slate-200 focus:border-[hsl(var(--pm-primary))] focus:ring-4 focus:ring-[hsl(var(--pm-primary))]/15 transition-all duration-200 bg-white shadow-sm font-mono" 
             />
           </div>
         </div>
@@ -1604,21 +1604,21 @@ export default function ReceptionForms() {
 
       {/* Form Selection Buttons - Hide on print */}
       {!selectedForm && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 print:hidden">
-          <button onClick={() => setSelectedForm('anesthesia')} className="h-32 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-bold text-xl cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex flex-col items-center justify-center gap-3">
-            <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"/></svg>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:hidden">
+          <button onClick={() => setSelectedForm('anesthesia')} className="h-32 rounded-2xl bg-[hsl(var(--pm-surface))] ring-1 ring-[hsl(var(--pm-border))] shadow-sm hover:bg-[hsl(var(--pm-primary-soft))] transition-colors duration-200 flex flex-col items-center justify-center gap-3 text-[hsl(var(--pm-text))] font-bold text-xl cursor-pointer">
+            <svg className="w-12 h-12 text-[hsl(var(--pm-primary))]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"/></svg>
             Anesthesia
           </button>
-          <button onClick={() => setSelectedForm('discharge')} className="h-32 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold text-xl cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex flex-col items-center justify-center gap-3">
-            <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>
+          <button onClick={() => setSelectedForm('discharge')} className="h-32 rounded-2xl bg-[hsl(var(--pm-surface))] ring-1 ring-[hsl(var(--pm-border))] shadow-sm hover:bg-[hsl(var(--pm-primary-soft))] transition-colors duration-200 flex flex-col items-center justify-center gap-3 text-[hsl(var(--pm-text))] font-bold text-xl cursor-pointer">
+            <svg className="w-12 h-12 text-[hsl(var(--pm-primary))]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>
             Boarding Discharge
           </button>
-          <button onClick={() => setSelectedForm('admission')} className="h-32 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-xl cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex flex-col items-center justify-center gap-3">
-            <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V8z" clipRule="evenodd"/></svg>
+          <button onClick={() => setSelectedForm('admission')} className="h-32 rounded-2xl bg-[hsl(var(--pm-surface))] ring-1 ring-[hsl(var(--pm-border))] shadow-sm hover:bg-[hsl(var(--pm-primary-soft))] transition-colors duration-200 flex flex-col items-center justify-center gap-3 text-[hsl(var(--pm-text))] font-bold text-xl cursor-pointer">
+            <svg className="w-12 h-12 text-[hsl(var(--pm-primary))]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V8z" clipRule="evenodd"/></svg>
             Patient Admission
           </button>
-          <button onClick={() => setSelectedForm('patientDischarge')} className="h-32 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-bold text-xl cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl flex flex-col items-center justify-center gap-3">
-            <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd"/></svg>
+          <button onClick={() => setSelectedForm('patientDischarge')} className="h-32 rounded-2xl bg-[hsl(var(--pm-surface))] ring-1 ring-[hsl(var(--pm-border))] shadow-sm hover:bg-[hsl(var(--pm-primary-soft))] transition-colors duration-200 flex flex-col items-center justify-center gap-3 text-[hsl(var(--pm-text))] font-bold text-xl cursor-pointer">
+            <svg className="w-12 h-12 text-[hsl(var(--pm-primary))]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd"/></svg>
             Patient Discharge
           </button>
         </div>
@@ -1632,7 +1632,7 @@ export default function ReceptionForms() {
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd"/></svg>
               Back
             </button>
-            <button onClick={() => setShowPrintDialog(true)} className="h-10 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold cursor-pointer transition-all duration-200 flex items-center gap-2">
+            <button onClick={() => setShowPrintDialog(true)} className="h-10 px-4 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white font-semibold cursor-pointer transition-all duration-200 flex items-center gap-2">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clipRule="evenodd"/></svg>
               Print
             </button>
@@ -1641,15 +1641,15 @@ export default function ReceptionForms() {
             <>
               {/* Medicine Condition Buttons - Hide on print */}
               {regimens.length > 0 && (
-                <div className="rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-100 shadow-xl ring-1 ring-purple-200/50 p-6 border border-purple-100 mb-6 print:hidden">
+                <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6 mb-6 print:hidden">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
-                      <div className="text-purple-800 font-bold text-lg">Quick Add Medicines</div>
+                      <svg className="w-5 h-5 text-[hsl(var(--pm-primary))]" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+                      <div className="text-[hsl(var(--pm-primary))] font-bold text-lg">Quick Add Medicines</div>
                     </div>
                     <button 
                       onClick={() => setShowMedicineButtons(!showMedicineButtons)}
-                      className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm transition-all duration-200"
+                      className="px-4 py-2 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white font-semibold text-sm transition-colors duration-200"
                     >
                       {showMedicineButtons ? 'Hide' : 'Show'} Medicines
                     </button>
@@ -1660,7 +1660,7 @@ export default function ReceptionForms() {
                         <button 
                           key={g.id} 
                           onClick={() => addConditionMedicines(g)} 
-                          className="group h-10 px-4 rounded-xl bg-gradient-to-r from-sky-500 to-blue-500 hover:from-sky-600 hover:to-blue-600 text-white border-2 border-sky-300 hover:border-sky-400 cursor-pointer text-sm font-semibold transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2"
+                          className="group h-10 px-4 rounded-xl bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white cursor-pointer text-sm font-semibold transition-colors duration-200 shadow-sm flex items-center gap-2"
                         >
                           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd"/></svg>
                           {g.condition || 'Condition'}
@@ -1668,7 +1668,7 @@ export default function ReceptionForms() {
                       ))}
                     </div>
                   )}
-                  <p className="text-xs text-purple-700 mt-3">💡 Tip: Enter patient body weight first, then click a condition to auto-calculate and add medicines</p>
+                  <p className="text-xs text-slate-600 mt-3">💡 Tip: Enter patient body weight first, then click a condition to auto-calculate and add medicines</p>
                 </div>
               )}
               {renderAnesthesia()}
@@ -1678,15 +1678,15 @@ export default function ReceptionForms() {
             <>
               {/* Medicine Condition Buttons - Hide on print */}
               {regimens.length > 0 && (
-                <div className="rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-100 shadow-xl ring-1 ring-purple-200/50 p-6 border border-purple-100 mb-6 print:hidden">
+                <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6 mb-6 print:hidden">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
-                      <div className="text-purple-800 font-bold text-lg">Quick Add Medicines</div>
+                      <svg className="w-5 h-5 text-[hsl(var(--pm-primary))]" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+                      <div className="text-[hsl(var(--pm-primary))] font-bold text-lg">Quick Add Medicines</div>
                     </div>
                     <button 
                       onClick={() => setShowMedicineButtons(!showMedicineButtons)}
-                      className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm transition-all duration-200"
+                      className="px-4 py-2 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white font-semibold text-sm transition-colors duration-200"
                     >
                       {showMedicineButtons ? 'Hide' : 'Show'} Medicines
                     </button>
@@ -1697,7 +1697,7 @@ export default function ReceptionForms() {
                         <button 
                           key={g.id} 
                           onClick={() => addConditionMedicines(g)} 
-                          className="group h-10 px-4 rounded-xl bg-gradient-to-r from-sky-500 to-blue-500 hover:from-sky-600 hover:to-blue-600 text-white border-2 border-sky-300 hover:border-sky-400 cursor-pointer text-sm font-semibold transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2"
+                          className="group h-10 px-4 rounded-xl bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white cursor-pointer text-sm font-semibold transition-colors duration-200 shadow-sm flex items-center gap-2"
                         >
                           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd"/></svg>
                           {g.condition || 'Condition'}
@@ -1705,7 +1705,7 @@ export default function ReceptionForms() {
                       ))}
                     </div>
                   )}
-                  <p className="text-xs text-purple-700 mt-3">💡 Tip: Enter patient body weight first, then click a condition to auto-calculate and add medicines</p>
+                  <p className="text-xs text-slate-600 mt-3">💡 Tip: Enter patient body weight first, then click a condition to auto-calculate and add medicines</p>
                 </div>
               )}
               {renderDischarge()}
@@ -1715,15 +1715,15 @@ export default function ReceptionForms() {
             <>
               {/* Medicine Condition Buttons - Hide on print */}
               {regimens.length > 0 && (
-                <div className="rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-100 shadow-xl ring-1 ring-purple-200/50 p-6 border border-purple-100 mb-6 print:hidden">
+                <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6 mb-6 print:hidden">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
-                      <div className="text-purple-800 font-bold text-lg">Quick Add Medicines</div>
+                      <svg className="w-5 h-5 text-[hsl(var(--pm-primary))]" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+                      <div className="text-[hsl(var(--pm-primary))] font-bold text-lg">Quick Add Medicines</div>
                     </div>
                     <button 
                       onClick={() => setShowMedicineButtons(!showMedicineButtons)}
-                      className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm transition-all duration-200"
+                      className="px-4 py-2 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white font-semibold text-sm transition-colors duration-200"
                     >
                       {showMedicineButtons ? 'Hide' : 'Show'} Medicines
                     </button>
@@ -1734,7 +1734,7 @@ export default function ReceptionForms() {
                         <button 
                           key={g.id} 
                           onClick={() => addConditionMedicines(g)} 
-                          className="group h-10 px-4 rounded-xl bg-gradient-to-r from-sky-500 to-blue-500 hover:from-sky-600 hover:to-blue-600 text-white border-2 border-sky-300 hover:border-sky-400 cursor-pointer text-sm font-semibold transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2"
+                          className="group h-10 px-4 rounded-xl bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white cursor-pointer text-sm font-semibold transition-colors duration-200 shadow-sm flex items-center gap-2"
                         >
                           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd"/></svg>
                           {g.condition || 'Condition'}
@@ -1742,15 +1742,15 @@ export default function ReceptionForms() {
                       ))}
                     </div>
                   )}
-                  <p className="text-xs text-purple-700 mt-3">💡 Tip: Enter patient body weight first, then click a condition to auto-calculate and add medicines</p>
+                  <p className="text-xs text-slate-600 mt-3">💡 Tip: Enter patient body weight first, then click a condition to auto-calculate and add medicines</p>
                 </div>
               )}
 
               <div className="bg-white p-6 rounded-xl shadow-lg print:shadow-none text-sm">
-                <div className="border-b-2 border-blue-600 pb-3 mb-4">
+                <div className="border-b-2 border-[hsl(var(--pm-primary))] pb-3 mb-4">
                   <div className="flex items-start justify-between">
                     <div className="text-left">
-                      <h1 className="text-xl font-bold text-blue-600">Abbottabad Pet Hospital</h1>
+                      <h1 className="text-xl font-bold text-[hsl(var(--pm-primary))]">Pet Matrix</h1>
                       {hospital.address && <p className="text-xs text-slate-600 mt-1">{hospital.address}</p>}
                       {hospital.phone && <p className="text-xs text-slate-600">{hospital.phone}</p>}
                     </div>
@@ -1904,15 +1904,15 @@ export default function ReceptionForms() {
             <>
               {/* Medicine Condition Buttons - Hide on print */}
               {regimens.length > 0 && (
-                <div className="rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-100 shadow-xl ring-1 ring-purple-200/50 p-6 border border-purple-100 mb-6 print:hidden">
+                <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6 mb-6 print:hidden">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
-                      <div className="text-purple-800 font-bold text-lg">Quick Add Medicines</div>
+                      <svg className="w-5 h-5 text-[hsl(var(--pm-primary))]" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+                      <div className="text-[hsl(var(--pm-primary))] font-bold text-lg">Quick Add Medicines</div>
                     </div>
                     <button 
                       onClick={() => setShowMedicineButtons(!showMedicineButtons)}
-                      className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm transition-all duration-200"
+                      className="px-4 py-2 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white font-semibold text-sm transition-colors duration-200"
                     >
                       {showMedicineButtons ? 'Hide' : 'Show'} Medicines
                     </button>
@@ -1923,7 +1923,7 @@ export default function ReceptionForms() {
                         <button 
                           key={g.id} 
                           onClick={() => addConditionMedicines(g)} 
-                          className="group h-10 px-4 rounded-xl bg-gradient-to-r from-sky-500 to-blue-500 hover:from-sky-600 hover:to-blue-600 text-white border-2 border-sky-300 hover:border-sky-400 cursor-pointer text-sm font-semibold transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2"
+                          className="group h-10 px-4 rounded-xl bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white cursor-pointer text-sm font-semibold transition-colors duration-200 shadow-sm flex items-center gap-2"
                         >
                           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd"/></svg>
                           {g.condition || 'Condition'}
@@ -1931,15 +1931,15 @@ export default function ReceptionForms() {
                       ))}
                     </div>
                   )}
-                  <p className="text-xs text-purple-700 mt-3">💡 Tip: Enter patient body weight first, then click a condition to auto-calculate and add medicines</p>
+                  <p className="text-xs text-slate-600 mt-3">💡 Tip: Enter patient body weight first, then click a condition to auto-calculate and add medicines</p>
                 </div>
               )}
 
               <div className="bg-white p-6 rounded-xl shadow-lg print:shadow-none text-sm">
-                <div className="border-b-2 border-blue-600 pb-3 mb-4">
+                <div className="border-b-2 border-[hsl(var(--pm-primary))] pb-3 mb-4">
                   <div className="flex items-start justify-between">
                     <div className="text-left">
-                      <h1 className="text-xl font-bold text-blue-600">Abbottabad Pet Hospital</h1>
+                      <h1 className="text-xl font-bold text-[hsl(var(--pm-primary))]">Pet Matrix</h1>
                       {hospital.address && <p className="text-xs text-slate-600 mt-1">{hospital.address}</p>}
                       {hospital.phone && <p className="text-xs text-slate-600">{hospital.phone}</p>}
                     </div>
@@ -2028,7 +2028,7 @@ export default function ReceptionForms() {
                     ))}
                   </tbody>
                 </table>
-                <button onClick={() => handleInputChange('medicationsAdministered', [...formData.medicationsAdministered, { name: '', dosage: '', frequency: '', duration: '' }])} className="mt-2 px-3 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600 print:hidden">+ Add Row</button>
+                <button onClick={() => handleInputChange('medicationsAdministered', [...formData.medicationsAdministered, { name: '', dosage: '', frequency: '', duration: '' }])} className="mt-2 px-3 py-1 bg-[hsl(var(--pm-primary))] text-white rounded text-xs hover:bg-[hsl(var(--pm-primary-hover))] print:hidden">+ Add Row</button>
               </div>
 
               <div className="mb-4">
@@ -2093,7 +2093,7 @@ export default function ReceptionForms() {
                     ))}
                   </tbody>
                 </table>
-                <button onClick={() => handleInputChange('medicationsAtHome', [...formData.medicationsAtHome, { name: '', dosage: '', frequency: '', duration: '' }])} className="mb-3 px-3 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600 print:hidden">+ Add Row</button>
+                <button onClick={() => handleInputChange('medicationsAtHome', [...formData.medicationsAtHome, { name: '', dosage: '', frequency: '', duration: '' }])} className="mb-3 px-3 py-1 bg-[hsl(var(--pm-primary))] text-white rounded text-xs hover:bg-[hsl(var(--pm-primary-hover))] print:hidden">+ Add Row</button>
                 
                 <p className="font-semibold text-xs mb-1">Special Instructions for Attendant:</p>
                 <textarea value={formData.specialInstructionsAttendant} onChange={e => handleInputChange('specialInstructionsAttendant', e.target.value)} className="w-full border border-slate-300 rounded p-2 text-xs mb-3" rows="3" />
@@ -2155,21 +2155,21 @@ export default function ReceptionForms() {
                   <div>
                     <h4 className="font-bold text-xs mb-2 border-b border-slate-300 pb-1">Pet Information:</h4>
                     <div className="space-y-1 text-xs">
-                      <div className="grid grid-cols-2 gap-1"><span className="font-semibold">Patient ID:</span><span className="text-green-600 font-semibold">{formData.patientId}</span></div>
+                      <div className="grid grid-cols-2 gap-1"><span className="font-semibold">Patient ID:</span><span className="text-[hsl(var(--pm-primary))] font-semibold">{formData.patientId}</span></div>
                       <div className="grid grid-cols-2 gap-1"><span className="font-semibold">Pet Name:</span><span>{formData.animalName}</span></div>
                       <div className="grid grid-cols-2 gap-1"><span className="font-semibold">Species:</span><span>{formData.species}</span></div>
                       <div className="grid grid-cols-2 gap-1"><span className="font-semibold">Age:</span><span>{formData.age}</span></div>
-                      <div className="grid grid-cols-2 gap-1"><span className="font-semibold">B. Wt(kg):</span><span className="text-red-600 font-semibold">{formData.bodyWeight}</span></div>
+                      <div className="grid grid-cols-2 gap-1"><span className="font-semibold">B. Wt(kg):</span><span className="text-[hsl(var(--pm-primary))] font-semibold">{formData.bodyWeight}</span></div>
                     </div>
                   </div>
                   <div>
                     <h4 className="font-bold text-xs mb-2 border-b border-slate-300 pb-1">Owner Details</h4>
                     <div className="space-y-1 text-xs">
                       <div className="grid grid-cols-2 gap-1"><span className="font-semibold">Client ID:</span><span>{formData.clientId}</span></div>
-                      <div className="grid grid-cols-2 gap-1"><span className="font-semibold">Name:</span><span className="text-red-600 font-semibold">{formData.ownerName}</span></div>
-                      <div className="grid grid-cols-2 gap-1"><span className="font-semibold">CNIC # of Owner:</span><span className="text-red-600 font-semibold">{formData.cnicOwner}</span></div>
-                      <div className="grid grid-cols-2 gap-1"><span className="font-semibold">Contact # of Owner/Guardian:</span><span className="text-red-600 font-semibold">{formData.contactOwnerGuardian}</span></div>
-                      <div className="grid grid-cols-2 gap-1"><span className="font-semibold">Home Address:</span><span className="text-red-600 font-semibold">{formData.homeAddress}</span></div>
+                      <div className="grid grid-cols-2 gap-1"><span className="font-semibold">Name:</span><span className="text-[hsl(var(--pm-primary))] font-semibold">{formData.ownerName}</span></div>
+                      <div className="grid grid-cols-2 gap-1"><span className="font-semibold">CNIC # of Owner:</span><span className="text-[hsl(var(--pm-primary))] font-semibold">{formData.cnicOwner}</span></div>
+                      <div className="grid grid-cols-2 gap-1"><span className="font-semibold">Contact # of Owner/Guardian:</span><span className="text-[hsl(var(--pm-primary))] font-semibold">{formData.contactOwnerGuardian}</span></div>
+                      <div className="grid grid-cols-2 gap-1"><span className="font-semibold">Home Address:</span><span className="text-[hsl(var(--pm-primary))] font-semibold">{formData.homeAddress}</span></div>
                     </div>
                   </div>
                 </div>

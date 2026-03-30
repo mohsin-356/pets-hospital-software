@@ -104,8 +104,8 @@ export default function ReceptionBilling(){
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Billing</h1>
 
-      <div className="rounded-2xl bg-white shadow-md ring-1 ring-emerald-200/70 p-6">
-        <div className="mb-4 flex items-center gap-2 text-slate-800 font-semibold"><FiDollarSign className="text-emerald-600" /> Create Invoice</div>
+      <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
+        <div className="mb-4 flex items-center gap-2 text-slate-800 font-semibold"><FiDollarSign className="text-[hsl(var(--pm-primary))]" /> Create Invoice</div>
         <form onSubmit={submitInvoice} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <select value={petId} onChange={e=>setPetId(e.target.value)} className="h-10 px-3 rounded-lg border border-slate-300 bg-white" required>
@@ -130,19 +130,19 @@ export default function ReceptionBilling(){
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
             <div className="text-slate-800">Total: <span className="font-bold">Rs. {total.toLocaleString()}</span></div>
             <input type="number" min="0" value={received} onChange={e=>setReceived(Number(e.target.value||0))} placeholder="Amount Received" className="h-10 px-3 rounded-lg border border-slate-300 bg-white" />
-            <div className={`text-sm px-3 h-8 rounded-lg grid place-items-center ${status==='Paid'?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-700'}`}>{status}</div>
+            <div className={`text-sm px-3 h-8 rounded-lg grid place-items-center ${status==='Paid'?'bg-emerald-100 text-emerald-700':'bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))]'}`}>{status}</div>
           </div>
 
-          <button className="px-4 h-10 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm">Save Invoice</button>
+          <button className="px-4 h-10 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white shadow-sm">Save Invoice</button>
         </form>
       </div>
 
-      <div className="rounded-2xl bg-white shadow-md ring-1 ring-slate-200/70 p-6">
+      <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
         <div className="flex items-center justify-between">
           <div className="text-slate-800 font-semibold">Invoices</div>
           <div className="flex items-center gap-3">
             <div className="text-sm text-slate-600">Paid Total: Rs. {paidSum.toLocaleString()}</div>
-            <button onClick={exportCSV} className="px-3 h-9 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm">Export CSV</button>
+            <button onClick={exportCSV} className="px-3 h-9 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white shadow-sm">Export CSV</button>
           </div>
         </div>
         <ul className="divide-y divide-slate-100 text-sm mt-4">

@@ -61,6 +61,23 @@ const appointmentSchema = new mongoose.Schema({
   },
   createdBy: {
     type: String
+  },
+  appliedDiscountPercent: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 100
+  },
+  nextVisitDiscountPercent: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 100
+  },
+  petVisitNumber: {
+    type: Number,
+    default: 1,
+    min: 1
   }
 }, {
   timestamps: true

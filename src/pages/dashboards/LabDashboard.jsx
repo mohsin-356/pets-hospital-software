@@ -14,7 +14,7 @@ export default function LabDashboard() {
   }, [navigate])
   
   return (
-    <div className="min-h-screen bg-hospital-blue">
+    <div className="min-h-screen bg-[hsl(var(--pm-bg))]">
       <Navbar title="Laboratory Dashboard" />
       <div className="max-w-5xl mx-auto px-4 py-10">
         <h1 className="text-2xl font-semibold text-slate-800">Welcome to Laboratory Dashboard</h1>

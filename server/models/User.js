@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     enum: ['admin', 'reception', 'doctor', 'lab', 'pharmacy', 'shop']
   },
+  accessRoleId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'AccessRole'
+  },
   name: {
     type: String,
     trim: true

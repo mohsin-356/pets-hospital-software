@@ -17,6 +17,7 @@ export default function Suppliers() {
     name: '',
     contactPerson: '',
     phone: '',
+    isWhatsApp: false,
     email: '',
     address: '',
     city: '',
@@ -41,6 +42,7 @@ export default function Suppliers() {
         name: s.supplierName || s.name || '',
         contactPerson: s.contactPerson || '',
         phone: s.phone || '',
+        isWhatsApp: s.isWhatsApp === true,
         email: s.email || '',
         address: s.address || '',
         city: s.city || s.supplierCity || (s.location && s.location.city) || s.addressCity || (s.address && s.address.city) || '',
@@ -76,6 +78,15 @@ export default function Suppliers() {
     setTimeout(() => setToast(''), 3000);
   };
 
+  const formatPhoneForWa = (raw) => {
+    const digits = String(raw || '').replace(/[^0-9]/g, '');
+    if (!digits) return '';
+    if (digits.startsWith('0')) return `92${digits.slice(1)}`;
+    if (digits.startsWith('92')) return digits;
+    if (digits.length === 10) return `92${digits}`;
+    return digits;
+  };
+
   const openModal = (supplier = null) => {
     if (supplier) {
       setEditingSupplier(supplier);
@@ -83,6 +94,7 @@ export default function Suppliers() {
         name: supplier.name,
         contactPerson: supplier.contactPerson,
         phone: supplier.phone,
+        isWhatsApp: supplier.isWhatsApp === true,
         email: supplier.email,
         address: supplier.address,
         city: supplier.city,
@@ -94,6 +106,7 @@ export default function Suppliers() {
         name: '',
         contactPerson: '',
         phone: '',
+        isWhatsApp: false,
         email: '',
         address: '',
         city: '',
@@ -115,6 +128,7 @@ export default function Suppliers() {
         supplierName: formData.name,
         contactPerson: formData.contactPerson,
         phone: formData.phone,
+        isWhatsApp: formData.isWhatsApp === true,
         email: formData.email,
         address: formData.address,
         city: formData.city,
@@ -159,27 +173,27 @@ export default function Suppliers() {
   return (
     <div className="space-y-6">
       {toast && (
-        <div className="fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+        <div className="fixed top-4 right-4 bg-[hsl(var(--pm-primary))] text-white px-6 py-3 rounded-lg shadow-lg z-50">
           {toast}
         </div>
       )}
 
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-[hsl(var(--pm-primary))]">
             Supplier Management
           </h1>
           <p className="text-slate-500 mt-1">Manage pharmacy suppliers and vendors</p>
         </div>
         <button 
           onClick={() => openModal()} 
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+          className="flex items-center gap-2 px-4 py-2 bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white rounded-lg"
         >
           <FiPlus /> Add Supplier
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+      <div className="bg-[hsl(var(--pm-surface))] rounded-xl shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-4">
         <div className="flex items-center gap-4">
           <div className="flex-1 relative">
             <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -188,16 +202,16 @@ export default function Suppliers() {
               placeholder="Search by name, contact person, phone, or city..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
             />
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-[hsl(var(--pm-surface))] rounded-xl shadow-sm ring-1 ring-[hsl(var(--pm-border))] overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--pm-primary))]"></div>
           </div>
         ) : filteredSuppliers.length === 0 ? (
           <div className="text-center py-12 text-slate-500">
@@ -207,16 +221,29 @@ export default function Suppliers() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
             {filteredSuppliers.map((supplier) => (
-              <div key={supplier.id} className="border border-slate-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+              <div key={supplier.id} className="border border-[hsl(var(--pm-border))] rounded-lg p-4 hover:shadow-sm transition-shadow">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className="font-bold text-slate-800 text-lg">{supplier.name}</h3>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <h3 className="font-bold text-slate-800 text-lg truncate" title={supplier.name}>{supplier.name}</h3>
+                      {supplier.isWhatsApp && supplier.phone && (
+                        <a
+                          href={`https://wa.me/${encodeURIComponent(formatPhoneForWa(supplier.phone))}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 whitespace-nowrap"
+                          title="WhatsApp"
+                        >
+                          WhatsApp
+                        </a>
+                      )}
+                    </div>
                     <p className="text-sm text-slate-600">{supplier.contactPerson}</p>
                   </div>
                   <div className="flex gap-1">
                     <button 
                       onClick={() => openModal(supplier)} 
-                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                      className="p-2 text-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-soft))] rounded-lg"
                     >
                       <FiEdit2 className="w-4 h-4" />
                     </button>
@@ -261,7 +288,7 @@ export default function Suppliers() {
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4 flex items-center justify-between">
+            <div className="sticky top-0 bg-[hsl(var(--pm-primary))] px-6 py-4 flex items-center justify-between">
               <h3 className="text-xl font-bold text-white">
                 {editingSupplier ? 'Edit Supplier' : 'Add New Supplier'}
               </h3>
@@ -279,8 +306,21 @@ export default function Suppliers() {
                     required 
                     value={formData.name} 
                     onChange={(e) => setFormData({...formData, name: e.target.value})} 
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]" 
                   />
+                </div>
+
+                <div className="md:col-span-2 flex items-center gap-2">
+                  <input
+                    id="pharmacy_supplier_is_whatsapp"
+                    type="checkbox"
+                    checked={formData.isWhatsApp === true}
+                    onChange={(e) => setFormData({ ...formData, isWhatsApp: e.target.checked })}
+                    className="h-4 w-4"
+                  />
+                  <label htmlFor="pharmacy_supplier_is_whatsapp" className="text-sm text-slate-700 select-none">
+                    WhatsApp number
+                  </label>
                 </div>
 
                 <div>
@@ -290,7 +330,7 @@ export default function Suppliers() {
                     required 
                     value={formData.contactPerson} 
                     onChange={(e) => setFormData({...formData, contactPerson: e.target.value})} 
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]" 
                   />
                 </div>
 
@@ -301,7 +341,7 @@ export default function Suppliers() {
                     required 
                     value={formData.phone} 
                     onChange={(e) => setFormData({...formData, phone: e.target.value})} 
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]" 
                   />
                 </div>
 
@@ -311,7 +351,7 @@ export default function Suppliers() {
                     type="email" 
                     value={formData.email} 
                     onChange={(e) => setFormData({...formData, email: e.target.value})} 
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]" 
                   />
                 </div>
 
@@ -322,7 +362,7 @@ export default function Suppliers() {
                     required 
                     value={formData.city} 
                     onChange={(e) => setFormData({...formData, city: e.target.value})} 
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]" 
                   />
                 </div>
 
@@ -332,7 +372,7 @@ export default function Suppliers() {
                     type="text" 
                     value={formData.address} 
                     onChange={(e) => setFormData({...formData, address: e.target.value})} 
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]" 
                   />
                 </div>
 
@@ -342,7 +382,7 @@ export default function Suppliers() {
                     value={formData.description} 
                     onChange={(e) => setFormData({...formData, description: e.target.value})} 
                     rows="3" 
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]" 
                   />
                 </div>
               </div>
@@ -357,7 +397,7 @@ export default function Suppliers() {
                 </button>
                 <button 
                   type="submit" 
-                  className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                  className="flex-1 px-4 py-2 bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white rounded-lg"
                 >
                   {editingSupplier ? 'Update Supplier' : 'Add Supplier'}
                 </button>
@@ -371,7 +411,7 @@ export default function Suppliers() {
       {showDeleteModal && supplierToDelete && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
-            <div className="bg-gradient-to-r from-red-500 to-red-600 px-6 py-4">
+            <div className="bg-red-600 px-6 py-4">
               <div className="flex items-center gap-3 text-white">
                 <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
                   <FiTrash2 className="w-6 h-6" />
@@ -410,7 +450,7 @@ export default function Suppliers() {
                 </button>
                 <button 
                   onClick={handleDelete} 
-                  className="flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl font-semibold shadow-lg"
+                  className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold shadow-sm"
                 >
                   Delete Supplier
                 </button>

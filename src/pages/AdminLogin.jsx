@@ -1,14 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import LoginForm from '../components/LoginForm'
 import { useActivity } from '../context/ActivityContext'
 import { usersAPI } from '../services/api'
+import { useModuleAccess } from '../context/ModuleAccessContext'
 
 export default function AdminLogin() {
   const navigate = useNavigate()
+  const { isPortalEnabled } = useModuleAccess()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { addActivity } = useActivity()
+
+  useEffect(() => {
+    if (!isPortalEnabled('admin')) {
+      navigate('/', { replace: true })
+    }
+  }, [isPortalEnabled, navigate])
   
   const handleSubmit = async ({ username, password }) => {
     try {
@@ -27,7 +35,8 @@ export default function AdminLogin() {
           localStorage.setItem('admin_auth', JSON.stringify({ 
             username: user.username,
             name: user.name,
-            role: user.role
+            role: user.role,
+            accessRoleId: user.accessRoleId
           }))
           try { addActivity({ user: 'Admin', text: `Login successful: ${user.username}` }) } catch {}
           navigate('/admin')
@@ -54,7 +63,8 @@ export default function AdminLogin() {
           localStorage.setItem('admin_auth', JSON.stringify({ 
             username: user.username,
             name: user.name,
-            role: user.role
+            role: user.role,
+            accessRoleId: user.accessRoleId
           }))
           try { addActivity({ user: 'Admin', text: `Login successful: ${user.username}` }) } catch {}
           navigate('/admin')
@@ -69,5 +79,5 @@ export default function AdminLogin() {
     }
   }
   
-  return <LoginForm title="Admin Portal" onSubmit={handleSubmit} error={error} loading={loading} />
+  return <LoginForm title="Admin Portal" onSubmit={handleSubmit} error={error} loading={loading} illustrationSrc="/vetdoctor.png" illustrationAlt="Admin portal illustration" />
 }

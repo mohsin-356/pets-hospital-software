@@ -2,9 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/database.js';
+import mongoose from 'mongoose';
 import User from './models/User.js';
 import Pet from './models/Pet.js';
 import PharmacyMedicine from './models/PharmacyMedicine.js';
+import Product from './models/Product.js';
 
 // Import routes
 import userRoutes from './routes/userRoutes.js';
@@ -25,6 +27,7 @@ import doctorProfileRoutes from './routes/doctorProfileRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import saleRoutes from './routes/saleRoutes.js';
 import supplierRoutes from './routes/supplierRoutes.js';
+import distributorRoutes from './routes/distributorRoutes.js';
 import shopCustomerRoutes from './routes/shopCustomerRoutes.js';
 import pharmacyRoutes from './routes/enhancedPharmacyRoutes.js';
 import taxonomyRoutes from './routes/taxonomyRoutes.js';
@@ -39,6 +42,9 @@ import receivablesRoutes from './routes/receivablesRoutes.js';
 import payablesRoutes from './routes/payablesRoutes.js';
 import vendorPaymentRoutes from './routes/vendorPaymentRoutes.js';
 import staffAdvanceRoutes from './routes/staffAdvanceRoutes.js';
+import licenseRoutes from './routes/licenseRoutes.js';
+import moduleAccessRoutes from './routes/moduleAccessRoutes.js';
+import accessRoleRoutes from './routes/accessRoleRoutes.js';
 
 dotenv.config();
 
@@ -47,6 +53,33 @@ const PORT = process.env.PORT || 3001;
 
 // Connect to MongoDB
 connectDB();
+
+// Ensure Product indexes (drop legacy unique index that blocks multiple null/empty barcodes)
+(async () => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      await new Promise((resolve) => mongoose.connection.once('connected', resolve));
+    }
+
+    const idxs = await Product.collection.indexes();
+    const companyBarcodeIdx = idxs.find(ix => ix.name === 'company_1_barcode_1');
+    if (companyBarcodeIdx && companyBarcodeIdx.unique) {
+      await Product.collection.dropIndex('company_1_barcode_1');
+      console.log('✅ Dropped legacy unique index company_1_barcode_1 (product barcode per company)');
+    }
+
+    // Clean bad historical values that may have been stored as null/empty
+    await Product.updateMany({ barcode: null }, { $unset: { barcode: '' } });
+    await Product.updateMany({ barcode: '' }, { $unset: { barcode: '' } });
+
+    // Recreate indexes as per schema (includes partial unique index)
+    await Product.createIndexes();
+  } catch (e) {
+    if (e?.codeName !== 'IndexNotFound') {
+      console.warn('⚠️  Product index migration failed:', e?.message || e);
+    }
+  }
+})();
 
 // Ensure default admin exists (dev-friendly)
 (async () => {
@@ -67,6 +100,77 @@ connectDB();
     }
   } catch (e) {
     console.warn('⚠️  Failed to ensure default admin:', e?.message || e);
+  }
+})();
+
+// Ensure default portal users exist (dev-friendly)
+(async () => {
+  try {
+    const nodeEnv = (process.env.NODE_ENV || 'development').toLowerCase();
+    if (nodeEnv === 'production') return;
+
+    const defaultUsers = [
+      {
+        username: (process.env.RECEPTION_USERNAME || 'reception').trim(),
+        password: (process.env.RECEPTION_PASSWORD || 'reception123').trim(),
+        role: 'reception',
+        name: 'Reception Staff',
+        email: 'reception@petshospital.com',
+        isActive: true,
+      },
+      {
+        username: (process.env.DOCTOR_USERNAME || 'doctor').trim(),
+        password: (process.env.DOCTOR_PASSWORD || 'doctor123').trim(),
+        role: 'doctor',
+        name: 'Dr. Ahmed Khan',
+        email: 'doctor@petshospital.com',
+        isActive: true,
+      },
+      {
+        username: (process.env.LAB_USERNAME || 'lab').trim(),
+        password: (process.env.LAB_PASSWORD || 'lab123').trim(),
+        role: 'lab',
+        name: 'Lab Technician',
+        email: 'lab@petshospital.com',
+        isActive: true,
+      },
+      {
+        username: (process.env.PHARMACY_USERNAME || 'pharmacy').trim(),
+        password: (process.env.PHARMACY_PASSWORD || 'pharmacy123').trim(),
+        role: 'pharmacy',
+        name: 'Pharmacy Staff',
+        email: 'pharmacy@petshospital.com',
+        isActive: true,
+      },
+      {
+        username: (process.env.SHOP_USERNAME || 'shop').trim(),
+        password: (process.env.SHOP_PASSWORD || 'shop123').trim(),
+        role: 'shop',
+        name: 'Pet Shop Manager',
+        email: 'shop@petshospital.com',
+        isActive: true,
+      },
+    ];
+
+    for (const u of defaultUsers) {
+      const existing = await User.findOne({ username: u.username });
+      if (!existing) {
+        const user = new User(u);
+        await user.save();
+        console.log(`✅ Default user created: ${u.username} (${u.role})`);
+        continue;
+      }
+
+      let updated = false;
+      if (!existing.isActive) { existing.isActive = true; updated = true; }
+      if (existing.role !== u.role) { existing.role = u.role; updated = true; }
+      if (updated) {
+        await existing.save();
+        console.log(`✅ User ensured/updated: ${u.username} (${u.role})`);
+      }
+    }
+  } catch (e) {
+    console.warn('⚠️  Failed to ensure default portal users:', e?.message || e);
   }
 })();
 
@@ -123,7 +227,7 @@ app.use((req, res, next) => {
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'OK',
-    message: 'Pet Hospital API Server is running',
+    message: 'Pet Matrix API Server is running',
     timestamp: new Date().toISOString()
   });
 });
@@ -150,6 +254,7 @@ app.use('/api/doctor-profiles', doctorProfileRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/sales', saleRoutes);
 app.use('/api/suppliers', supplierRoutes);
+app.use('/api/distributors', distributorRoutes);
 app.use('/api/shop-customers', shopCustomerRoutes);
 app.use('/api/pharmacy', pharmacyRoutes);
 app.use('/api/taxonomy', taxonomyRoutes);
@@ -161,6 +266,9 @@ app.use('/api/receivables', receivablesRoutes);
 app.use('/api/payables', payablesRoutes);
 app.use('/api/vendor-payments', vendorPaymentRoutes);
 app.use('/api/staff-advances', staffAdvanceRoutes);
+app.use('/api/license', licenseRoutes);
+app.use('/api/module-access', moduleAccessRoutes);
+app.use('/api/access-roles', accessRoleRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -184,7 +292,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`\n🚀 Server running on port ${PORT}`);
   console.log(`📍 API URL: http://localhost:${PORT}/api`);
-  console.log(`🏥 Pet Hospital Management System Backend`);
+  console.log(`🏥 Pet Matrix Backend`);
   console.log(`⏰ Started at: ${new Date().toLocaleString()}\n`);
 });
 

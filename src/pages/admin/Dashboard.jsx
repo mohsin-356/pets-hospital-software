@@ -4,15 +4,15 @@ import { FiCalendar, FiUsers, FiDollarSign, FiActivity, FiTrendingUp, FiCheckCir
 import { petsAPI, appointmentsAPI, financialsAPI, labReportsAPI, pharmacySalesAPI, salesAPI, prescriptionsAPI } from '../../services/api'
 import DateRangePicker from '../../components/DateRangePicker'
 
-function StatCard({ title, value, bg, icon: Icon, trend, subtitle, onClick }) {
+function StatCard({ title, value, icon: Icon, trend, subtitle, onClick }) {
   return (
-    <div onClick={onClick} className={`rounded-2xl p-6 shadow-xl ring-1 ring-slate-200/70 ${bg} hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer`}>
+    <div onClick={onClick} className="rounded-2xl p-6 bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 group cursor-pointer">
       <div className="flex items-center justify-between mb-4">
-        <div className="h-14 w-14 rounded-xl bg-white/90 shadow-lg grid place-items-center text-indigo-600 group-hover:scale-110 transition-transform duration-300">
+        <div className="h-14 w-14 rounded-xl bg-[hsl(var(--pm-primary))]/10 ring-1 ring-[hsl(var(--pm-border))] grid place-items-center text-[hsl(var(--pm-primary))] group-hover:scale-105 transition-transform duration-200">
           <Icon size={26} />
         </div>
         {trend && (
-          <div className="flex items-center gap-1 text-xs font-semibold text-green-600 bg-green-100 px-2 py-1 rounded-full">
+          <div className="flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-1 rounded-full">
             <FiTrendingUp className="w-3 h-3" />
             {trend}
           </div>
@@ -68,7 +68,7 @@ function DailyIncomeChart({ data }) {
                     y={y} 
                     width="6" 
                     height={h} 
-                    fill="#3b82f6" 
+                    fill="hsl(var(--pm-primary))" 
                     opacity={active ? 1 : 0.8}
                     style={{transition: 'all 200ms ease'}}
                   />
@@ -95,9 +95,9 @@ function DailyIncomeChart({ data }) {
 
 function ComparisonChart({ sales, purchases, expenses }) {
   const data = [
-    { label: 'Sales', value: sales, color: '#10b981' },
-    { label: 'Purchases', value: purchases, color: '#10b981' },
-    { label: 'Expenses', value: expenses, color: '#10b981' }
+    { label: 'Sales', value: sales, color: 'hsl(var(--pm-primary))' },
+    { label: 'Purchases', value: purchases, color: 'hsl(var(--pm-primary))' },
+    { label: 'Expenses', value: expenses, color: 'hsl(var(--pm-primary))' }
   ]
   const max = Math.max(1, ...data.map(d => d.value)) * 1.2
   const [hi, setHi] = React.useState(null)
@@ -481,21 +481,21 @@ export default function Dashboard(){
     <div className="space-y-8">
       {/* Professional Header */}
       <div className="text-center">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-4xl font-bold text-[hsl(var(--pm-primary))] mb-2">
           Admin Dashboard
         </h1>
         <p className="text-slate-600 text-lg">Complete hospital management overview</p>
       </div>
 
       {/* Professional Date Range Picker */}
-      <div className="rounded-2xl bg-gradient-to-br from-white via-indigo-50 to-purple-50 shadow-xl ring-1 ring-indigo-200 border border-indigo-100 p-6">
+      <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiCalendar className="w-6 h-6 text-white" />
             </div>
             <div>
-              <div className="text-sm font-semibold text-indigo-600">Date Range</div>
+              <div className="text-sm font-semibold text-[hsl(var(--pm-primary))]">Date Range</div>
               <div className="text-lg font-bold text-slate-800">
                 {dateRange.fromDate === dateRange.toDate 
                   ? formatDate(dateRange.fromDate)
@@ -515,12 +515,12 @@ export default function Dashboard(){
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[hsl(var(--pm-primary))] mx-auto mb-4"></div>
           <div className="text-slate-500 font-medium">Loading dashboard data...</div>
           <div className="mt-4 space-y-2">
             <button 
               onClick={() => setLoading(false)}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              className="px-4 py-2 bg-[hsl(var(--pm-primary))] text-white rounded-lg hover:bg-[hsl(var(--pm-primary-hover))] transition-colors"
             >
               Skip Loading
             </button>
@@ -536,7 +536,6 @@ export default function Dashboard(){
             <StatCard 
               title="Appointments"
               value={dateFilteredAppts.length.toString()} 
-              bg="bg-gradient-to-br from-sky-50 via-blue-50 to-indigo-50" 
               icon={FiCalendar}
               trend="+12%"
               subtitle={`${appointments.length} total`}
@@ -545,7 +544,6 @@ export default function Dashboard(){
             <StatCard 
               title="Pet Registrations"
               value={totalPets.toString()} 
-              bg="bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50" 
               icon={FiUsers}
               trend="+8%"
               subtitle={`${pets.length} total pets`}
@@ -554,7 +552,6 @@ export default function Dashboard(){
             <StatCard 
               title="Total Income"
               value={`Rs. ${totalIncome.toLocaleString()}`} 
-              bg="bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50" 
               icon={FiDollarSign}
               trend="+15%"
               subtitle="From all portals"
@@ -563,7 +560,6 @@ export default function Dashboard(){
             <StatCard 
               title="Lab Tests" 
               value={dateFilteredLabReports.length.toString()} 
-              bg="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50" 
               icon={FiActivity}
               subtitle={`${pendingTests} pending`}
               onClick={() => navigate('/lab/reports')}
@@ -572,34 +568,40 @@ export default function Dashboard(){
 
           {/* Secondary Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="rounded-2xl p-6 bg-gradient-to-br from-green-50 to-emerald-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div className="rounded-2xl p-6 bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
-                  <FiCheckCircle className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center ring-1 ring-emerald-100 text-emerald-700">
+                  <FiCheckCircle className="w-5 h-5" />
                 </div>
-                <div className="text-sm font-semibold text-green-700">Completed</div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-800">Completed</div>
+                </div>
               </div>
               <div className="text-3xl font-bold text-slate-900">{completedAppts}</div>
               <div className="text-xs text-slate-600 mt-1">Appointments completed</div>
             </div>
 
-            <div className="rounded-2xl p-6 bg-gradient-to-br from-amber-50 to-orange-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div className="rounded-2xl p-6 bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center">
-                  <FiClock className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 bg-amber-50 rounded-lg flex items-center justify-center ring-1 ring-amber-100 text-amber-700">
+                  <FiClock className="w-5 h-5" />
                 </div>
-                <div className="text-sm font-semibold text-amber-700">Pending</div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-800">Pending</div>
+                </div>
               </div>
               <div className="text-3xl font-bold text-slate-900">{pendingAppts}</div>
               <div className="text-xs text-slate-600 mt-1">Appointments pending</div>
             </div>
 
-            <div className="rounded-2xl p-6 bg-gradient-to-br from-red-50 to-pink-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div className="rounded-2xl p-6 bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
-                  <FiAlertCircle className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 bg-rose-50 rounded-lg flex items-center justify-center ring-1 ring-rose-100 text-rose-700">
+                  <FiAlertCircle className="w-5 h-5" />
                 </div>
-                <div className="text-sm font-semibold text-red-700">Urgent</div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-800">Urgent</div>
+                </div>
               </div>
               <div className="text-3xl font-bold text-slate-900">{pendingTests}</div>
               <div className="text-xs text-slate-600 mt-1">Lab tests pending</div>
@@ -633,7 +635,7 @@ export default function Dashboard(){
             </div>
           ) : (
             recentTransactions.map((transaction, index) => (
-              <div key={transaction.id || index} className="flex items-start gap-4 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+              <div key={transaction.id || index} className="flex items-start gap-4 p-3 rounded-lg hover:bg-[hsl(var(--pm-primary))]/5 transition-colors">
                 <div className={`w-1 h-12 ${transaction.color === 'emerald' ? 'bg-emerald-500' : 'bg-red-500'} rounded-full flex-shrink-0`}></div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
@@ -641,7 +643,7 @@ export default function Dashboard(){
                     <div className="flex items-center gap-2">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         transaction.type === 'income' 
-                          ? 'bg-blue-100 text-blue-800' 
+                          ? 'bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))]' 
                           : 'bg-red-100 text-red-800'
                       }`}>
                         {transaction.type === 'income' ? 'Income' : 'Expense'}
@@ -675,7 +677,7 @@ export default function Dashboard(){
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <span className="text-sm text-slate-500">All Portals</span>
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))]">
                 Live Data
               </span>
             </div>

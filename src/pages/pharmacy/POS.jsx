@@ -945,7 +945,7 @@ export default function PharmacyPOS() {
       '</table>'
     );
 
-    const name = (hospitalSettings?.hospitalName || hospitalSettings?.companyName || 'Abbottabad Pet Hospital');
+    const name = (hospitalSettings?.hospitalName || hospitalSettings?.companyName || 'Pet Matrix');
     const addr = (hospitalSettings?.address || 'Main Boulevard, Gulshan-e-Iqbal, Karachi');
     const phone = (hospitalSettings?.phone || '+92-21-1234567');
 
@@ -1318,7 +1318,7 @@ export default function PharmacyPOS() {
             </div>
           ` : ''}
           <div class="hospital-info">
-            <div class="hospital-name">ABBOTTABAD PET HOSPITAL</div>
+            <div class="hospital-name">Pet Matrix</div>
             <div class="hospital-address">
               ${hospitalSettings?.address || 'Main Boulevard, Gulshan-e-Iqbal, Karachi'}<br>
               Phone: ${hospitalSettings?.phone || '+92-21-1234567'}
@@ -1547,7 +1547,7 @@ export default function PharmacyPOS() {
     <div className="space-y-6">
       {/* Toast */}
       {toast && (
-        <div className="fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+        <div className="fixed top-4 right-4 bg-[hsl(var(--pm-primary))] text-white px-6 py-3 rounded-lg shadow-lg z-50">
           {toast}
         </div>
       )}
@@ -1562,7 +1562,7 @@ export default function PharmacyPOS() {
             onClick={() => setViewMode('grid')}
             className={`px-4 py-2.5 rounded-lg flex items-center gap-2 text-sm font-medium transition-all ${
               viewMode === 'grid' 
-                ? 'bg-blue-600 text-white shadow-md' 
+                ? 'bg-[hsl(var(--pm-primary))] text-white shadow-sm' 
                 : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
             }`}
           >
@@ -1573,7 +1573,7 @@ export default function PharmacyPOS() {
             onClick={() => setViewMode('list')}
             className={`px-4 py-2.5 rounded-lg flex items-center gap-2 text-sm font-medium transition-all ${
               viewMode === 'list' 
-                ? 'bg-blue-600 text-white shadow-md' 
+                ? 'bg-[hsl(var(--pm-primary))] text-white shadow-sm' 
                 : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
             }`}
           >
@@ -1634,7 +1634,7 @@ export default function PharmacyPOS() {
                     }
                   }
                 }}
-                className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+                className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))] text-lg"
                 autoFocus
               />
             </div>
@@ -1663,11 +1663,11 @@ export default function PharmacyPOS() {
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex flex-col">
                           <span className="text-xs text-slate-500">Rs</span>
-                          <span className="text-lg font-bold text-purple-600">{medicine.salePrice}</span>
+                          <span className="text-lg font-bold text-[hsl(var(--pm-primary))]">{medicine.salePrice}</span>
                         </div>
                         <button 
                           onClick={() => addToCart(medicine)}
-                          className="px-4 py-2 bg-purple-600 text-white text-sm rounded-lg hover:bg-purple-700 flex items-center gap-1 font-medium"
+                          className="px-4 py-2 bg-[hsl(var(--pm-primary))] text-white text-sm rounded-lg hover:bg-[hsl(var(--pm-primary-hover))] flex items-center gap-1 font-medium"
                         >
                           <FiPlus className="w-4 h-4" />
                         </button>
@@ -1697,7 +1697,7 @@ export default function PharmacyPOS() {
                       </div>
                       <div className="flex items-center gap-4">
                         <p className="text-lg font-bold text-slate-800">Rs {medicine.salePrice}</p>
-                        <button className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">
+                        <button className="px-4 py-2 bg-[hsl(var(--pm-primary))] text-white rounded hover:bg-[hsl(var(--pm-primary-hover))]">
                           Add to Cart
                         </button>
                       </div>
@@ -1746,7 +1746,7 @@ export default function PharmacyPOS() {
                               />
                               <button 
                                 onClick={() => setEditingItem(null)}
-                                className="p-1 text-green-600 hover:bg-green-50 rounded"
+                                className="p-1 text-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-soft))] rounded"
                               >
                                 <FiSave className="w-3 h-3" />
                               </button>
@@ -1756,7 +1756,7 @@ export default function PharmacyPOS() {
                               <span className="font-medium">{item.pricePerUnit}</span>
                               <button 
                                 onClick={() => setEditingItem(`${item.medicineId}_price`)}
-                                className="p-1 text-blue-600 hover:bg-blue-50 rounded"
+                                className="p-1 text-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-soft))] rounded"
                               >
                                 <FiEdit3 className="w-3 h-3" />
                               </button>
@@ -1790,17 +1790,17 @@ export default function PharmacyPOS() {
                               />
                               <button 
                                 onClick={() => setEditingItem(null)}
-                                className="p-1 text-green-600 hover:bg-green-50 rounded"
+                                className="p-1 text-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-soft))] rounded"
                               >
                                 <FiSave className="w-4 h-4" />
                               </button>
                             </div>
                           ) : (
                             <div className="flex items-center gap-2">
-                              <span className="font-medium text-purple-600">{item.mlUsed || 1}ml</span>
+                              <span className="font-medium text-[hsl(var(--pm-primary))]">{item.mlUsed || 1}ml</span>
                               <button 
                                 onClick={() => setEditingItem(item.medicineId)}
-                                className="p-1 text-blue-600 hover:bg-blue-50 rounded"
+                                className="p-1 text-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-soft))] rounded"
                               >
                                 <FiEdit3 className="w-4 h-4" />
                               </button>
@@ -1860,7 +1860,7 @@ export default function PharmacyPOS() {
 
                     <div className="flex items-center justify-between pt-2 border-t border-slate-200">
                       <span className="text-sm text-slate-600">Total:</span>
-                      <span className="text-lg font-bold text-green-600">Rs{item.totalPrice.toFixed(2)}</span>
+                      <span className="text-lg font-bold text-[hsl(var(--pm-primary))]">Rs{item.totalPrice.toFixed(2)}</span>
                     </div>
                   </div>
                 ))}
@@ -1928,7 +1928,7 @@ export default function PharmacyPOS() {
                 setShowPaymentModal(true);
               }}
               disabled={cart.length === 0}
-              className="w-full mt-4 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+              className="w-full mt-4 py-3 bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] disabled:bg-slate-300 text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
             >
               <FiShoppingCart className="w-5 h-5" />
               Process Payment
@@ -1958,7 +1958,7 @@ export default function PharmacyPOS() {
                     placeholder="Auto-generated"
                     value={customerInfo.patientId}
                     onChange={(e) => setCustomerInfo({...customerInfo, patientId: e.target.value})}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))] text-sm"
                   />
                 </div>
                 <div>
@@ -1968,7 +1968,7 @@ export default function PharmacyPOS() {
                     placeholder="Auto-generated"
                     value={customerInfo.clientId}
                     onChange={(e) => setCustomerInfo({...customerInfo, clientId: e.target.value})}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))] text-sm"
                   />
                 </div>
               </div>
@@ -1981,7 +1981,7 @@ export default function PharmacyPOS() {
                   placeholder="Customer full name"
                   value={customerInfo.customerName}
                   onChange={(e) => setCustomerInfo({...customerInfo, customerName: e.target.value})}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
                 />
               </div>
 
@@ -1993,7 +1993,7 @@ export default function PharmacyPOS() {
                     placeholder="03xx-xxxxxxx"
                     value={customerInfo.customerContact}
                     onChange={(e) => setCustomerInfo({...customerInfo, customerContact: e.target.value})}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
                   />
                 </div>
                 <div>
@@ -2003,7 +2003,7 @@ export default function PharmacyPOS() {
                     placeholder="Customer address"
                     value={customerInfo.address}
                     onChange={(e) => setCustomerInfo({...customerInfo, address: e.target.value})}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
                   />
                 </div>
               </div>
@@ -2019,7 +2019,7 @@ export default function PharmacyPOS() {
                       placeholder="Pet name"
                       value={customerInfo.petName}
                       onChange={(e) => setCustomerInfo({...customerInfo, petName: e.target.value})}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
                     />
                   </div>
                   <div>
@@ -2027,7 +2027,7 @@ export default function PharmacyPOS() {
                     <select
                       value={customerInfo.species}
                       onChange={(e) => setCustomerInfo({...customerInfo, species: e.target.value})}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
                     >
                       <option value="">Select species</option>
                       <option value="Felis silvestris Catus">Felis silvestris Catus</option>
@@ -2045,7 +2045,7 @@ export default function PharmacyPOS() {
                       placeholder="Breed"
                       value={customerInfo.breed}
                       onChange={(e) => setCustomerInfo({...customerInfo, breed: e.target.value})}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
                     />
                   </div>
                   <div>
@@ -2053,7 +2053,7 @@ export default function PharmacyPOS() {
                     <select
                       value={customerInfo.sex}
                       onChange={(e) => setCustomerInfo({...customerInfo, sex: e.target.value})}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
                     >
                       <option value="">Select</option>
                       <option value="Male">Male</option>
@@ -2067,7 +2067,7 @@ export default function PharmacyPOS() {
                       placeholder="5Y/9M/11D"
                       value={customerInfo.age}
                       onChange={(e) => setCustomerInfo({...customerInfo, age: e.target.value})}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
                     />
                   </div>
                 </div>
@@ -2080,7 +2080,7 @@ export default function PharmacyPOS() {
                       placeholder="0.0"
                       value={customerInfo.weight}
                       onChange={(e) => setCustomerInfo({...customerInfo, weight: e.target.value})}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
                     />
                   </div>
                   <div>
@@ -2089,7 +2089,7 @@ export default function PharmacyPOS() {
                       type="date"
                       value={customerInfo.followUpDate}
                       onChange={(e) => setCustomerInfo({...customerInfo, followUpDate: e.target.value})}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
                     />
                   </div>
                 </div>
@@ -2098,7 +2098,7 @@ export default function PharmacyPOS() {
               <div className="space-y-4">
                 <div className="grid grid-cols-3 gap-2">
                   {availableMethods.map(m => (
-                    <button key={m} onClick={()=>setPaymentMethod(m)} className={paymentMethod===m ? 'px-3 py-2 rounded-lg border text-sm bg-blue-600 text-white border-blue-600' : 'px-3 py-2 rounded-lg border text-sm bg-white hover:bg-gray-50 border-gray-300'}>
+                    <button key={m} onClick={()=>setPaymentMethod(m)} className={paymentMethod===m ? 'px-3 py-2 rounded-lg border text-sm bg-[hsl(var(--pm-primary))] text-white border-[hsl(var(--pm-primary))]' : 'px-3 py-2 rounded-lg border text-sm bg-white hover:bg-gray-50 border-gray-300'}>
                       {m}
                     </button>
                   ))}
@@ -2109,9 +2109,9 @@ export default function PharmacyPOS() {
                     placeholder="Add new method (e.g. Bank ABC)"
                     value={newMethodName}
                     onChange={(e)=>setNewMethodName(e.target.value)}
-                    className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
                   />
-                  <button onClick={addPaymentMethod} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Add</button>
+                  <button onClick={addPaymentMethod} className="px-4 py-2 bg-[hsl(var(--pm-primary))] text-white rounded-lg hover:bg-[hsl(var(--pm-primary-hover))]">Add</button>
                 </div>
 
                 <div className="bg-gray-50 p-4 rounded-lg space-y-3">
@@ -2134,7 +2134,7 @@ export default function PharmacyPOS() {
                         onChange={(e)=>{ setPaymentCharge(Math.max(0, Number(e.target.value)||0)); setIsChargeManual(true); }}
                         className="w-24 px-2 py-1 border border-slate-300 rounded text-right bg-white"
                       />
-                      <button onClick={()=>setIsChargeManual(false)} className="text-xs text-blue-600 hover:underline">Auto</button>
+                      <button onClick={()=>setIsChargeManual(false)} className="text-xs text-[hsl(var(--pm-primary))] hover:underline">Auto</button>
                     </div>
                   </div>
                   <div className="flex justify-between font-semibold text-lg">
@@ -2151,7 +2151,7 @@ export default function PharmacyPOS() {
                         step="1"
                         value={receivedAmount}
                         onChange={(e)=>{ setReceivedTouched(true); setReceivedAmount(Number(e.target.value)||0); }}
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
                       />
                     </div>
                     <div>
@@ -2174,7 +2174,7 @@ export default function PharmacyPOS() {
                 <button
                   onClick={processSale}
                   disabled={isProcessing || !paymentMethod}
-                  className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+                  className="flex-1 px-4 py-2 bg-[hsl(var(--pm-primary))] text-white rounded-lg hover:bg-[hsl(var(--pm-primary-hover))] disabled:opacity-50"
                 >
                   {isProcessing ? 'Processing...' : (paymentMethod? `Pay with ${paymentMethod}` : 'Select Method')}
                 </button>
@@ -2195,7 +2195,7 @@ export default function PharmacyPOS() {
             </div>
             <div ref={receiptRef} className="p-4 text-sm">
               <div className="text-center mb-3">
-                <div className="font-bold text-lg">{hospitalSettings?.companyName || 'Abbottabad Pet Hospital'}</div>
+                <div className="font-bold text-lg">{hospitalSettings?.companyName || 'Pet Matrix'}</div>
                 <div className="text-slate-500">{hospitalSettings?.address || 'Main Boulevard, Gulshan-e-Iqbal, Karachi'}</div>
                 <div className="text-slate-500">{hospitalSettings?.phone ? `Phone: ${hospitalSettings.phone}` : ''}</div>
               </div>
@@ -2274,7 +2274,7 @@ export default function PharmacyPOS() {
               </button>
               <button
                 onClick={() => printDualReceipts(lastSale, 'PATIENT COPY')}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white rounded-lg font-semibold"
               >
                 <FiPrinter /> Print
               </button>

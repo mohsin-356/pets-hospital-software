@@ -24,7 +24,7 @@ export default function Navbar({ title }) {
             <img src={settings.companyLogo} alt="Logo" className="h-7 w-7 rounded-md object-contain ring-1 ring-slate-200" />
           )}
           <div className="text-base font-semibold text-slate-800 truncate">
-            {settings.companyName || 'Abbottabad Pet Hospital'}
+            {settings.companyName || 'Pet Matrix'}
             <span className="ml-2 text-sm text-slate-600">• {title}</span>
           </div>
         </div>

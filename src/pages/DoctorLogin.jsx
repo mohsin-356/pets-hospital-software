@@ -1,14 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import LoginForm from '../components/LoginForm'
 import { useActivity } from '../context/ActivityContext'
 import { usersAPI } from '../services/api'
+import { useModuleAccess } from '../context/ModuleAccessContext'
 
 export default function DoctorLogin() {
   const navigate = useNavigate()
+  const { isPortalEnabled } = useModuleAccess()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { addActivity } = useActivity()
+
+  useEffect(() => {
+    if (!isPortalEnabled('doctor')) {
+      navigate('/', { replace: true })
+    }
+  }, [isPortalEnabled, navigate])
   
   const handleSubmit = async ({ username, password }) => {
     try {
@@ -25,7 +33,8 @@ export default function DoctorLogin() {
           localStorage.setItem('doctor_auth', JSON.stringify({ 
             username: user.username,
             name: user.name,
-            role: user.role
+            role: user.role,
+            accessRoleId: user.accessRoleId
           }))
           try { addActivity({ user: 'Doctor', text: `Login successful: ${user.username}` }) } catch {}
           navigate('/doctor')
@@ -43,5 +52,5 @@ export default function DoctorLogin() {
     }
   }
   
-  return <LoginForm title="Doctor Portal" onSubmit={handleSubmit} error={error} loading={loading} />
+  return <LoginForm title="Doctor Portal" onSubmit={handleSubmit} error={error} loading={loading} illustrationSrc="/doctor.avif" illustrationAlt="Doctor portal illustration" />
 }

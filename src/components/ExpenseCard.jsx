@@ -60,55 +60,19 @@ export default function ExpenseCard({ portal, title, color = 'red' }) {
     .slice(0, 3)
 
   const colorMap = {
-    red: {
-      bg: 'from-red-50 to-rose-50',
-      border: 'border-red-200',
-      text: 'text-red-700',
-      icon: 'text-red-600',
-      accent: 'bg-red-100 text-red-700'
-    },
-    orange: {
-      bg: 'from-orange-50 to-amber-50',
-      border: 'border-orange-200',
-      text: 'text-orange-700',
-      icon: 'text-orange-600',
-      accent: 'bg-orange-100 text-orange-700'
-    },
-    blue: {
-      bg: 'from-blue-50 to-sky-50',
-      border: 'border-blue-200',
-      text: 'text-blue-700',
-      icon: 'text-blue-600',
-      accent: 'bg-blue-100 text-blue-700'
-    },
-    purple: {
-      bg: 'from-purple-50 to-violet-50',
-      border: 'border-purple-200',
-      text: 'text-purple-700',
-      icon: 'text-purple-600',
-      accent: 'bg-purple-100 text-purple-700'
-    },
-    green: {
-      bg: 'from-green-50 to-emerald-50',
-      border: 'border-green-200',
-      text: 'text-green-700',
-      icon: 'text-green-600',
-      accent: 'bg-green-100 text-green-700'
-    },
-    slate: {
-      bg: 'from-slate-50 to-gray-50',
-      border: 'border-slate-200',
-      text: 'text-slate-700',
-      icon: 'text-slate-600',
-      accent: 'bg-slate-100 text-slate-700'
-    }
+    red: { text: 'text-[hsl(var(--pm-primary))]', icon: 'text-[hsl(var(--pm-primary))]' },
+    orange: { text: 'text-[hsl(var(--pm-primary))]', icon: 'text-[hsl(var(--pm-primary))]' },
+    blue: { text: 'text-[hsl(var(--pm-primary))]', icon: 'text-[hsl(var(--pm-primary))]' },
+    purple: { text: 'text-[hsl(var(--pm-primary))]', icon: 'text-[hsl(var(--pm-primary))]' },
+    green: { text: 'text-[hsl(var(--pm-primary))]', icon: 'text-[hsl(var(--pm-primary))]' },
+    slate: { text: 'text-[hsl(var(--pm-primary))]', icon: 'text-[hsl(var(--pm-primary))]' }
   }
 
   const colors = colorMap[color] || colorMap.red
 
   if (loading) {
     return (
-      <div className={`rounded-xl p-4 bg-gradient-to-br ${colors.bg} border ${colors.border} shadow-sm`}>
+      <div className="rounded-xl p-4 bg-[hsl(var(--pm-surface))] ring-1 ring-[hsl(var(--pm-border))] shadow-sm">
         <div className="animate-pulse">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-5 h-5 bg-gray-300 rounded"></div>
@@ -122,7 +86,7 @@ export default function ExpenseCard({ portal, title, color = 'red' }) {
   }
 
   return (
-    <div className={`rounded-xl p-4 bg-gradient-to-br ${colors.bg} border ${colors.border} shadow-sm hover:shadow-md transition-shadow`}>
+    <div className="rounded-xl p-4 bg-[hsl(var(--pm-surface))] ring-1 ring-[hsl(var(--pm-border))] shadow-sm hover:shadow-md transition-shadow">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
@@ -136,7 +100,7 @@ export default function ExpenseCard({ portal, title, color = 'red' }) {
 
       {/* Today's Total */}
       <div className="mb-3">
-        <div className={`text-2xl font-bold ${colors.text}`}>
+        <div className="text-2xl font-bold text-slate-900">
           Rs. {todayTotal.toLocaleString()}
         </div>
         <div className="text-xs text-slate-500 flex items-center gap-1">
@@ -149,7 +113,7 @@ export default function ExpenseCard({ portal, title, color = 'red' }) {
       <div className="mb-3 pb-3 border-b border-slate-200">
         <div className="flex items-center justify-between text-xs">
           <span className="text-slate-600">This Month</span>
-          <span className={`font-semibold ${colors.text}`}>
+          <span className="font-semibold text-slate-900">
             Rs. {monthTotal.toLocaleString()}
           </span>
         </div>
@@ -173,7 +137,7 @@ export default function ExpenseCard({ portal, title, color = 'red' }) {
                     {new Date(expense.date || expense.createdAt).toLocaleDateString()}
                   </div>
                 </div>
-                <div className={`font-semibold ${colors.text} ml-2`}>
+                <div className="font-semibold text-slate-900 ml-2">
                   Rs. {(expense.amount || 0).toLocaleString()}
                 </div>
               </div>

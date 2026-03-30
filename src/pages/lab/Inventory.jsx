@@ -185,7 +185,7 @@ export default function LabInventory(){
         <div className="rounded-2xl p-4 bg-white ring-1 ring-slate-200 shadow-sm"><div className="text-xs text-slate-500">Total Items</div><div className="text-2xl font-bold">{totals.totalItems}</div></div>
         <div className="rounded-2xl p-4 bg-white ring-1 ring-slate-200 shadow-sm"><div className="text-xs text-slate-500">Low Stock</div><div className="text-2xl font-bold text-amber-600">{totals.low}</div></div>
         <div className="rounded-2xl p-4 bg-white ring-1 ring-slate-200 shadow-sm"><div className="text-xs text-slate-500">Expiring Soon</div><div className="text-2xl font-bold text-rose-600">{totals.exp}</div></div>
-        <div className="rounded-2xl p-4 bg-white ring-1 ring-slate-200 shadow-sm"><div className="text-xs text-slate-500">Total Value</div><div className="text-2xl font-bold text-emerald-600">PKR {totals.value.toLocaleString()}</div></div>
+        <div className="rounded-2xl p-4 bg-white ring-1 ring-slate-200 shadow-sm"><div className="text-xs text-slate-500">Total Value</div><div className="text-2xl font-bold text-blue-600">PKR {totals.value.toLocaleString()}</div></div>
       </div>
 
       <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-4">
@@ -197,8 +197,8 @@ export default function LabInventory(){
             <button onClick={()=>setItems([...items])} className="px-3 h-10 rounded-lg bg-slate-100 hover:bg-slate-200">Refresh</button>
             <button onClick={exportCSV} className="px-3 h-10 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white">Export CSV</button>
             <button className="px-3 h-10 rounded-lg bg-sky-100 text-sky-700">Update Stock</button>
-            <button className="px-3 h-10 rounded-lg bg-teal-100 text-teal-700">Add Loose Items</button>
-            <button onClick={openAdd} className="px-3 h-10 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white">+ Add New Item</button>
+            <button className="px-3 h-10 rounded-lg bg-cyan-100 text-cyan-700">Add Loose Items</button>
+            <button onClick={openAdd} className="px-3 h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">+ Add New Item</button>
           </div>
         </div>
 
@@ -287,7 +287,7 @@ export default function LabInventory(){
                 {showAddCategory && (
                   <div className="mt-2 flex gap-2">
                     <input value={newCategory} onChange={e=>setNewCategory(e.target.value)} placeholder="New category name" className="h-10 px-3 rounded-lg border border-slate-300 w-full" />
-                    <button type="button" onClick={addCategoryInline} className="px-3 h-10 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white">Save</button>
+                    <button type="button" onClick={addCategoryInline} className="px-3 h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">Save</button>
                     <button type="button" onClick={()=>{ setShowAddCategory(false); setNewCategory('') }} className="px-3 h-10 rounded-lg border">Cancel</button>
                   </div>
                 )}
@@ -346,7 +346,7 @@ export default function LabInventory(){
             </div>
             <div className="flex justify-end gap-3">
               <button type="button" onClick={()=>setShowForm(false)} className="px-4 h-10 rounded-lg border border-slate-300">Cancel</button>
-              <button className="px-4 h-10 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white">{editing ? 'Update Item' : 'Add Item'}</button>
+              <button className="px-4 h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">{editing ? 'Update Item' : 'Add Item'}</button>
             </div>
           </form>
         </div>

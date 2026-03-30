@@ -1,8 +1,8 @@
-# Pet Hospital Management System - Backend API
+# Pet Matrix - Backend API
 
 ## 🏥 Overview
 
-RESTful API server for Pet Hospital Management System built with Express.js and MongoDB.
+RESTful API server for Pet Matrix built with Express.js and MongoDB.
 
 ## 🚀 Quick Start
 

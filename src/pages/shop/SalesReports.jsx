@@ -32,7 +32,7 @@ export default function SalesReports() {
       return Number((extraCharge - prev).toFixed(2));
     });
     const discountCurrency = ((Number(sale?.subtotal||0) * Number(sale?.discount||0)) / 100);
-    const headerName = hospitalSettings?.companyName || 'Abbottabad Pet Hospital';
+    const headerName = hospitalSettings?.companyName || 'Pet Matrix';
     const headerAddr = hospitalSettings?.address || 'Main Boulevard, Gulshan-e-Iqbal, Karachi';
     const headerPhone = hospitalSettings?.phone || '+92-21-1234567';
 
@@ -208,7 +208,7 @@ export default function SalesReports() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
             Sales Reports
           </h1>
           <p className="text-slate-500 mt-1">Analyze sales performance and trends</p>
@@ -223,7 +223,7 @@ export default function SalesReports() {
           />
           <button
             onClick={exportToCSV}
-            className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-lg"
           >
             <FiDownload /> Export CSV
           </button>
@@ -231,7 +231,7 @@ export default function SalesReports() {
       </div>
 
       {/* Date Range Filter */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+      <div className="rounded-2xl bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-xl ring-1 ring-blue-200/50 border border-blue-100 p-6">
         <div className="flex flex-col md:flex-row gap-4 items-end">
           <div className="flex-1">
             <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -241,7 +241,7 @@ export default function SalesReports() {
               type="date"
               value={dateRange.startDate}
               onChange={(e) => setDateRange({...dateRange, startDate: e.target.value})}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
             />
           </div>
           <div className="flex-1">
@@ -252,12 +252,12 @@ export default function SalesReports() {
               type="date"
               value={dateRange.endDate}
               onChange={(e) => setDateRange({...dateRange, endDate: e.target.value})}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
             />
           </div>
           <button
             onClick={fetchSales}
-            className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg"
+            className="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-lg"
           >
             Apply
           </button>
@@ -266,43 +266,51 @@ export default function SalesReports() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white">
+        <div className="rounded-2xl bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-xl ring-1 ring-blue-200/50 border border-blue-100 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90">Total Sales</p>
-              <p className="text-3xl font-bold mt-1">{stats.totalSales}</p>
+              <p className="text-sm font-semibold text-slate-600">Total Sales</p>
+              <p className="text-3xl font-bold text-slate-900 mt-1">{stats.totalSales}</p>
             </div>
-            <FiShoppingCart className="w-12 h-12 opacity-80" />
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+              <FiShoppingCart className="w-6 h-6 text-white" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white">
+        <div className="rounded-2xl bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-xl ring-1 ring-blue-200/50 border border-blue-100 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90">Total Revenue</p>
-              <p className="text-3xl font-bold mt-1">Rs{stats.totalRevenue.toLocaleString()}</p>
+              <p className="text-sm font-semibold text-slate-600">Total Revenue</p>
+              <p className="text-3xl font-bold text-slate-900 mt-1">Rs{stats.totalRevenue.toLocaleString()}</p>
             </div>
-            <FiDollarSign className="w-12 h-12 opacity-80" />
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+              <FiDollarSign className="w-6 h-6 text-white" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white">
+        <div className="rounded-2xl bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-xl ring-1 ring-blue-200/50 border border-blue-100 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90">Avg Order Value</p>
-              <p className="text-3xl font-bold mt-1">Rs{Math.round(stats.averageOrderValue).toLocaleString()}</p>
+              <p className="text-sm font-semibold text-slate-600">Avg Order Value</p>
+              <p className="text-3xl font-bold text-slate-900 mt-1">Rs{Math.round(stats.averageOrderValue).toLocaleString()}</p>
             </div>
-            <FiTrendingUp className="w-12 h-12 opacity-80" />
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+              <FiTrendingUp className="w-6 h-6 text-white" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white">
+        <div className="rounded-2xl bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-xl ring-1 ring-blue-200/50 border border-blue-100 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90">Items Sold</p>
-              <p className="text-3xl font-bold mt-1">{stats.totalItems}</p>
+              <p className="text-sm font-semibold text-slate-600">Items Sold</p>
+              <p className="text-3xl font-bold text-slate-900 mt-1">{stats.totalItems}</p>
             </div>
-            <FiCalendar className="w-12 h-12 opacity-80" />
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+              <FiCalendar className="w-6 h-6 text-white" />
+            </div>
           </div>
         </div>
       </div>
@@ -444,7 +452,7 @@ export default function SalesReports() {
               </div>
             </div>
             <div className="p-4 text-sm">
-              <div className="font-semibold mb-2">{hospitalSettings?.companyName || 'Abbottabad Pet Hospital'}</div>
+              <div className="font-semibold mb-2">{hospitalSettings?.companyName || 'Pet Matrix'}</div>
               <div className="grid grid-cols-2 gap-2 mb-3">
                 <div>Customer ID: <strong>{previewSale.customerId || '-'}</strong></div>
                 <div>Date: {new Date(previewSale.createdAt).toLocaleString()}</div>

@@ -586,19 +586,19 @@ export default function Financials(){
     <div className="space-y-8">
       {/* Professional Header */}
       <div className="text-center">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">Financial Reports</h1>
+        <h1 className="text-4xl font-bold text-[hsl(var(--pm-primary))] mb-2">Financial Reports</h1>
         <p className="text-slate-600 text-lg">Comprehensive financial overview across all portals</p>
       </div>
 
       {/* Professional Date Range Picker */}
-      <div className="rounded-2xl bg-gradient-to-br from-white via-indigo-50 to-purple-50 shadow-xl ring-1 ring-indigo-200 border border-indigo-100 p-6">
+      <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiCalendar className="w-6 h-6 text-white" />
             </div>
             <div>
-              <div className="text-sm font-semibold text-indigo-600">Date Range</div>
+              <div className="text-sm font-semibold text-[hsl(var(--pm-primary))]">Date Range</div>
               <div className="text-lg font-bold text-slate-800">
                 {dateRange.fromDate === dateRange.toDate 
                   ? formatDate(dateRange.fromDate)
@@ -615,7 +615,7 @@ export default function Financials(){
               defaultToDate={dateRange.toDate}
             />
             
-            <button onClick={()=>exportCSV(allTx,'financials-summary')} className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg font-semibold transition-all duration-200 flex items-center gap-2">
+            <button onClick={()=>exportCSV(allTx,'financials-summary')} className="px-6 py-3 rounded-xl bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white shadow-sm font-semibold transition-colors duration-200 flex items-center gap-2">
               <FiDownload className="w-4 h-4" /> Export CSV
             </button>
           </div>
@@ -624,70 +624,71 @@ export default function Financials(){
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[hsl(var(--pm-primary))] mx-auto mb-4"></div>
           <div className="text-slate-500 font-medium">Loading financial data...</div>
         </div>
       ) : (
       <>
-      {/* Summary cards with animations */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-        <div className="rounded-2xl p-6 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 ring-1 ring-emerald-200/70 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer">
-          <div className="flex items-center justify-between mb-3">
-            <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <FiTrendingUp className="h-6 w-6 text-white" />
+      {/* Summary */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="rounded-2xl bg-[hsl(var(--pm-surface))] ring-1 ring-[hsl(var(--pm-border))] p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-sm font-medium text-slate-600">Total Revenue</div>
+              <div className="mt-1 text-3xl font-semibold text-slate-900">Rs. {totalRevenue.toLocaleString()}</div>
             </div>
-            <div className="text-xs font-semibold text-green-600 bg-green-100 px-2 py-1 rounded-full">+15%</div>
-          </div>
-          <div>
-            <div className="text-sm font-medium text-slate-600 mb-1">Total Revenue</div>
-            <div className="text-3xl font-bold text-slate-900">Rs. {totalRevenue.toLocaleString()}</div>
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/70 flex items-center justify-center">
+              <FiTrendingUp className="h-6 w-6" />
+            </div>
           </div>
         </div>
-        <div className="rounded-2xl p-6 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 ring-1 ring-amber-200/70 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer">
-          <div className="flex items-center justify-between mb-3">
-            <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <FiDollarSign className="h-6 w-6 text-white" />
+
+        <div className="rounded-2xl bg-[hsl(var(--pm-surface))] ring-1 ring-[hsl(var(--pm-border))] p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-sm font-medium text-slate-600">Total Pending</div>
+              <div className="mt-1 text-3xl font-semibold text-slate-900">Rs. {totalPending.toLocaleString()}</div>
             </div>
-          </div>
-          <div>
-            <div className="text-sm font-medium text-slate-600 mb-1">Total Pending</div>
-            <div className="text-3xl font-bold text-slate-900">Rs. {totalPending.toLocaleString()}</div>
+            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 ring-1 ring-amber-200/70 flex items-center justify-center">
+              <FiDollarSign className="h-6 w-6" />
+            </div>
           </div>
         </div>
-        <div className="rounded-2xl p-6 bg-gradient-to-br from-blue-50 via-sky-50 to-cyan-50 ring-1 ring-blue-200/70 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer">
-          <div className="flex items-center justify-between mb-3">
-            <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <FiTrendingDown className="h-6 w-6 text-white" />
+
+        <div className="rounded-2xl bg-[hsl(var(--pm-surface))] ring-1 ring-[hsl(var(--pm-border))] p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-sm font-medium text-slate-600">Total Expense</div>
+              <div className="mt-1 text-3xl font-semibold text-slate-900">Rs. {totalExpense.toLocaleString()}</div>
             </div>
-          </div>
-          <div>
-            <div className="text-sm font-medium text-slate-600 mb-1">Total Expense</div>
-            <div className="text-3xl font-bold text-slate-900">Rs. {totalExpense.toLocaleString()}</div>
+            <div className="w-12 h-12 rounded-xl bg-rose-50 text-rose-700 ring-1 ring-rose-200/70 flex items-center justify-center">
+              <FiTrendingDown className="h-6 w-6" />
+            </div>
           </div>
         </div>
-        <div className="rounded-2xl p-6 bg-gradient-to-br from-indigo-50 via-purple-50 to-violet-50 ring-1 ring-indigo-200/70 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer">
-          <div className="flex items-center justify-between mb-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <FiDollarSign className="h-6 w-6 text-white" />
+
+        <div className="rounded-2xl bg-[hsl(var(--pm-surface))] ring-1 ring-[hsl(var(--pm-border))] p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-sm font-medium text-slate-600">Net Profit</div>
+              <div className="mt-1 text-3xl font-semibold text-slate-900">Rs. {netProfit.toLocaleString()}</div>
             </div>
-            <div className="text-xs font-semibold text-indigo-600 bg-indigo-100 px-2 py-1 rounded-full">Profit</div>
-          </div>
-          <div>
-            <div className="text-sm font-medium text-slate-600 mb-1">Net Profit</div>
-            <div className="text-3xl font-bold text-slate-900">Rs. {netProfit.toLocaleString()}</div>
+            <div className="w-12 h-12 rounded-xl bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] ring-1 ring-[hsl(var(--pm-border))] flex items-center justify-center">
+              <FiDollarSign className="h-6 w-6" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Hospital Inventory (Admin) Section */}
-      <div className="rounded-3xl bg-white shadow-xl ring-1 ring-orange-200/70 p-6 border-l-4 border-orange-400 bg-gradient-to-br from-orange-50 to-white hover:shadow-2xl transition-shadow duration-300">
+      <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2 text-slate-800 font-semibold">
             <FiPackage className="text-orange-600" /> Hospital Inventory
           </div>
           <button
             onClick={() => exportCSV(hospitalInventoryExportRows, 'hospital-inventory')}
-            className="px-3 h-9 rounded-lg bg-orange-500 hover:bg-orange-600 text-white shadow-sm cursor-pointer text-sm font-medium"
+            className="px-3 h-9 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white shadow-sm cursor-pointer text-sm font-medium"
           >
             <FiDownload className="inline-block w-4 h-4 mr-1" /> Export
           </button>
@@ -696,15 +697,15 @@ export default function Financials(){
           <Metric label="Total Items" value={String(hospitalInventoryStats.totalItems)} color="amber" />
           <Metric label="Total Quantity" value={String(hospitalInventoryStats.totalQuantity)} color="blue" />
           <Metric label="Total Value" value={`Rs. ${hospitalInventoryStats.totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} color="green" />
-          <Metric label="Avg Value / Item" value={`Rs. ${hospitalInventoryStats.totalItems ? Math.round(hospitalInventoryStats.avgValuePerItem).toLocaleString() : 0}`} color="purple" />
+          <Metric label="Avg Value / Item" value={`Rs. ${hospitalInventoryStats.totalItems ? Math.round(hospitalInventoryStats.avgValuePerItem).toLocaleString() : 0}`} color="indigo" />
         </div>
       </div>
 
       {/* Reception Portal Section */}
-      <div className="rounded-3xl bg-white shadow-xl ring-1 ring-indigo-200/70 p-6 border-t-4 border-indigo-400 bg-gradient-to-br from-indigo-50 to-white hover:shadow-2xl transition-shadow duration-300">
+      <div className="rounded-3xl bg-white shadow-xl ring-1 ring-[hsl(var(--pm-border))] p-6 border-t-4 border-[hsl(var(--pm-primary))] bg-gradient-to-br from-[hsl(var(--pm-primary-soft))] to-white hover:shadow-2xl transition-shadow duration-300">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2 text-slate-800 font-semibold">
-            <FiClipboard className="text-indigo-600" /> Reception Portal
+            <FiClipboard className="text-[hsl(var(--pm-primary))]" /> Reception Portal
           </div>
           <div className="text-xs text-slate-500">Patient Registration & Appointments</div>
         </div>
@@ -737,27 +738,27 @@ export default function Financials(){
         </div>
         
         <div className="mt-4">
-          <button onClick={()=>exportCSV(receptionTx,'reception')} className="w-full px-4 h-10 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm cursor-pointer flex items-center justify-center gap-2">
+          <button onClick={()=>exportCSV(receptionTx,'reception')} className="w-full px-4 h-10 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white shadow-sm cursor-pointer flex items-center justify-center gap-2">
             <FiDownload /> Export Reception Data
           </button>
         </div>
       </div>
 
       {/* Doctor Portal Section */}
-      <div className="rounded-3xl bg-white shadow-xl ring-1 ring-purple-200/70 p-6 border-t-4 border-purple-400 bg-gradient-to-br from-purple-50 to-white hover:shadow-2xl transition-shadow duration-300">
+      <div className="rounded-3xl bg-white shadow-xl ring-1 ring-[hsl(var(--pm-border))] p-6 border-t-4 border-[hsl(var(--pm-primary))] bg-gradient-to-br from-[hsl(var(--pm-primary-soft))] to-white hover:shadow-2xl transition-shadow duration-300">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2 text-slate-800 font-semibold">
-            <FaStethoscope className="text-purple-600" /> Doctor Portal
+            <FaStethoscope className="text-[hsl(var(--pm-primary))]" /> Doctor Portal
           </div>
           <button
             onClick={() => exportCSV(doctorExportRows, 'doctor')}
-            className="px-3 h-9 rounded-lg bg-purple-600 hover:bg-purple-700 text-white shadow-sm cursor-pointer text-xs font-medium"
+            className="px-3 h-9 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white shadow-sm cursor-pointer text-xs font-medium"
           >
             <FiDownload className="inline-block w-4 h-4 mr-1" /> Export
           </button>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-          <Metric label="Total Patients" value={String(doctorStats.totalPatients)} color="purple" />
+          <Metric label="Total Patients" value={String(doctorStats.totalPatients)} color="indigo" />
           <Metric label="Pending" value={String(doctorStats.pending)} color="amber" />
           <Metric label="Completed" value={String(doctorStats.completed)} color="emerald" />
           <Metric label="Prescriptions" value={String(doctorStats.totalPrescriptions)} color="indigo" />
@@ -767,16 +768,16 @@ export default function Financials(){
         
         {/* Additional Stats */}
         <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div className="rounded-xl p-4 bg-gradient-to-br from-purple-100 to-purple-50 ring-1 ring-purple-200/70">
+          <div className="rounded-xl p-4 bg-[hsl(var(--pm-primary-soft))] ring-1 ring-[hsl(var(--pm-border))]">
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-xs text-slate-600">Completion Rate</div>
-                <div className="text-2xl font-bold text-purple-700">
+                <div className="text-2xl font-bold text-[hsl(var(--pm-primary))]">
                   {doctorStats.completionRate}%
                 </div>
               </div>
-              <div className="w-12 h-12 rounded-full bg-purple-200 flex items-center justify-center">
-                <svg className="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+              <div className="w-12 h-12 rounded-full bg-[hsl(var(--pm-primary))]/15 flex items-center justify-center">
+                <svg className="w-6 h-6 text-[hsl(var(--pm-primary))]" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                 </svg>
               </div>
@@ -967,16 +968,16 @@ export default function Financials(){
 
 function Metric({ label, value, color='indigo', icon }){
   const map = {
-    indigo: 'from-indigo-50 to-indigo-100 ring-indigo-200/70',
-    emerald: 'from-emerald-50 to-emerald-100 ring-emerald-200/70',
-    green: 'from-green-50 to-green-100 ring-green-200/70',
-    amber: 'from-amber-50 to-amber-100 ring-amber-200/70',
-    blue: 'from-blue-50 to-blue-100 ring-blue-200/70',
-    purple: 'from-purple-50 to-purple-100 ring-purple-200/70',
-    red: 'from-red-50 to-red-100 ring-red-200/70',
+    indigo: 'bg-[hsl(var(--pm-primary-soft))] ring-[hsl(var(--pm-border))]',
+    emerald: 'bg-emerald-50 ring-emerald-200/70',
+    green: 'bg-green-50 ring-green-200/70',
+    amber: 'bg-amber-50 ring-amber-200/70',
+    blue: 'bg-blue-50 ring-blue-200/70',
+    purple: 'bg-[hsl(var(--pm-primary-soft))] ring-[hsl(var(--pm-border))]',
+    red: 'bg-red-50 ring-red-200/70',
   }
   return (
-    <div className={`rounded-xl p-4 bg-gradient-to-br ${map[color]} ring-1`}>
+    <div className={`rounded-xl p-4 ${map[color]} ring-1`}>
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <div className="text-xs text-slate-600">{label}</div>

@@ -106,7 +106,7 @@ export default function ReceiptGenerator({ sale, hospitalSettings, onClose }) {
       <div ref={pharmacyReceiptRef} className="bg-white p-6 max-w-2xl mx-auto">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold text-blue-600">
-            {hospitalSettings?.hospitalName || 'Pet Hospital'}
+            {hospitalSettings?.hospitalName || 'Pet Matrix'}
           </h1>
           <p className="text-gray-600">{hospitalSettings?.address}</p>
           <p className="text-gray-600">Phone: {hospitalSettings?.phone}</p>
@@ -213,7 +213,7 @@ export default function ReceiptGenerator({ sale, hospitalSettings, onClose }) {
     <div ref={hospitalReceiptRef} className="bg-white p-6 max-w-2xl mx-auto">
       <div className="text-center mb-6">
         <h1 className="text-2xl font-bold text-blue-600">
-          {hospitalSettings?.hospitalName || 'Pet Hospital'}
+          {hospitalSettings?.hospitalName || 'Pet Matrix'}
         </h1>
         <p className="text-gray-600">{hospitalSettings?.address}</p>
         <p className="text-gray-600">Phone: {hospitalSettings?.phone}</p>
@@ -332,7 +332,7 @@ export default function ReceiptGenerator({ sale, hospitalSettings, onClose }) {
     <div ref={patientReceiptRef} className="bg-white p-6 max-w-lg mx-auto">
       <div className="text-center mb-6">
         <h1 className="text-xl font-bold text-blue-600">
-          {hospitalSettings?.hospitalName || 'Pet Hospital'}
+          {hospitalSettings?.hospitalName || 'Pet Matrix'}
         </h1>
         <p className="text-sm text-gray-600">{hospitalSettings?.address}</p>
         <p className="text-sm text-gray-600">Phone: {hospitalSettings?.phone}</p>

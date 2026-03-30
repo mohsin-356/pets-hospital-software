@@ -189,7 +189,7 @@ export default function LabReports(){
             )}
             <div className="flex justify-end gap-3">
               <button type="button" onClick={()=>setShowEdit(false)} className="px-4 h-10 rounded-lg border border-slate-300">Cancel</button>
-              <button className="px-4 h-10 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white">Save Changes</button>
+              <button className="px-4 h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">Save Changes</button>
             </div>
           </form>
         </div>
@@ -226,7 +226,7 @@ export default function LabReports(){
             <div id="lab-report-print" className="p-8 overflow-y-auto flex-1">
               {/* Header */}
               <div className="text-center border-b-4 border-blue-600 pb-3 mb-6">
-                <div className="text-3xl font-bold text-blue-600" style={{fontFamily: 'Georgia, serif'}}>{settings.companyName || 'Abbottabad Pet Hospital'}</div>
+                <div className="text-3xl font-bold text-blue-600" style={{fontFamily: 'Georgia, serif'}}>{settings.companyName || 'Pet Matrix'}</div>
               </div>
 
               {/* Test Information Grid */}

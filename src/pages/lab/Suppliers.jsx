@@ -64,14 +64,14 @@ export default function LabSuppliers(){
 
   return (
     <div className="space-y-6">
-      {toast && (<div className="fixed top-4 right-4 bg-emerald-600 text-white px-4 py-2 rounded-lg shadow z-50">{toast}</div>)}
+      {toast && (<div className="fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow z-50">{toast}</div>)}
 
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Suppliers</h1>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Suppliers</h1>
           <p className="text-slate-500">Manage lab suppliers for inventory purchases</p>
         </div>
-        <button onClick={()=>openModal()} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold"><FiPlus/> Add Supplier</button>
+        <button onClick={()=>openModal()} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold"><FiPlus/> Add Supplier</button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -80,7 +80,7 @@ export default function LabSuppliers(){
             <div className="flex items-start justify-between">
               <div>
                 <div className="font-semibold text-slate-900 text-lg">{s.supplierName}</div>
-                {s.category && <div className="text-xs text-emerald-700 mt-1">{s.category}</div>}
+                {s.category && <div className="text-xs text-blue-700 mt-1">{s.category}</div>}
                 {s.contactPerson && <div className="text-xs text-slate-600 mt-1">Contact: {s.contactPerson}</div>}
                 {s.phone && <div className="text-xs text-slate-600">Phone: {s.phone}</div>}
               </div>
@@ -136,7 +136,7 @@ export default function LabSuppliers(){
             </div>
             <div className="sticky bottom-0 z-10 px-6 py-4 border-t border-slate-200 flex justify-end gap-2 bg-slate-50">
               <button type="button" onClick={()=>setShowModal(false)} className="h-10 px-4 rounded-lg border border-slate-300">Cancel</button>
-              <button className="h-10 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white">{editing? 'Update' : 'Save'}</button>
+              <button className="h-10 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">{editing? 'Update' : 'Save'}</button>
             </div>
           </form>
         </div>

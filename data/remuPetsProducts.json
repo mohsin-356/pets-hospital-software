@@ -1,0 +1,240 @@
+[
+  {
+    "sr": 1,
+    "product": "Smart Catty Cat Litter 7.5 kg",
+    "packing": "7.5 kg",
+    "description": "Clay",
+    "rate": 300
+  },
+  {
+    "sr": 2,
+    "product": "White Cat Litter",
+    "packing": "5 kg",
+    "description": "Clay",
+    "rate": 200
+  },
+  {
+    "sr": 3,
+    "product": "Easy Clean",
+    "packing": "5 kg",
+    "description": "Clay",
+    "rate": 250
+  },
+  {
+    "sr": 4,
+    "product": "Easy Clean",
+    "packing": "20 kg",
+    "description": "Clay",
+    "rate": 1000
+  },
+  {
+    "sr": 5,
+    "product": "Wood Cat Litter",
+    "packing": "3.5 kg",
+    "description": "Wood",
+    "rate": 0
+  },
+  {
+    "sr": 6,
+    "product": "Paper Cat Litter",
+    "packing": "3 kg",
+    "description": "Paper",
+    "rate": 0
+  },
+  {
+    "sr": 7,
+    "product": "Magic Cat Litter",
+    "packing": "1.8 kg",
+    "description": "Silicon",
+    "rate": 1300
+  },
+  {
+    "sr": 8,
+    "product": "Front Liner spray",
+    "packing": "500 ml",
+    "description": "Fipronil (Tick & Flies)",
+    "rate": 1300
+  },
+  {
+    "sr": 9,
+    "product": "Front Liner Spray",
+    "packing": "300 ml",
+    "description": "Fipronil (Tick & Flies)",
+    "rate": 750
+  },
+  {
+    "sr": 10,
+    "product": "Front Liner Spray",
+    "packing": "100 ml",
+    "description": "Fipronil (Tick & Flies)",
+    "rate": 300
+  },
+  {
+    "sr": 11,
+    "product": "Dog Groomar Shampoo",
+    "packing": "600 ml",
+    "description": "Strawberry, Apple, Pyrethrin, Mild Puppy, Frequent",
+    "rate": 400
+  },
+  {
+    "sr": 12,
+    "product": "Dog Natural Shampoo",
+    "packing": "400 ml",
+    "description": "Neem Oil, Tea Tree Oil, Pyrethrin, Mild Puppy, Frequent",
+    "rate": 325
+  },
+  {
+    "sr": 13,
+    "product": "Freshy Shampoo",
+    "packing": "250 ml",
+    "description": "Cat's & Dog's (6 Color)",
+    "rate": 300
+  },
+  {
+    "sr": 14,
+    "product": "Cat Black Catty",
+    "packing": "400 ml",
+    "description": "Pink, Yellow, Green, Blue",
+    "rate": 325
+  },
+  {
+    "sr": 15,
+    "product": "Cat Black Catty",
+    "packing": "120 ml",
+    "description": "Pink, Yellow, Green, Blue",
+    "rate": 170
+  },
+  {
+    "sr": 16,
+    "product": "Dog Luxury Perfumed shampoo",
+    "packing": "320 ml",
+    "description": "Perfumed",
+    "rate": 325
+  },
+  {
+    "sr": 17,
+    "product": "Cat Luxury Perfumed Shampoo",
+    "packing": "320 ml",
+    "description": "Perfumed",
+    "rate": 325
+  },
+  {
+    "sr": 18,
+    "product": "Medicated shampoo",
+    "packing": "120 ml",
+    "description": "Chlorex, Tea Tree Oil, Climb a, Ecotick, Sulfur, Daffy Tristo",
+    "rate": 220
+  },
+  {
+    "sr": 19,
+    "product": "Medicated Shampoo",
+    "packing": "400 ml",
+    "description": "Chlorex, Tea Tree Oil, Climb a, Ecotick, Sulfur, Daffy Tristo",
+    "rate": 700
+  },
+  {
+    "sr": 20,
+    "product": "Dog Dry Powder",
+    "packing": "225 gm",
+    "description": "Dry Shampoo",
+    "rate": 325
+  },
+  {
+    "sr": 21,
+    "product": "Dog Dry Powder",
+    "packing": "225 gm",
+    "description": "Dry Shampoo",
+    "rate": 325
+  },
+  {
+    "sr": 22,
+    "product": "Fiprotic Dip",
+    "packing": "100 ml",
+    "description": "Dip",
+    "rate": 1200
+  },
+  {
+    "sr": 23,
+    "product": "Fiprotic Dip",
+    "packing": "35 ml",
+    "description": "Dip",
+    "rate": 500
+  },
+  {
+    "sr": 24,
+    "product": "Litter Deodorizer",
+    "packing": "500 gm",
+    "description": "Deodorizer",
+    "rate": 300
+  },
+  {
+    "sr": 25,
+    "product": "Cologne Cat",
+    "packing": "100 ml",
+    "description": "",
+    "rate": 0
+  },
+  {
+    "sr": 26,
+    "product": "Cologne Cat",
+    "packing": "120 ml",
+    "description": "",
+    "rate": 0
+  },
+  {
+    "sr": 27,
+    "product": "Cologne Dog",
+    "packing": "100 ml",
+    "description": "",
+    "rate": 0
+  },
+  {
+    "sr": 28,
+    "product": "Cologne Dog",
+    "packing": "120 ml",
+    "description": "",
+    "rate": 0
+  },
+  {
+    "sr": 29,
+    "product": "Supplement",
+    "packing": "",
+    "description": "Calcium, Multi-vitamin, Cod liver, Salmon",
+    "rate": 0
+  },
+  {
+    "sr": 30,
+    "product": "Oil Supplement",
+    "packing": "120 ml",
+    "description": "Cod liver, Flax seed, Salmon",
+    "rate": 0
+  },
+  {
+    "sr": 31,
+    "product": "Sulphur Dip",
+    "packing": "100 ml",
+    "description": "Sulphur",
+    "rate": 2200
+  },
+  {
+    "sr": 32,
+    "product": "Sulphur Dip",
+    "packing": "320 ml",
+    "description": "Sulphur",
+    "rate": 700
+  },
+  {
+    "sr": 33,
+    "product": "Fizzy Spray Cat",
+    "packing": "200 ml",
+    "description": "Deodorizer",
+    "rate": 300
+  },
+  {
+    "sr": 34,
+    "product": "Fizzy Spray Dog",
+    "packing": "200 ml",
+    "description": "Deodorizer",
+    "rate": 300
+  }
+]

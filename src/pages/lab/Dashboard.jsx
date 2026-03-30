@@ -58,8 +58,8 @@ function TestStatisticsChart({ reports }) {
               <path d="M 10 0 L 0 0 0 7.5" fill="none" stroke="#e2e8f0" strokeWidth="0.2"/>
             </pattern>
             <linearGradient id="barGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#10b981" stopOpacity="1" />
-              <stop offset="100%" stopColor="#059669" stopOpacity="1" />
+              <stop offset="0%" stopColor="#3b82f6" stopOpacity="1" />
+              <stop offset="100%" stopColor="#2563eb" stopOpacity="1" />
             </linearGradient>
           </defs>
           
@@ -96,7 +96,7 @@ function TestStatisticsChart({ reports }) {
                     <g>
                       <rect x={x-4} y={y-8} width="14" height="7" rx="1" fill="#1e293b" opacity="0.95" />
                       <text x={x+3} y={y-4} fontSize="2.2" fill="#fff" textAnchor="middle" fontWeight="600">{item.count}</text>
-                      <text x={x+3} y={y-1.5} fontSize="1.5" fill="#10b981" textAnchor="middle">tests</text>
+                      <text x={x+3} y={y-1.5} fontSize="1.5" fill="#3b82f6" textAnchor="middle">tests</text>
                     </g>
                   )}
                 </g>
@@ -112,7 +112,7 @@ function TestStatisticsChart({ reports }) {
       </div>
       <div className="flex items-center justify-between text-xs text-slate-500 px-2">
         <span>Last 7 days performance</span>
-        <span className="font-semibold text-emerald-600">Total: {chartData.reduce((sum, d) => sum + d.count, 0)} tests</span>
+        <span className="font-semibold text-blue-600">Total: {chartData.reduce((sum, d) => sum + d.count, 0)} tests</span>
       </div>
     </div>
   )
@@ -187,24 +187,24 @@ export default function LabDashboard(){
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Laboratory Dashboard</h1>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Laboratory Dashboard</h1>
           <p className="text-slate-500 mt-1">Monitor your lab operations and performance</p>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg">
+        <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg">
           <TbMicroscope className="w-6 h-6" />
           <span className="font-semibold">Lab Portal</span>
         </div>
       </div>
 
       {/* Date Range Picker */}
-      <div className="rounded-2xl bg-gradient-to-br from-white via-emerald-50 to-teal-50 shadow-xl ring-1 ring-emerald-200 border border-emerald-100 p-6">
+      <div className="rounded-2xl bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-xl ring-1 ring-blue-200 border border-blue-100 p-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center">
               <FiCalendar className="w-6 h-6 text-white" />
             </div>
             <div>
-              <div className="text-sm font-semibold text-emerald-600">Date Range</div>
+              <div className="text-sm font-semibold text-blue-600">Date Range</div>
               <div className="text-lg font-bold text-slate-800">
                 {dateRange.fromDate === dateRange.toDate 
                   ? new Date(dateRange.fromDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
@@ -254,14 +254,14 @@ export default function LabDashboard(){
           </div>
         </div>
 
-        <div className="group relative rounded-2xl p-6 bg-gradient-to-br from-emerald-50 to-green-50 ring-1 ring-emerald-200/50 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-200/30 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
+        <div className="group relative rounded-2xl p-6 bg-gradient-to-br from-blue-50 to-sky-50 ring-1 ring-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-200/30 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
           <div className="relative">
             <div className="flex items-center justify-between mb-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center text-white shadow-lg">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white shadow-lg">
                 <TbClipboardCheck className="w-6 h-6" />
               </div>
-              <div className="text-xs font-semibold text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full">Done</div>
+              <div className="text-xs font-semibold text-blue-600 bg-blue-100 px-3 py-1 rounded-full">Done</div>
             </div>
             <div className="text-slate-600 text-sm font-medium mb-1">Completed</div>
             <div className="text-3xl font-bold text-slate-800">{stats.completed}</div>
@@ -287,7 +287,7 @@ export default function LabDashboard(){
         <ExpenseCard 
           portal="lab" 
           title="Laboratory" 
-          color="green" 
+          color="blue" 
         />
       </div>
 
@@ -295,7 +295,7 @@ export default function LabDashboard(){
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 rounded-2xl p-6 bg-white ring-1 ring-slate-200 shadow-xl">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white">
               <FiTrendingUp className="w-5 h-5" />
             </div>
             <div>
@@ -318,8 +318,8 @@ export default function LabDashboard(){
           </div>
           <div className="space-y-3 max-h-[280px] overflow-y-auto custom-scrollbar">
             {recentReports.map((a, i) => (
-              <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-gradient-to-r from-slate-50 to-slate-100 hover:from-emerald-50 hover:to-teal-50 transition-all duration-200 border border-slate-200">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${a.status === 'Paid' ? 'bg-emerald-500' : 'bg-amber-500'}`}>
+              <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-gradient-to-r from-slate-50 to-slate-100 hover:from-blue-50 hover:to-cyan-50 transition-all duration-200 border border-slate-200">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${a.status === 'Paid' ? 'bg-blue-500' : 'bg-amber-500'}`}>
                   <FiCheckCircle className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">

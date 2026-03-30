@@ -285,13 +285,13 @@ export default function Pets(){
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <FaPaw className="h-8 w-8 text-indigo-600" />
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent">Pets Records</h1>
+          <FaPaw className="h-8 w-8 text-[hsl(var(--pm-primary))]" />
+          <h1 className="text-2xl font-bold text-[hsl(var(--pm-primary))]">Pets Records</h1>
         </div>
         <div className="relative">
           <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
-            className="h-10 pl-10 pr-4 w-64 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+            className="h-10 pl-10 pr-4 w-64 rounded-lg border border-[hsl(var(--pm-border))] focus:ring-2 focus:ring-[hsl(var(--pm-primary))] focus:border-[hsl(var(--pm-primary))] transition-all"
             placeholder="Search pets, client, phone, ID..."
             value={q}
             onChange={e=>setQ(e.target.value)}
@@ -300,14 +300,14 @@ export default function Pets(){
       </div>
 
       {/* Date Range Filter */}
-      <div className="rounded-2xl bg-gradient-to-br from-white via-indigo-50 to-purple-50 shadow-xl ring-1 ring-indigo-200 border border-indigo-100 p-6">
+      <div className="rounded-2xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[hsl(var(--pm-primary))] rounded-xl flex items-center justify-center">
               <FiCalendar className="w-6 h-6 text-white" />
             </div>
             <div>
-              <div className="text-sm font-semibold text-indigo-600">Filter by Registration Date</div>
+              <div className="text-sm font-semibold text-[hsl(var(--pm-primary))]">Filter by Registration Date</div>
               <div className="text-lg font-bold text-slate-800">
                 {dateRange.fromDate === dateRange.toDate 
                   ? new Date(dateRange.fromDate).toLocaleDateString()
@@ -329,7 +329,7 @@ export default function Pets(){
       <div className="rounded-2xl bg-white shadow-lg ring-1 ring-slate-200/70 p-6 overflow-hidden">
         <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between mb-6">
           <div className="flex items-center gap-2">
-            <div className="h-10 w-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center">
+            <div className="h-10 w-10 rounded-full bg-[hsl(var(--pm-primary))]/10 text-[hsl(var(--pm-primary))] ring-1 ring-[hsl(var(--pm-border))] flex items-center justify-center">
               <FaPaw className="h-5 w-5" />
             </div>
             <div className="font-semibold text-slate-800">All Pets ({filtered.length})</div>
@@ -353,7 +353,7 @@ export default function Pets(){
             <tbody>
               {filtered.map(p => (
                 <tr key={p.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                  <td className="py-3 px-4 font-medium text-indigo-600">
+                  <td className="py-3 px-4 font-medium text-[hsl(var(--pm-primary))]">
                     <div className="flex items-center gap-2">
                       <span>{p.name}</span>
                       {(p.status==='Expired'||p.status==='Deceased') && (
@@ -369,7 +369,7 @@ export default function Pets(){
                   <td className="py-3 px-4">{p.owner}</td>
                   <td className="py-3 px-4">{p.contact}</td>
                   <td className="py-3 px-4">
-                    <span className="px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-medium">
+                    <span className="px-2 py-1 rounded-full bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] text-xs font-medium">
                       {p.purpose}
                     </span>
                   </td>
@@ -377,7 +377,7 @@ export default function Pets(){
                     <div className="flex items-center gap-2">
                       <button 
                         onClick={() => viewPetDetails(p)} 
-                        className="p-2 rounded-full bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition cursor-pointer"
+                        className="p-2 rounded-full bg-[hsl(var(--pm-primary))]/10 text-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary))]/20 transition cursor-pointer"
                         title="View Details"
                       >
                         <FiEye className="h-4 w-4" />
@@ -450,8 +450,8 @@ export default function Pets(){
             <div className="bg-white rounded-2xl shadow-xl max-w-6xl w-full p-6 animate-fade-in max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-4">
-                  <div className="h-14 w-14 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
-                    <FaPaw className="h-7 w-7 text-indigo-600" />
+                  <div className="h-14 w-14 rounded-full bg-[hsl(var(--pm-primary))]/10 ring-1 ring-[hsl(var(--pm-border))] flex items-center justify-center flex-shrink-0">
+                    <FaPaw className="h-7 w-7 text-[hsl(var(--pm-primary))]" />
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
@@ -477,7 +477,7 @@ export default function Pets(){
                 {/* Basic Information */}
                 <div className="bg-slate-50 rounded-xl p-5">
                   <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                    <FiFileText className="text-indigo-500" />
+                    <FiFileText className="text-[hsl(var(--pm-primary))]" />
                     Basic Information
                   </h3>
                   <div className="space-y-3">
@@ -509,28 +509,28 @@ export default function Pets(){
                 </div>
 
                 {petFin && (
-                  <div className="rounded-2xl p-5 border border-indigo-200 bg-indigo-50">
+                  <div className="rounded-2xl p-5 border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-primary-soft))]">
                     <h3 className="text-lg font-semibold text-slate-800 mb-4">All Portals Financials (Per-pet)</h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-                      <div className="bg-white/60 rounded-lg p-3 border border-indigo-200">
+                      <div className="bg-white/60 rounded-lg p-3 border border-[hsl(var(--pm-border))]">
                         <div className="text-slate-600 font-medium">Pharmacy Pending</div>
                         <div className="font-bold text-slate-800">Rs. {Number(petFin?.modules?.pharmacy?.pending||0).toLocaleString()}</div>
                       </div>
-                      <div className="bg-white/60 rounded-lg p-3 border border-indigo-200">
+                      <div className="bg-white/60 rounded-lg p-3 border border-[hsl(var(--pm-border))]">
                         <div className="text-slate-600 font-medium">Lab Pending</div>
                         <div className="font-bold text-slate-800">Rs. {Number(petFin?.modules?.lab?.pending||0).toLocaleString()}</div>
                       </div>
-                      <div className="bg-white/60 rounded-lg p-3 border border-indigo-200">
+                      <div className="bg-white/60 rounded-lg p-3 border border-[hsl(var(--pm-border))]">
                         <div className="text-slate-600 font-medium">Procedures Pending</div>
                         <div className="font-bold text-slate-800">Rs. {Number(petFin?.modules?.procedures?.pending||0).toLocaleString()}</div>
                       </div>
-                      <div className="bg-white/60 rounded-lg p-3 border border-indigo-200">
+                      <div className="bg-white/60 rounded-lg p-3 border border-[hsl(var(--pm-border))]">
                         <div className="text-slate-600 font-medium">Pet Shop Pending</div>
                         <div className="font-bold text-slate-800">Rs. {Number(petFin?.modules?.petShop?.pending||0).toLocaleString()}</div>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm mt-4">
-                      <div className="bg-white/60 rounded-lg p-3 border border-indigo-200">
+                      <div className="bg-white/60 rounded-lg p-3 border border-[hsl(var(--pm-border))]">
                         <div className="text-slate-600 font-medium">Consultant</div>
                         <div className={petFin?.modules?.consultant?.paid ? 'font-bold text-green-700' : 'font-bold text-red-700'}>
                           {petFin?.modules?.consultant?.paid 
@@ -538,11 +538,11 @@ export default function Pets(){
                             : 'Pending'}
                         </div>
                       </div>
-                      <div className="bg-white/60 rounded-lg p-3 border border-indigo-200">
+                      <div className="bg-white/60 rounded-lg p-3 border border-[hsl(var(--pm-border))]">
                         <div className="text-slate-600 font-medium">Total Received</div>
                         <div className="font-bold text-green-700">Rs. {(() => { try { const rc = Number(petFin?.totals?.received||0); const cons = petFin?.modules?.consultant?.paid ? Number(petFin?.modules?.consultant?.amount||0) : 0; return Math.max(rc, cons).toLocaleString() } catch { return '0' } })()}</div>
                       </div>
-                      <div className="bg-white/60 rounded-lg p-3 border border-indigo-200">
+                      <div className="bg-white/60 rounded-lg p-3 border border-[hsl(var(--pm-border))]">
                         <div className="text-slate-600 font-medium">Total Pending</div>
                         <div className="font-bold text-amber-700">Rs. {(() => { try { const pd = Number(petFin?.totals?.pending||0); const consPend = !petFin?.modules?.consultant?.paid ? Number(petFin?.modules?.consultant?.amount||0) : 0; return Math.max(pd, consPend).toLocaleString() } catch { return '0' } })()}</div>
                       </div>
@@ -553,7 +553,7 @@ export default function Pets(){
                 {/* Visit Information */}
                 <div className="bg-slate-50 rounded-xl p-5">
                   <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                    <FiClock className="text-indigo-500" />
+                    <FiClock className="text-[hsl(var(--pm-primary))]" />
                     Visit Information
                   </h3>
                   <div className="space-y-3">
@@ -563,14 +563,14 @@ export default function Pets(){
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Purpose</span>
-                      <span className="font-medium text-slate-800 px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-xs">
+                      <span className="font-medium text-slate-800 px-2 py-1 rounded-full bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] text-xs">
                         {selectedPet.purpose}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Next Appointment</span>
                       <span className="font-medium text-slate-800 flex items-center gap-1 text-sm">
-                        <FiCalendar className="text-indigo-500 h-3 w-3" />
+                        <FiCalendar className="text-[hsl(var(--pm-primary))] h-3 w-3" />
                         {selectedPet.nextAppointment || 'Not scheduled'}
                       </span>
                     </div>
@@ -597,7 +597,7 @@ export default function Pets(){
                       
                       <div className="bg-white/60 rounded-lg p-3 border border-green-200">
                         <div className="flex items-center gap-2 mb-1">
-                          <MdLocalPharmacy className="text-violet-600 w-4 h-4" />
+                          <MdLocalPharmacy className="text-[hsl(var(--pm-primary))] w-4 h-4" />
                           <span className="text-slate-600 font-medium">Medicines</span>
                         </div>
                         <div className="font-bold text-slate-800">Rs. {totalPharmacyCosts.toLocaleString()}</div>
@@ -625,7 +625,7 @@ export default function Pets(){
                       
                       <div className="bg-white/60 rounded-lg p-3 border border-green-200">
                         <div className="flex items-center gap-2 mb-1">
-                          <FiActivity className="text-indigo-600 w-4 h-4" />
+                          <FiActivity className="text-[hsl(var(--pm-primary))] w-4 h-4" />
                           <span className="text-slate-600 font-medium">Consultation</span>
                         </div>
                         <div className="font-bold text-slate-800">Rs. {totalConsultantFees.toLocaleString()}</div>
@@ -661,15 +661,15 @@ export default function Pets(){
                 </div>
 
                 {/* Prescription Summary */}
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200">
+                <div className="bg-[hsl(var(--pm-surface))] rounded-xl p-5 ring-1 ring-[hsl(var(--pm-border))]">
                   <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                    <FiPackage className="text-blue-600" />
+                    <FiPackage className="text-[hsl(var(--pm-primary))]" />
                     Prescription Summary
                   </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-slate-600">Total Prescriptions</span>
-                      <span className="font-bold text-blue-700 text-2xl">{petPrescriptions.length}</span>
+                      <span className="font-bold text-[hsl(var(--pm-primary))] text-2xl">{petPrescriptions.length}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-slate-600">Total Medicines</span>
@@ -691,14 +691,14 @@ export default function Pets(){
 
               {/* Detailed Prescription History */}
               {petPrescriptions.length > 0 && (
-                <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-6 border border-indigo-200 mb-6">
+                <div className="bg-[hsl(var(--pm-primary-soft))] rounded-xl p-6 border border-[hsl(var(--pm-border))] mb-6">
                   <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-                    <FiFileText className="text-indigo-600" />
+                    <FiFileText className="text-[hsl(var(--pm-primary))]" />
                     Complete Prescription History ({petPrescriptions.length})
                   </h3>
                   <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
                     {petPrescriptions.map((prescription, idx) => (
-                      <div key={idx} className="bg-white rounded-lg p-4 shadow-md border border-indigo-200">
+                      <div key={idx} className="bg-white rounded-lg p-4 shadow-sm border border-[hsl(var(--pm-border))]">
                         <div className="flex justify-between items-start mb-3 pb-3 border-b border-slate-200">
                           <div>
                             <div className="font-bold text-slate-800 text-lg">
@@ -710,7 +710,7 @@ export default function Pets(){
                           </div>
                           <div className="text-right">
                             {prescription.doctor?.name && (
-                              <div className="text-sm font-medium text-indigo-700">
+                              <div className="text-sm font-medium text-[hsl(var(--pm-primary))]">
                                 Dr. {prescription.doctor.name}
                               </div>
                             )}
@@ -750,13 +750,13 @@ export default function Pets(){
                         {/* Medicines List */}
                         <div className="space-y-3">
                           <div className="font-semibold text-slate-800 flex items-center gap-2">
-                            <FiPackage className="text-indigo-500" />
+                            <FiPackage className="text-[hsl(var(--pm-primary))]" />
                             Prescribed Medicines
                           </div>
                           {(prescription.items || []).map((item, itemIdx) => (
-                            <div key={itemIdx} className="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg p-3 border-l-4 border-indigo-400">
+                            <div key={itemIdx} className="bg-white rounded-lg p-3 border-l-4 border-[hsl(var(--pm-primary))] ring-1 ring-[hsl(var(--pm-border))]">
                               <div className="flex justify-between items-start mb-2">
-                                <div className="font-bold text-indigo-800 text-base">{itemIdx + 1}. {item.name}</div>
+                                <div className="font-bold text-[hsl(var(--pm-primary))] text-base">{itemIdx + 1}. {item.name}</div>
                                 {item.composition && (
                                   <div className="text-xs text-slate-600 bg-white px-2 py-1 rounded">
                                     {item.composition}
@@ -909,14 +909,14 @@ export default function Pets(){
 
               {/* Pharmacy Purchases History */}
               {petPharmacySales.length > 0 && (
-                <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-6 border border-violet-200 mb-6">
+                <div className="bg-[hsl(var(--pm-primary-soft))] rounded-xl p-6 border border-[hsl(var(--pm-border))] mb-6">
                   <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-                    <MdLocalPharmacy className="text-violet-600" />
+                    <MdLocalPharmacy className="text-[hsl(var(--pm-primary))]" />
                     Pharmacy Purchases ({petPharmacySales.length})
                   </h3>
                   <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
                     {petPharmacySales.map((sale, idx) => (
-                      <div key={idx} className="bg-white rounded-lg p-4 shadow-md border border-violet-200">
+                      <div key={idx} className="bg-white rounded-lg p-4 shadow-sm border border-[hsl(var(--pm-border))]">
                         <div className="flex justify-between items-start mb-3 pb-3 border-b border-slate-200">
                           <div>
                             <div className="font-bold text-slate-800 text-lg">
@@ -927,8 +927,8 @@ export default function Pets(){
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="text-lg font-bold text-violet-700">Rs. {(sale.totalAmount || 0).toLocaleString()}</div>
-                            <div className="text-xs text-slate-500 bg-violet-100 px-2 py-1 rounded">
+                            <div className="text-lg font-bold text-[hsl(var(--pm-primary))]">Rs. {(sale.totalAmount || 0).toLocaleString()}</div>
+                            <div className="text-xs text-[hsl(var(--pm-primary))] bg-[hsl(var(--pm-primary-soft))] px-2 py-1 rounded">
                               {sale.status || 'Paid'}
                             </div>
                           </div>
@@ -938,10 +938,10 @@ export default function Pets(){
                           <div className="space-y-2">
                             <div className="font-semibold text-slate-800 text-sm">Medicines Purchased:</div>
                             {sale.items.map((item, itemIdx) => (
-                              <div key={itemIdx} className="bg-violet-50 rounded p-2 text-sm">
+                              <div key={itemIdx} className="bg-[hsl(var(--pm-primary))]/5 rounded p-2 text-sm">
                                 <div className="flex justify-between items-start">
                                   <div>
-                                    <div className="font-medium text-violet-800">{item.medicineName || item.name}</div>
+                                    <div className="font-medium text-[hsl(var(--pm-primary))]">{item.medicineName || item.name}</div>
                                     <div className="text-slate-600">
                                       Qty: <span className="font-medium">{item.quantity}</span>
                                       {item.unit && <span className="ml-1">({item.unit})</span>}
@@ -1018,7 +1018,7 @@ export default function Pets(){
               <div className="flex justify-end gap-3">
                 <button 
                   onClick={() => setShowPetDetails(false)} 
-                  className="px-6 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition cursor-pointer font-medium"
+                  className="px-6 py-2 rounded-lg bg-[hsl(var(--pm-primary))] text-white hover:bg-[hsl(var(--pm-primary-hover))] transition cursor-pointer font-medium"
                 >
                   Close
                 </button>

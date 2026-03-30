@@ -490,7 +490,7 @@ export default function AddLabReport(){
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Test Reports</h1>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Test Reports</h1>
           <p className="text-slate-500 mt-1 flex items-center gap-2">
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
@@ -501,7 +501,7 @@ export default function AddLabReport(){
         </div>
         <button 
           onClick={()=>setShowForm(true)} 
-          className="px-6 h-12 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center gap-2 cursor-pointer font-semibold"
+          className="px-6 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center gap-2 cursor-pointer font-semibold"
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd"/>
@@ -516,9 +516,9 @@ export default function AddLabReport(){
           <div className="text-xs text-blue-600 font-semibold mb-1">Total Reports</div>
           <div className="text-2xl font-bold text-blue-700">{stats.total}</div>
         </div>
-        <div className="rounded-xl p-4 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200">
-          <div className="text-xs text-emerald-600 font-semibold mb-1">Paid</div>
-          <div className="text-2xl font-bold text-emerald-700">{stats.paid}</div>
+        <div className="rounded-xl p-4 bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200">
+          <div className="text-xs text-cyan-600 font-semibold mb-1">Paid</div>
+          <div className="text-2xl font-bold text-cyan-700">{stats.paid}</div>
         </div>
         <div className="rounded-xl p-4 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200">
           <div className="text-xs text-amber-600 font-semibold mb-1">Pending</div>
@@ -534,7 +534,7 @@ export default function AddLabReport(){
       <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-xl overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b border-slate-200">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center">
               <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
                 <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd"/>
@@ -592,7 +592,7 @@ export default function AddLabReport(){
                   <td className="py-4 px-6">
                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
                       r.paymentStatus === 'Paid' 
-                        ? 'bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200' 
+                        ? 'bg-blue-100 text-blue-700 ring-1 ring-blue-200' 
                         : 'bg-amber-100 text-amber-700 ring-1 ring-amber-200'
                     }`}>
                       {r.paymentStatus || 'Paid'}
@@ -611,7 +611,7 @@ export default function AddLabReport(){
                       </button>
                       <button 
                         onClick={()=>startEdit(r)} 
-                        className="px-3 h-9 rounded-lg border-2 border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition-all cursor-pointer inline-flex items-center gap-1 text-sm font-medium"
+                        className="px-3 h-9 rounded-lg border-2 border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 transition-all cursor-pointer inline-flex items-center gap-1 text-sm font-medium"
                       >
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                           <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
@@ -657,7 +657,7 @@ export default function AddLabReport(){
           <div className="absolute inset-0 bg-black/50" onClick={()=>setShowForm(false)}></div>
           <form onSubmit={handleSubmit} className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
             {/* Modal Header */}
-            <div className="sticky top-0 z-10 px-8 py-6 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-t-3xl">
+            <div className="sticky top-0 z-10 px-8 py-6 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-t-3xl">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
@@ -668,7 +668,7 @@ export default function AddLabReport(){
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-white">Add Test Report</h2>
-                    <p className="text-emerald-100 text-sm mt-1">Fill in the test details below</p>
+                    <p className="text-blue-100 text-sm mt-1">Fill in the test details below</p>
                   </div>
                 </div>
                 <button 
@@ -814,7 +814,7 @@ export default function AddLabReport(){
               </button>
               <button 
                 type="submit"
-                className="px-6 h-12 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl font-semibold transition-all cursor-pointer inline-flex items-center gap-2"
+                className="px-6 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg hover:shadow-xl font-semibold transition-all cursor-pointer inline-flex items-center gap-2"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
@@ -879,7 +879,7 @@ export default function AddLabReport(){
             )}
             <div className="flex justify-end gap-3">
               <button type="button" onClick={()=>setShowEdit(false)} className="px-4 h-10 rounded-lg border border-slate-300">Cancel</button>
-              <button className="px-4 h-10 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white">Save Changes</button>
+              <button className="px-4 h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">Save Changes</button>
             </div>
           </form>
         </div>
@@ -925,7 +925,7 @@ export default function AddLabReport(){
             <div id="lab-report-print" className="p-8 overflow-y-auto flex-1">
               {/* Header */}
               <div className="text-center border-b-4 border-blue-600 pb-3 mb-6">
-                <div className="text-3xl font-bold text-blue-600" style={{fontFamily: 'Georgia, serif'}}>{settings.companyName || 'Abbottabad Pet Hospital'}</div>
+                <div className="text-3xl font-bold text-blue-600" style={{fontFamily: 'Georgia, serif'}}>{settings.companyName || 'Pet Matrix'}</div>
               </div>
 
               {/* Test Information Grid */}

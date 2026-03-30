@@ -8,6 +8,7 @@ import dayGuard from '../middleware/dayGuard.js';
 import Receivable from '../models/Receivable.js';
 import DailyLog from '../models/DailyLog.js';
 import Payable from '../models/Payable.js';
+import { upsertInventoryForMedicine } from '../utils/inventoryLinking.js';
 
 const router = express.Router();
 
@@ -197,6 +198,15 @@ router.post('/medicines', async (req, res) => {
 
     const medicine = new PharmacyMedicine({ ...medicineData, barcode });
     await medicine.save();
+
+    try {
+      const inv = await upsertInventoryForMedicine(medicine.toObject());
+      if (inv && inv._id && String(medicine.inventoryItemId || '') !== String(inv._id)) {
+        medicine.inventoryItemId = inv._id;
+        await medicine.save();
+      }
+    } catch {}
+
     res.status(201).json({ success: true, data: medicine });
   } catch (error) {
     if (error.code === 11000) {
@@ -230,6 +240,15 @@ router.put('/medicines/:id', async (req, res) => {
     if (!medicine) {
       return res.status(404).json({ success: false, message: 'Medicine not found' });
     }
+
+    try {
+      const inv = await upsertInventoryForMedicine(medicine.toObject());
+      if (inv && inv._id && String(medicine.inventoryItemId || '') !== String(inv._id)) {
+        await PharmacyMedicine.findByIdAndUpdate(medicine._id, { $set: { inventoryItemId: inv._id } });
+        medicine.inventoryItemId = inv._id;
+      }
+    } catch {}
+
     res.json({ success: true, data: medicine });
   } catch (error) {
     if (error.code === 11000) {
@@ -360,6 +379,14 @@ router.post('/sales', dayGuard('pharmacy'), async (req, res) => {
         
         await medicine.save();
 
+        try {
+          const inv = await upsertInventoryForMedicine(medicine.toObject());
+          if (inv && inv._id && String(medicine.inventoryItemId || '') !== String(inv._id)) {
+            await PharmacyMedicine.findByIdAndUpdate(medicine._id, { $set: { inventoryItemId: inv._id } });
+            medicine.inventoryItemId = inv._id;
+          }
+        } catch {}
+
         // Cost for injection: use purchasePrice per ml where possible
         const purchasePricePerMl = medicine.mlPerVial && medicine.purchasePrice
           ? medicine.purchasePrice / medicine.mlPerVial
@@ -401,6 +428,14 @@ router.post('/sales', dayGuard('pharmacy'), async (req, res) => {
         }
         
         await medicine.save();
+
+        try {
+          const inv = await upsertInventoryForMedicine(medicine.toObject());
+          if (inv && inv._id && String(medicine.inventoryItemId || '') !== String(inv._id)) {
+            await PharmacyMedicine.findByIdAndUpdate(medicine._id, { $set: { inventoryItemId: inv._id } });
+            medicine.inventoryItemId = inv._id;
+          }
+        } catch {}
 
         // Cost for regular medicine: quantity * purchasePrice
         const unitCost = medicine.purchasePrice || 0;
@@ -527,6 +562,14 @@ router.delete('/sales/:id', dayGuard('pharmacy'), async (req, res) => {
           medicine.quantity += item.quantity;
         }
         await medicine.save();
+
+        try {
+          const inv = await upsertInventoryForMedicine(medicine.toObject());
+          if (inv && inv._id && String(medicine.inventoryItemId || '') !== String(inv._id)) {
+            await PharmacyMedicine.findByIdAndUpdate(medicine._id, { $set: { inventoryItemId: inv._id } });
+            medicine.inventoryItemId = inv._id;
+          }
+        } catch {}
       }
     }
 
@@ -597,6 +640,84 @@ router.post('/purchases', dayGuard('pharmacy'), async (req, res) => {
   try {
     const purchase = new PharmacyPurchase(req.body);
     await purchase.save();
+
+    try {
+      const items = Array.isArray(purchase.items) ? purchase.items : [];
+      for (const item of items) {
+        const barcode = String(item?.barcode || '').trim();
+        const medicineName = String(item?.medicineName || '').trim();
+        const batchNo = String(item?.batchNo || '').trim();
+        const category = String(item?.category || '').trim();
+        const qty = Math.max(0, Number(item?.quantity || 0));
+        if (!medicineName || !batchNo || !qty) continue;
+
+        const existing = barcode
+          ? await PharmacyMedicine.findOne({ barcode })
+          : await PharmacyMedicine.findOne({ medicineName, batchNo });
+
+        if (existing) {
+          if (existing.category === 'Injection' || category === 'Injection') {
+            existing.quantity = Math.max(0, Number(existing.quantity || 0)) + qty;
+            if (!existing.mlPerVial && item?.mlPerVial) existing.mlPerVial = Number(item.mlPerVial || 0);
+            if (existing.mlPerVial) {
+              const addMl = Number(existing.mlPerVial || 0) * qty;
+              existing.remainingMl = Math.max(0, Number(existing.remainingMl || 0)) + addMl;
+            }
+          } else {
+            existing.quantity = Math.max(0, Number(existing.quantity || 0)) + qty;
+          }
+
+          if (item?.purchasePrice != null) existing.purchasePrice = Number(item.purchasePrice || 0);
+          if (item?.salePrice != null) existing.salePrice = Number(item.salePrice || 0);
+          if (purchase.supplierName) existing.supplierName = purchase.supplierName;
+          if (purchase.purchaseDate) existing.purchaseDate = purchase.purchaseDate;
+          if (purchase.invoiceNo) existing.invoiceNo = purchase.invoiceNo;
+          await existing.save();
+
+          try {
+            const inv = await upsertInventoryForMedicine(existing.toObject());
+            if (inv && inv._id && String(existing.inventoryItemId || '') !== String(inv._id)) {
+              await PharmacyMedicine.findByIdAndUpdate(existing._id, { $set: { inventoryItemId: inv._id } });
+            }
+          } catch {}
+        } else {
+          const medicineData = {
+            medicineName,
+            batchNo,
+            category: category || 'Medicine',
+            expiryDate: item.expiryDate,
+            quantity: qty,
+            unit: item.unit,
+            purchasePrice: Number(item.purchasePrice || 0),
+            salePrice: Number(item.salePrice || 0),
+            supplierName: purchase.supplierName,
+            purchaseDate: purchase.purchaseDate,
+            invoiceNo: purchase.invoiceNo,
+            lowStockThreshold: 10,
+            description: '',
+            barcode: barcode || `PH-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+            mlPerVial: item.mlPerVial,
+            isActive: true,
+          };
+
+          if (medicineData.category === 'Injection' && medicineData.mlPerVial) {
+            medicineData.remainingMl = Number(medicineData.mlPerVial || 0) * qty;
+            medicineData.originalQuantity = qty;
+          } else {
+            medicineData.originalQuantity = qty;
+          }
+
+          const created = await PharmacyMedicine.create(medicineData);
+
+          try {
+            const inv = await upsertInventoryForMedicine(created.toObject());
+            if (inv && inv._id) {
+              await PharmacyMedicine.findByIdAndUpdate(created._id, { $set: { inventoryItemId: inv._id } });
+            }
+          } catch {}
+        }
+      }
+    } catch (e) {}
 
     try {
       await postPharmacyPurchase(purchase.toObject());

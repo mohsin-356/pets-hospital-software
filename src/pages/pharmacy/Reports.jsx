@@ -59,7 +59,7 @@ export default function PharmacyReports() {
   const printReceipt = (sale, receiptType = 'PATIENT COPY') => {
     if (!sale || !sale.items || !sale.items.length) return;
 
-    const name = 'Abbottabad Pet Hospital';
+    const name = 'Pet Matrix';
     const addr = 'Pharmacy Department';
     const phone = sale.customerContact || '';
 
@@ -405,21 +405,21 @@ export default function PharmacyReports() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-[hsl(var(--pm-primary))]">
             Sales Reports
           </h1>
           <p className="text-slate-500 mt-1">Analyze sales performance and trends</p>
         </div>
         <button
           onClick={exportToCSV}
-          className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg"
+          className="flex items-center gap-2 px-4 py-2 bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white rounded-lg"
         >
           <FiDownload /> Export CSV
         </button>
       </div>
 
       {/* Date Range Filter */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+      <div className="bg-[hsl(var(--pm-surface))] rounded-xl shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-4">
         <div className="flex flex-col md:flex-row gap-4 items-end">
           <div className="flex-1">
             <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -429,7 +429,7 @@ export default function PharmacyReports() {
               type="date"
               value={dateRange.startDate}
               onChange={(e) => setDateRange({...dateRange, startDate: e.target.value})}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
             />
           </div>
           <div className="flex-1">
@@ -440,12 +440,12 @@ export default function PharmacyReports() {
               type="date"
               value={dateRange.endDate}
               onChange={(e) => setDateRange({...dateRange, endDate: e.target.value})}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))]"
             />
           </div>
           <button
             onClick={fetchSales}
-            className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg"
+            className="px-6 py-2 bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white rounded-lg"
           >
             Apply
           </button>
@@ -453,7 +453,7 @@ export default function PharmacyReports() {
       </div>
 
       {/* Tab Navigation */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-1">
+      <div className="bg-[hsl(var(--pm-surface))] rounded-xl shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-1">
         <div className="flex space-x-1">
           {[
             { id: 'sales', label: 'Sales Reports', icon: FiShoppingCart },
@@ -465,7 +465,7 @@ export default function PharmacyReports() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
                 activeTab === tab.id
-                  ? 'bg-blue-600 text-white shadow-md'
+                  ? 'bg-[hsl(var(--pm-primary))] text-white shadow-sm'
                   : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -478,64 +478,74 @@ export default function PharmacyReports() {
 
       {/* Enhanced Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white">
+        <div className="rounded-xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90">Total Sales</p>
-              <p className="text-3xl font-bold mt-1">{stats.totalSales}</p>
+              <p className="text-sm text-slate-600">Total Sales</p>
+              <p className="text-3xl font-bold mt-1 text-[hsl(var(--pm-primary))]">{stats.totalSales}</p>
             </div>
-            <FiShoppingCart className="w-12 h-12 opacity-80" />
+            <div className="w-12 h-12 rounded-xl bg-[hsl(var(--pm-primary))] text-white flex items-center justify-center">
+              <FiShoppingCart className="w-7 h-7" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white">
+        <div className="rounded-xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90">Total Revenue</p>
-              <p className="text-3xl font-bold mt-1">Rs{stats.totalRevenue.toLocaleString()}</p>
+              <p className="text-sm text-slate-600">Total Revenue</p>
+              <p className="text-3xl font-bold mt-1 text-[hsl(var(--pm-primary))]">Rs{stats.totalRevenue.toLocaleString()}</p>
             </div>
-            <FiDollarSign className="w-12 h-12 opacity-80" />
+            <div className="w-12 h-12 rounded-xl bg-[hsl(var(--pm-primary))] text-white flex items-center justify-center">
+              <FiDollarSign className="w-7 h-7" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-6 text-white">
+        <div className="rounded-xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90">Total Cost</p>
-              <p className="text-3xl font-bold mt-1">Rs{stats.totalCost.toLocaleString()}</p>
+              <p className="text-sm text-slate-600">Total Cost</p>
+              <p className="text-3xl font-bold mt-1 text-[hsl(var(--pm-primary))]">Rs{stats.totalCost.toLocaleString()}</p>
             </div>
-            <FiBarChart className="w-12 h-12 opacity-80" />
+            <div className="w-12 h-12 rounded-xl bg-[hsl(var(--pm-primary))] text-white flex items-center justify-center">
+              <FiBarChart className="w-7 h-7" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-6 text-white">
+        <div className="rounded-xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90">Total Profit</p>
-              <p className="text-3xl font-bold mt-1">Rs{stats.totalProfit.toLocaleString()}</p>
+              <p className="text-sm text-slate-600">Total Profit</p>
+              <p className="text-3xl font-bold mt-1 text-[hsl(var(--pm-primary))]">Rs{stats.totalProfit.toLocaleString()}</p>
             </div>
-            <FiTrendingUp className="w-12 h-12 opacity-80" />
+            <div className="w-12 h-12 rounded-xl bg-[hsl(var(--pm-primary))] text-white flex items-center justify-center">
+              <FiTrendingUp className="w-7 h-7" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white">
+        <div className="rounded-xl bg-[hsl(var(--pm-surface))] shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90">Profit Margin</p>
-              <p className="text-3xl font-bold mt-1">{stats.profitMargin.toFixed(1)}%</p>
+              <p className="text-sm text-slate-600">Profit Margin</p>
+              <p className="text-3xl font-bold mt-1 text-[hsl(var(--pm-primary))]">{stats.profitMargin.toFixed(1)}%</p>
             </div>
-            <FiPieChart className="w-12 h-12 opacity-80" />
+            <div className="w-12 h-12 rounded-xl bg-[hsl(var(--pm-primary))] text-white flex items-center justify-center">
+              <FiPieChart className="w-7 h-7" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Conditional Content Based on Active Tab */}
       {activeTab === 'sales' && (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-[hsl(var(--pm-surface))] rounded-xl shadow-sm ring-1 ring-[hsl(var(--pm-border))] overflow-hidden">
           <div className="px-6 py-4 border-b border-slate-200 flex flex-col gap-3">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <h2 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
-                <FiShoppingCart className="w-5 h-5 text-blue-500" />
+                <FiShoppingCart className="w-5 h-5 text-[hsl(var(--pm-primary))]" />
                 Sales Transactions
               </h2>
               <div className="flex flex-col md:flex-row gap-3 md:items-center">
@@ -572,7 +582,7 @@ export default function PharmacyReports() {
                     }
                   }}
                   placeholder="Search by Invoice Number..."
-                  className="w-full pl-3 pr-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  className="w-full pl-3 pr-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--pm-primary))]/25 focus:border-[hsl(var(--pm-primary))] text-sm"
                 />
               </div>
             </div>
@@ -580,7 +590,7 @@ export default function PharmacyReports() {
 
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--pm-primary))]"></div>
             </div>
           ) : filteredSales.length === 0 ? (
             <div className="text-center py-12 text-slate-500">
@@ -590,7 +600,7 @@ export default function PharmacyReports() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-              <thead className="bg-slate-50 border-b border-slate-200">
+              <thead className="bg-slate-50 border-b border-[hsl(var(--pm-border))]">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Invoice</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Date & Time</th>
@@ -607,7 +617,7 @@ export default function PharmacyReports() {
                 {filteredSales.map((sale) => (
                   <tr key={sale._id} className="hover:bg-slate-50">
                     <td className="px-6 py-4">
-                      <button className="font-medium text-blue-600 hover:underline" onClick={()=>setPreviewSale(sale)}>{sale.invoiceNumber}</button>
+                      <button className="font-medium text-[hsl(var(--pm-primary))] hover:underline" onClick={()=>setPreviewSale(sale)}>{sale.invoiceNumber}</button>
                     </td>
                     <td className="px-6 py-4 text-slate-600">
                       <div>
@@ -625,12 +635,12 @@ export default function PharmacyReports() {
                     </td>
                     <td className="px-6 py-4 text-slate-600">{sale.items?.length || 0}</td>
                     <td className="px-6 py-4 text-slate-600">Rs{sale.subtotal.toLocaleString()}</td>
-                    <td className="px-6 py-4 text-orange-600">
+                    <td className="px-6 py-4 text-slate-600">
                       {sale.discount > 0 ? `-Rs${sale.discount.toLocaleString()}` : '-'}
                     </td>
-                    <td className="px-6 py-4 font-semibold text-green-600">Rs{sale.totalAmount.toLocaleString()}</td>
+                    <td className="px-6 py-4 font-semibold text-[hsl(var(--pm-primary))]">Rs{sale.totalAmount.toLocaleString()}</td>
                     <td className="px-6 py-4">
-                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                      <span className="px-2 py-1 rounded-full text-xs font-medium border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))]">
                         {sale.paymentMethod}
                       </span>
                     </td>
@@ -652,7 +662,7 @@ export default function PharmacyReports() {
 
           {/* Top Selling Medicines */}
           {filteredSales.length > 0 && (
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-[hsl(var(--pm-surface))] rounded-xl shadow-sm ring-1 ring-[hsl(var(--pm-border))] p-6">
               <h2 className="text-lg font-semibold text-slate-800 mb-4">Top Selling Medicines</h2>
               <div className="space-y-3">
                 {(() => {
@@ -676,7 +686,7 @@ export default function PharmacyReports() {
                           <p className="font-medium text-slate-800">{name}</p>
                           <p className="text-sm text-slate-500">Sold: {data.quantity} units</p>
                         </div>
-                        <p className="font-semibold text-green-600">Rs{data.revenue.toLocaleString()}</p>
+                        <p className="font-semibold text-[hsl(var(--pm-primary))]">Rs{data.revenue.toLocaleString()}</p>
                       </div>
                     ));
                 })()}
@@ -691,12 +701,12 @@ export default function PharmacyReports() {
             <div className="flex items-center justify-between border-b px-4 py-3">
               <div className="font-semibold">Invoice {previewSale.invoiceNumber}</div>
               <div className="flex items-center gap-2">
-                <button onClick={handlePrint} className="px-3 py-1.5 bg-blue-600 text-white rounded-lg flex items-center gap-2"><FiPrinter/> Print</button>
+                <button onClick={handlePrint} className="px-3 py-1.5 bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white rounded-lg flex items-center gap-2"><FiPrinter/> Print</button>
                 <button onClick={()=>setPreviewSale(null)} className="px-3 py-1.5 border rounded-lg">Close</button>
               </div>
             </div>
             <div className="p-4 text-sm">
-              <div className="font-semibold mb-2">Abbottabad Pet Hospital</div>
+              <div className="font-semibold mb-2">Pet Matrix</div>
               <div className="grid grid-cols-2 gap-2 mb-3">
                 <div>Invoice: <strong>{previewSale.invoiceNumber}</strong></div>
                 <div>Date: {new Date(previewSale.createdAt).toLocaleString()}</div>
@@ -766,23 +776,23 @@ export default function PharmacyReports() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                        <span className="px-2 py-1 rounded-full text-xs font-medium border border-[hsl(var(--pm-border))] bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))]">
                           {medicine.category}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-slate-600">
-                        <span className={`font-semibold ${medicine.currentStock <= 10 ? 'text-orange-600' : 'text-green-600'}`}>
+                        <span className="font-semibold text-[hsl(var(--pm-primary))]">
                           {medicine.currentStock} {medicine.unit}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-slate-600 font-medium">{medicine.quantitySold}</td>
                       <td className="px-6 py-4 text-slate-600">Rs{medicine.purchasePrice.toLocaleString()}</td>
                       <td className="px-6 py-4 text-slate-600">Rs{medicine.salePrice.toLocaleString()}</td>
-                      <td className="px-6 py-4 font-semibold text-green-600">Rs{medicine.totalRevenue.toLocaleString()}</td>
+                      <td className="px-6 py-4 font-semibold text-[hsl(var(--pm-primary))]">Rs{medicine.totalRevenue.toLocaleString()}</td>
                       <td className="px-6 py-4 text-red-600">Rs{medicine.totalCost.toLocaleString()}</td>
-                      <td className="px-6 py-4 font-semibold text-emerald-600">Rs{medicine.totalProfit.toLocaleString()}</td>
+                      <td className="px-6 py-4 font-semibold text-[hsl(var(--pm-primary))]">Rs{medicine.totalProfit.toLocaleString()}</td>
                       <td className="px-6 py-4">
-                        <span className={`font-semibold ${medicine.profitMargin >= 20 ? 'text-green-600' : medicine.profitMargin >= 10 ? 'text-yellow-600' : 'text-red-600'}`}>
+                        <span className="font-semibold text-[hsl(var(--pm-primary))]">
                           {medicine.profitMargin.toFixed(1)}%
                         </span>
                       </td>
@@ -806,9 +816,9 @@ export default function PharmacyReports() {
                 .filter(med => med.totalProfit > 0)
                 .slice(0, 10)
                 .map((medicine, idx) => (
-                  <div key={medicine.id} className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
+                  <div key={medicine.id} className="flex items-center justify-between p-4 bg-[hsl(var(--pm-surface))] rounded-lg border border-[hsl(var(--pm-border))]">
                     <div className="flex items-center gap-4">
-                      <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                      <div className="w-8 h-8 bg-[hsl(var(--pm-primary))] text-white rounded-full flex items-center justify-center font-bold text-sm">
                         {idx + 1}
                       </div>
                       <div>
@@ -817,7 +827,7 @@ export default function PharmacyReports() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-green-600 text-lg">Rs{medicine.totalProfit.toLocaleString()}</p>
+                      <p className="font-bold text-[hsl(var(--pm-primary))] text-lg">Rs{medicine.totalProfit.toLocaleString()}</p>
                       <p className="text-sm text-slate-500">{medicine.profitMargin.toFixed(1)}% margin</p>
                     </div>
                   </div>
@@ -833,14 +843,14 @@ export default function PharmacyReports() {
                 .filter(med => med.quantitySold > 0 && med.profitMargin < 15)
                 .slice(0, 5)
                 .map((medicine) => (
-                  <div key={medicine.id} className="flex items-center justify-between p-4 bg-gradient-to-r from-red-50 to-orange-50 rounded-lg border border-red-200">
+                  <div key={medicine.id} className="flex items-center justify-between p-4 bg-[hsl(var(--pm-surface))] rounded-lg border border-[hsl(var(--pm-border))]">
                     <div>
                       <p className="font-semibold text-slate-800">{medicine.name}</p>
                       <p className="text-sm text-slate-500">{medicine.category} • Sold: {medicine.quantitySold} units</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-red-600">Rs{medicine.totalProfit.toLocaleString()}</p>
-                      <p className="text-sm text-red-500">{medicine.profitMargin.toFixed(1)}% margin</p>
+                      <p className="font-bold text-[hsl(var(--pm-primary))]">Rs{medicine.totalProfit.toLocaleString()}</p>
+                      <p className="text-sm text-slate-500">{medicine.profitMargin.toFixed(1)}% margin</p>
                     </div>
                   </div>
                 ))}
@@ -874,7 +884,7 @@ export default function PharmacyReports() {
                 </button>
                 <button
                   onClick={() => { printReceipt(selectedSale, 'PATIENT COPY'); closeReprintModal(); }}
-                  className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                  className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-lg bg-[hsl(var(--pm-primary))] text-white hover:bg-[hsl(var(--pm-primary-hover))]"
                 >
                   <FiPrinter className="w-4 h-4" /> Patient Copy
                 </button>

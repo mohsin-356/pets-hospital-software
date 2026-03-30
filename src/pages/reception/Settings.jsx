@@ -75,7 +75,7 @@ export default function ReceptionSettings() {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-sky-600 via-cyan-600 to-emerald-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-4xl font-bold text-[hsl(var(--pm-primary))] mb-2">
           Reception Settings
         </h1>
         <p className="text-slate-600 text-lg">Backup, restore, and manage Reception portal data</p>
@@ -91,11 +91,11 @@ export default function ReceptionSettings() {
         {/* Export */}
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 grid place-items-center"><FiDownload /></div>
+            <div className="w-10 h-10 rounded-xl bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] grid place-items-center"><FiDownload /></div>
             <div className="font-semibold">Export Reception Data</div>
           </div>
           <p className="text-sm text-slate-600 mb-4">Download pets, appointments, and procedure records as JSON.</p>
-          <button disabled={busy} onClick={handleExport} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-sm disabled:opacity-60">
+          <button disabled={busy} onClick={handleExport} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white text-sm disabled:opacity-60">
             <FiDownload className="w-4 h-4"/> Export JSON
           </button>
         </div>
@@ -103,12 +103,12 @@ export default function ReceptionSettings() {
         {/* Import */}
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 grid place-items-center"><FiUpload /></div>
+            <div className="w-10 h-10 rounded-xl bg-[hsl(var(--pm-primary-soft))] text-[hsl(var(--pm-primary))] grid place-items-center"><FiUpload /></div>
             <div className="font-semibold">Import Reception Data</div>
           </div>
           <p className="text-sm text-slate-600 mb-3">Select a previously exported JSON file to restore.</p>
           <input type="file" accept="application/json" onChange={handleImportFileChange} className="block w-full text-sm mb-3" />
-          <button disabled={busy || !importFile} onClick={handleImport} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm disabled:opacity-60">
+          <button disabled={busy || !importFile} onClick={handleImport} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white text-sm disabled:opacity-60">
             <FiUpload className="w-4 h-4"/> Import JSON
           </button>
         </div>

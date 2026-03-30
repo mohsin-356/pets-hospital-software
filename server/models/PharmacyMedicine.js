@@ -6,6 +6,10 @@ const pharmacyMedicineSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  inventoryItemId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Inventory'
+  },
   batchNo: {
     type: String,
     trim: true

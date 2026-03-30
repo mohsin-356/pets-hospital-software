@@ -2,12 +2,19 @@ import React, { useState } from 'react'
 import { useSettings } from '../../context/SettingsContext'
 import { FiSettings, FiMonitor, FiShield, FiSave, FiDownload, FiUpload, FiTrash2, FiCheckCircle } from 'react-icons/fi'
 import { backupAPI } from '../../services/api'
+import { accessRolesAPI } from '../../services/api'
+import { useModuleAccess } from '../../context/ModuleAccessContext'
+import { useAccessRoles } from '../../context/AccessRoleContext'
 
 export default function Settings() {
   const { settings, save: updateSettings } = useSettings()
+  const { config: moduleConfig } = useModuleAccess()
+  const { roles, reload: reloadRoles } = useAccessRoles()
   const [activeTab, setActiveTab] = useState('company')
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [showSaved, setShowSaved] = useState(false)
+  const [roleDialog, setRoleDialog] = useState({ open: false, id: null, name: '', config: {} })
+  const [roleBusy, setRoleBusy] = useState(false)
   const [formData, setFormData] = useState({
     companyName: settings.companyName || 'PharmaCare',
     companyLogo: settings.companyLogo || '',
@@ -175,8 +182,136 @@ export default function Settings() {
 
   const tabs = [
     { id: 'company', label: 'Company Settings', icon: FiSettings },
-    { id: 'backup', label: 'Backup & Security', icon: FiShield }
+    { id: 'backup', label: 'Backup & Security', icon: FiShield },
+    { id: 'permissions', label: 'Permissions', icon: FiShield }
   ]
+
+  const enabledPortals = React.useMemo(() => {
+    const portals = moduleConfig?.portals || {}
+    return Object.keys(portals).filter((p) => portals?.[p]?.enabled !== false)
+  }, [moduleConfig])
+
+  const enabledSubmodulesByPortal = React.useMemo(() => {
+    const portals = moduleConfig?.portals || {}
+    const out = {}
+    for (const p of enabledPortals) {
+      const sub = portals?.[p]?.submodules || {}
+      out[p] = Object.keys(sub).filter((k) => sub?.[k] !== false)
+    }
+    return out
+  }, [enabledPortals, moduleConfig])
+
+  const PREDEFINED_ROLES = React.useMemo(() => (['Reception', 'Pharmacy', 'Lab', 'Doctor', 'Shop', 'Admin']), [])
+
+  const findRoleDocByName = (name) => {
+    const n = String(name || '').trim().toLowerCase()
+    return (roles || []).find(r => String(r?.name || '').trim().toLowerCase() === n) || null
+  }
+
+  const openPredefinedRole = (name) => {
+    const doc = findRoleDocByName(name)
+    setRoleDialog({
+      open: true,
+      id: doc?._id || null,
+      name,
+      config: doc?.config || {},
+    })
+  }
+
+  const openNewRole = () => {
+    openPredefinedRole('Reception')
+  }
+
+  const openEditRole = (r) => {
+    setRoleDialog({
+      open: true,
+      id: r?._id || null,
+      name: r?.name || '',
+      config: r?.config || {},
+    })
+  }
+
+  const closeRoleDialog = () => {
+    setRoleDialog({ open: false, id: null, name: '', config: {} })
+  }
+
+  const toggleRolePermission = (portal, submodule) => {
+    setRoleDialog((prev) => {
+      const next = { ...prev }
+      const config = { ...(next.config || {}) }
+      const portals = { ...(config.portals || {}) }
+      const p = { ...(portals[portal] || {}) }
+      const sub = { ...(p.submodules || {}) }
+      const current = sub[submodule] === true
+      sub[submodule] = !current
+      p.submodules = sub
+      portals[portal] = p
+      config.portals = portals
+      next.config = config
+      return next
+    })
+  }
+
+  const buildCleanRoleConfig = (cfg) => {
+    const portals = cfg?.portals || {}
+    const clean = { portals: {} }
+    for (const p of enabledPortals) {
+      const allowedSubs = enabledSubmodulesByPortal?.[p] || []
+      const picked = portals?.[p]?.submodules || {}
+      const outSubs = {}
+      for (const s of allowedSubs) {
+        if (picked?.[s] === true) outSubs[s] = true
+      }
+      if (Object.keys(outSubs).length > 0) {
+        clean.portals[p] = { submodules: outSubs }
+      }
+    }
+    return clean
+  }
+
+  const saveRole = async () => {
+    if (!roleDialog.name?.trim()) {
+      alert('Role name is required.')
+      return
+    }
+    try {
+      setRoleBusy(true)
+      const existing = findRoleDocByName(roleDialog.name)
+      const payload = {
+        name: roleDialog.name.trim(),
+        config: buildCleanRoleConfig(roleDialog.config),
+      }
+      if (existing?._id || roleDialog.id) {
+        await accessRolesAPI.update(existing?._id || roleDialog.id, payload)
+      } else {
+        await accessRolesAPI.create(payload)
+      }
+      await reloadRoles()
+      closeRoleDialog()
+    } catch (e) {
+      console.error('Failed to save role', e)
+      alert(e?.message || 'Failed to save role')
+    } finally {
+      setRoleBusy(false)
+    }
+  }
+
+  const deleteRole = async (id) => {
+    if (!id) return
+    const ok = window.confirm('Delete this role?')
+    if (!ok) return
+    try {
+      setRoleBusy(true)
+      await accessRolesAPI.delete(id)
+      await reloadRoles()
+      if (roleDialog.id === id) closeRoleDialog()
+    } catch (e) {
+      console.error('Failed to delete role', e)
+      alert(e?.message || 'Failed to delete role')
+    } finally {
+      setRoleBusy(false)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -384,6 +519,145 @@ export default function Settings() {
                 <FiTrash2 className="h-4 w-4" />
                 Delete All Data
               </button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'permissions' && (
+          <div className="p-6">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="text-xl font-semibold text-slate-900 mb-2">Permissions</h2>
+                <p className="text-slate-600 mb-6">Manage built-in roles and assign screen-level access using ticks. Only modules enabled by Super Admin are available.</p>
+              </div>
+              <button
+                onClick={openNewRole}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors font-medium cursor-pointer"
+              >
+                New Role
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+              <div className="rounded-xl border border-slate-200 overflow-hidden">
+                <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 text-sm font-semibold text-slate-800">Roles</div>
+                <div className="divide-y divide-slate-100">
+                  {PREDEFINED_ROLES.map((name) => {
+                    const doc = findRoleDocByName(name)
+                    return (
+                      <button
+                        key={name}
+                        onClick={() => openPredefinedRole(name)}
+                        className="w-full text-left px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer"
+                      >
+                        <div className="font-semibold text-slate-900">{name}</div>
+                        <div className="text-xs text-slate-500">{doc ? 'Configured' : 'Not configured'}</div>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <div className="lg:col-span-2 rounded-xl border border-slate-200 overflow-hidden">
+                <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-3">
+                  <div className="text-sm font-semibold text-slate-800">Role Editor</div>
+                  {roleDialog.id && (
+                    <button
+                      onClick={() => deleteRole(roleDialog.id)}
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors text-sm font-medium cursor-pointer"
+                      disabled={roleBusy}
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
+
+                {!roleDialog.open ? (
+                  <div className="px-4 py-10 text-sm text-slate-600">Select a role to edit, or click “New Role”.</div>
+                ) : (
+                  <div className="p-4 space-y-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Select Role</label>
+                        <div className="relative">
+                          <select
+                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none bg-white"
+                            value={roleDialog.name || ''}
+                            onChange={(e) => {
+                              openPredefinedRole(e.target.value)
+                            }}
+                          >
+                            {PREDEFINED_ROLES.map((name) => (
+                              <option key={name} value={name}>{name}</option>
+                            ))}
+                          </select>
+                          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="hidden md:block" />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Role Name</label>
+                        <input
+                          value={roleDialog.name}
+                          readOnly
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          placeholder="e.g. Reception Staff"
+                        />
+                      </div>
+                      <div className="flex items-end justify-end gap-3">
+                        <button
+                          onClick={closeRoleDialog}
+                          className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium cursor-pointer"
+                          disabled={roleBusy}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={saveRole}
+                          className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium cursor-pointer"
+                          disabled={roleBusy}
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      {enabledPortals.map((p) => (
+                        <div key={p} className="rounded-xl border border-slate-200 overflow-hidden">
+                          <div className="px-4 py-2 bg-white border-b border-slate-200 flex items-center justify-between">
+                            <div className="font-semibold text-slate-800 capitalize">{p} Portal</div>
+                            <div className="text-xs text-slate-500">{(enabledSubmodulesByPortal?.[p] || []).length} modules</div>
+                          </div>
+                          <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                            {(enabledSubmodulesByPortal?.[p] || []).map((s) => {
+                              const checked = roleDialog?.config?.portals?.[p]?.submodules?.[s] === true
+                              return (
+                                <label key={s} className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer select-none">
+                                  <input
+                                    type="checkbox"
+                                    checked={checked}
+                                    onChange={() => toggleRolePermission(p, s)}
+                                    className="h-4 w-4"
+                                  />
+                                  <span className="capitalize">{String(s).replace(/([A-Z])/g, ' $1')}</span>
+                                </label>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}

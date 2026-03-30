@@ -34,6 +34,10 @@ const supplierSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  isWhatsApp: {
+    type: Boolean,
+    default: false
+  },
   email: {
     type: String,
     default: ''
@@ -49,6 +53,14 @@ const supplierSchema = new mongoose.Schema({
   category: {
     type: String,
     default: 'General'
+  },
+  suppliedCategories: {
+    type: String,
+    default: ''
+  },
+  suppliedProducts: {
+    type: String,
+    default: ''
   },
   purchaseHistory: [purchaseHistorySchema],
   totalPurchases: {

@@ -413,7 +413,7 @@ export default function Radiology() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Radiology</h1>
+          <h1 className="text-3xl font-bold text-blue-700">Radiology</h1>
           <p className="text-slate-500 mt-1">X-Ray, Ultrasound & Imaging Tests</p>
         </div>
         <div className="flex items-center gap-2">
@@ -424,7 +424,7 @@ export default function Radiology() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e)=>{ if(e.key==='Enter'){ e.preventDefault(); quickFindById() } }}
-              className="px-4 h-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500 pr-10"
+              className="px-4 h-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
             />
             {searchQuery && (
               <button 
@@ -435,33 +435,33 @@ export default function Radiology() {
               </button>
             )}
           </div>
-          <button onClick={quickFindById} className="px-4 h-11 rounded-lg bg-purple-600 hover:bg-purple-700 text-white">Find</button>
+          <button onClick={quickFindById} className="px-4 h-11 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">Find</button>
         </div>
       </div>
 
       {/* Date Range Picker */}
-      <div className="rounded-2xl bg-gradient-to-br from-white via-purple-50 to-pink-50 shadow-xl ring-1 ring-purple-200 border border-purple-100 p-6">
+      <div className="rounded-2xl bg-white shadow-xl ring-1 ring-blue-200 border border-blue-100 p-6">
         <div className="flex items-center justify-between gap-4">
-          <div className="text-sm font-semibold text-purple-700">Date Range</div>
+          <div className="text-sm font-semibold text-blue-700">Date Range</div>
           <DateRangePicker onDateChange={setDateRange} defaultFromDate={dateRange.fromDate} defaultToDate={dateRange.toDate} />
         </div>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-4 text-white">
+        <div className="bg-blue-600 rounded-xl p-4 text-white">
           <div className="text-sm opacity-90">Total Records</div>
           <div className="text-3xl font-bold mt-1">{recordsInRange.length}</div>
         </div>
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 text-white">
+        <div className="bg-blue-600 rounded-xl p-4 text-white">
           <div className="text-sm opacity-90">X-Rays</div>
           <div className="text-3xl font-bold mt-1">{recordsInRange.filter(r => r.testType === 'X-Ray').length}</div>
         </div>
-        <div className="bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl p-4 text-white">
+        <div className="bg-blue-600 rounded-xl p-4 text-white">
           <div className="text-sm opacity-90">Ultrasounds</div>
           <div className="text-3xl font-bold mt-1">{recordsInRange.filter(r => r.testType === 'Ultrasound').length}</div>
         </div>
-        <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-4 text-white">
+        <div className="bg-blue-600 rounded-xl p-4 text-white">
           <div className="text-sm opacity-90">Other Scans</div>
           <div className="text-3xl font-bold mt-1">{recordsInRange.filter(r => !['X-Ray', 'Ultrasound'].includes(r.testType)).length}</div>
         </div>
@@ -475,7 +475,7 @@ export default function Radiology() {
         ) : (
           <div className="flex items-center justify-between border-2 border-slate-200 rounded-lg p-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold">
+              <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
                 {foundPatient.petName?.charAt(0) || 'P'}
               </div>
               {/* Hidden condensed export layout for single-page PDF */}
@@ -483,8 +483,8 @@ export default function Radiology() {
                 ref={exportRef}
                 style={{ position: 'fixed', left: '-10000px', top: 0, width: '794px', background: '#fff', padding: '16px' }}
               >
-                <div style={{ textAlign: 'center', borderBottom: '3px solid #7c3aed', paddingBottom: 8, marginBottom: 12 }}>
-                  <div style={{ fontSize: 22, fontWeight: 800, color: '#7c3aed' }}>Radiology Summary</div>
+                <div style={{ textAlign: 'center', borderBottom: '3px solid #2563eb', paddingBottom: 8, marginBottom: 12 }}>
+                  <div style={{ fontSize: 22, fontWeight: 800, color: '#2563eb' }}>Radiology Summary</div>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, fontSize: 12, marginBottom: 12 }}>
                   <div><strong>Patient:</strong> {patientModal?.pet?.petName || '-'}</div>
@@ -556,7 +556,7 @@ export default function Radiology() {
             </div>
             <button
               onClick={() => handlePatientSelect(foundPatient)}
-              className="px-4 h-10 rounded-lg bg-purple-600 hover:bg-purple-700 text-white inline-flex items-center gap-2"
+              className="px-4 h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white inline-flex items-center gap-2"
             >
               <FiUpload /> Upload Images
             </button>
@@ -566,7 +566,7 @@ export default function Radiology() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/40" onClick={()=>setShowPatientModal(false)}></div>
           <div className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl">
-            <div className="sticky top-0 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-t-2xl p-5 flex items-center justify-between">
+            <div className="sticky top-0 bg-blue-600 text-white rounded-t-2xl p-5 flex items-center justify-between">
               <div>
                 <div className="text-xl font-bold">{patientModal.pet?.petName || 'Patient'}</div>
                 <div className="text-xs text-white/80">ID: {patientModal.patientId}</div>
@@ -592,7 +592,7 @@ export default function Radiology() {
                 <div className="rounded-xl border border-slate-200 p-4 md:col-span-2">
                   <div className="flex items-center justify-between mb-2">
                     <div className="text-sm font-semibold text-slate-700">Lab Reports</div>
-                    <div className="text-sm text-slate-500">Total: <span className="font-bold text-purple-700">Rs. {patientModal.total.toLocaleString()}</span></div>
+                    <div className="text-sm text-slate-500">Total: <span className="font-bold text-blue-700">Rs. {patientModal.total.toLocaleString()}</span></div>
                   </div>
                   <div className="overflow-x-auto">
                     <table className="min-w-full text-sm">
@@ -631,7 +631,7 @@ export default function Radiology() {
                     {patientModal.records.map((record, idx) => (
                       <div key={idx} className="border border-slate-200 rounded-lg p-3">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="px-2 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                          <span className="px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
                             {record.testType}
                           </span>
                           <span className="text-xs text-slate-500">{new Date(record.testDate).toLocaleDateString()}</span>
@@ -686,10 +686,10 @@ export default function Radiology() {
               <div
                 key={card.patientId}
                 onClick={() => openPatientModal(card.patientId)}
-                className="border-2 border-slate-200 rounded-xl p-4 hover:border-purple-500 hover:shadow-lg transition-all cursor-pointer"
+                className="border-2 border-slate-200 rounded-xl p-4 hover:border-blue-500 hover:shadow-lg transition-all cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-lg">
+                  <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg">
                     {card.petName?.charAt(0) || 'P'}
                   </div>
                   <div className="flex-1">
@@ -697,7 +697,7 @@ export default function Radiology() {
                     <div className="text-sm text-slate-500">{card.ownerName}</div>
                     <div className="text-xs text-slate-400 mt-1">{card.count} record{card.count>1?'s':''}</div>
                   </div>
-                  <FiEye className="w-5 h-5 text-purple-500" />
+                  <FiEye className="w-5 h-5 text-blue-500" />
                 </div>
               </div>
             ))
@@ -718,9 +718,9 @@ export default function Radiology() {
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               {/* Patient Info */}
-              <div className="bg-purple-50 rounded-lg p-4">
-                <div className="font-semibold text-purple-900 mb-2">Patient Information</div>
-                <div className="text-sm text-purple-800">
+              <div className="bg-blue-50 rounded-lg p-4">
+                <div className="font-semibold text-blue-900 mb-2">Patient Information</div>
+                <div className="text-sm text-blue-800">
                   <div><span className="font-semibold">Pet:</span> {uploadForm.petName}</div>
                   <div><span className="font-semibold">Owner:</span> {uploadForm.ownerName}</div>
                 </div>
@@ -732,7 +732,7 @@ export default function Radiology() {
                 <select
                   value={uploadForm.testType}
                   onChange={(e) => setUploadForm({...uploadForm, testType: e.target.value})}
-                  className="w-full px-4 h-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 h-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 >
                   <option value="X-Ray">X-Ray</option>
@@ -750,7 +750,7 @@ export default function Radiology() {
                   type="date"
                   value={uploadForm.testDate}
                   onChange={(e) => setUploadForm({...uploadForm, testDate: e.target.value})}
-                  className="w-full px-4 h-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 h-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -763,7 +763,7 @@ export default function Radiology() {
                   value={uploadForm.bodyPart}
                   onChange={(e) => setUploadForm({...uploadForm, bodyPart: e.target.value})}
                   placeholder="e.g., Chest, Abdomen, Leg"
-                  className="w-full px-4 h-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 h-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -775,7 +775,7 @@ export default function Radiology() {
                   value={uploadForm.findings}
                   onChange={(e) => setUploadForm({...uploadForm, findings: e.target.value})}
                   placeholder="Enter findings or observations..."
-                  className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   rows="3"
                 />
               </div>
@@ -783,7 +783,7 @@ export default function Radiology() {
               {/* Image Upload */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Upload Images</label>
-                <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-purple-500 transition-colors">
+                <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
                   <input
                     type="file"
                     accept="image/*"
@@ -837,7 +837,7 @@ export default function Radiology() {
                 <button
                   type="submit"
                   disabled={uploadForm.images.length === 0}
-                  className="px-6 h-11 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 h-11 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Save Record
                 </button>
@@ -847,7 +847,7 @@ export default function Radiology() {
         </div>
       )}
       {toast && (
-        <div className="fixed bottom-4 right-4 z-[100] rounded-lg bg-emerald-600 text-white text-sm px-4 py-2 shadow-lg">{toast}</div>
+        <div className="fixed bottom-4 right-4 z-[100] rounded-lg bg-blue-600 text-white text-sm px-4 py-2 shadow-lg">{toast}</div>
       )}
     </div>
   )

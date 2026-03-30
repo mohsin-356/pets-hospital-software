@@ -682,7 +682,7 @@ export default function ReceptionProcedures() {
   }, [records, dateFrom, dateTo]);
 
   const buildReceiptHTML = (data) => {
-    const name = (hospitalSettings?.hospitalName || hospitalSettings?.companyName || 'Abbottabad Pet Hospital');
+    const name = (hospitalSettings?.hospitalName || hospitalSettings?.companyName || 'Pet Matrix');
     const addr = (hospitalSettings?.address || 'Main Boulevard, Gulshan-e-Iqbal, Karachi');
     const phone = (hospitalSettings?.phone || '+92-21-1234567');
 
@@ -776,7 +776,7 @@ export default function ReceptionProcedures() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
-            <FiClipboard className="text-emerald-600" /> Procedures
+            <FiClipboard className="text-[hsl(var(--pm-primary))]" /> Procedures
           </h1>
           <p className="text-slate-600 text-sm">Create procedure sheets with patient details and dues.</p>
         </div>
@@ -790,7 +790,7 @@ export default function ReceptionProcedures() {
             setPreviousDues(0);
             setShowDialog(true);
           }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium shadow hover:bg-emerald-700"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[hsl(var(--pm-primary))] text-white text-sm font-medium shadow-sm hover:bg-[hsl(var(--pm-primary-hover))]"
         >
           <FiPlus />
           Add Procedure
@@ -802,7 +802,7 @@ export default function ReceptionProcedures() {
           <div className="bg-white rounded-2xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
               <h2 className="text-lg font-semibold flex items-center gap-2">
-                <FiPlus className="text-emerald-600" /> Add Procedure
+                <FiPlus className="text-[hsl(var(--pm-primary))]" /> Add Procedure
               </h2>
               <button onClick={() => setShowDialog(false)} className="text-slate-500 hover:text-slate-700">
                 <FiX />
@@ -898,7 +898,7 @@ export default function ReceptionProcedures() {
                                   </option>
                                 ))}
                               </select>
-                              <button type="button" onClick={() => openNewItem(idx)} className="text-emerald-600 text-xs hover:underline whitespace-nowrap">+ New</button>
+                              <button type="button" onClick={() => openNewItem(idx)} className="text-[hsl(var(--pm-primary))] text-xs hover:underline whitespace-nowrap">+ New</button>
                             </div>
                           </td>
                           <td className="px-3 py-2">
@@ -1030,7 +1030,7 @@ export default function ReceptionProcedures() {
                   type="button"
                   disabled={saving}
                   onClick={() => handleSubmit(false)}
-                  className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-sm disabled:opacity-60"
+                  className="px-4 py-2 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white text-sm disabled:opacity-60"
                 >
                   Save
                 </button>
@@ -1038,7 +1038,7 @@ export default function ReceptionProcedures() {
                   type="button"
                   disabled={saving}
                   onClick={() => handleSubmit(true)}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm disabled:opacity-60"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white text-sm disabled:opacity-60"
                 >
                   <FiPrinter className="w-4 h-4" /> Save & Print
                 </button>
@@ -1089,7 +1089,7 @@ export default function ReceptionProcedures() {
             </div>
             <div className="mt-4 flex justify-end gap-2">
               <button onClick={()=>setShowNewItemModal(false)} className="px-4 py-2 rounded-lg border border-slate-300 text-sm text-slate-700">Cancel</button>
-              <button disabled={creatingItem} onClick={saveNewItem} className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm disabled:opacity-60">{creatingItem ? 'Saving...' : 'Save Item'}</button>
+              <button disabled={creatingItem} onClick={saveNewItem} className="px-4 py-2 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white text-sm disabled:opacity-60">{creatingItem ? 'Saving...' : 'Save Item'}</button>
             </div>
           </div>
         </div>
@@ -1106,7 +1106,7 @@ export default function ReceptionProcedures() {
               <iframe title="receipt-preview" className="w-full h-[60vh]" srcDoc={buildReceiptHTML(receiptData || {})} />
             </div>
             <div className="mt-3 flex justify-end gap-2">
-              <button onClick={() => { try { if (receiptData) printThermalReceipt(receiptData) } catch {} ; setShowReceiptModal(false); }} className="px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-sm"><FiPrinter className="inline mr-1"/> Print</button>
+              <button onClick={() => { try { if (receiptData) printThermalReceipt(receiptData) } catch {} ; setShowReceiptModal(false); }} className="px-3 py-1.5 rounded-lg bg-[hsl(var(--pm-primary))] hover:bg-[hsl(var(--pm-primary-hover))] text-white text-sm"><FiPrinter className="inline mr-1"/> Print</button>
             </div>
           </div>
         </div>
@@ -1203,8 +1203,8 @@ export default function ReceptionProcedures() {
                   <td className="px-3 py-2 text-right">{Number(r.receivedAmount||0).toLocaleString()}</td>
                   <td className="px-3 py-2 text-right">{Number(r.receivable||0).toLocaleString()}</td>
                   <td className="px-3 py-2 text-center">
-                    <button onClick={()=>{ setReceiptData(r); setShowReceiptModal(true); }} className="text-indigo-600 hover:underline mr-2">View</button>
-                    <button onClick={()=>{ try { printThermalReceipt(r) } catch{} }} className="text-emerald-600 hover:underline">Reprint</button>
+                    <button onClick={()=>{ setReceiptData(r); setShowReceiptModal(true); }} className="text-[hsl(var(--pm-primary))] hover:underline mr-2">View</button>
+                    <button onClick={()=>{ try { printThermalReceipt(r) } catch{} }} className="text-[hsl(var(--pm-primary))] hover:underline">Reprint</button>
                   </td>
                 </tr>
               ))}

@@ -5,6 +5,10 @@ const purchaseItemSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  barcode: {
+    type: String,
+    trim: true
+  },
   batchNo: {
     type: String,
     required: true

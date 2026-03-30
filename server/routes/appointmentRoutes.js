@@ -1,5 +1,6 @@
 import express from 'express';
 import Appointment from '../models/Appointment.js';
+import Pet from '../models/Pet.js';
 
 const router = express.Router();
 
@@ -26,7 +27,38 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const appointment = new Appointment(req.body);
+    const body = req.body || {};
+    const petId = body.petId ? String(body.petId).trim() : '';
+    const nextVisitDiscountPercentInput = body.nextVisitDiscountPercent;
+    const enteredNextDiscount = Number(nextVisitDiscountPercentInput ?? 0);
+    const safeEnteredNextDiscount = Number.isFinite(enteredNextDiscount) ? Math.min(100, Math.max(0, enteredNextDiscount)) : 0;
+
+    let appliedDiscountPercent = 0;
+    let petVisitNumber = 1;
+
+    if (petId) {
+      const pet = await Pet.findOne({ id: petId });
+      if (pet) {
+        const saved = Number(pet.nextVisitDiscountPercent ?? 0);
+        appliedDiscountPercent = Number.isFinite(saved) ? Math.min(100, Math.max(0, saved)) : 0;
+        const currentCount = Number(pet.visitCount ?? 0);
+        const safeCount = Number.isFinite(currentCount) && currentCount >= 0 ? currentCount : 0;
+        petVisitNumber = safeCount + 1;
+
+        // Increment visit count immediately on appointment creation (as requested)
+        pet.visitCount = petVisitNumber;
+        // Save newly entered next-visit discount for future appointment
+        pet.nextVisitDiscountPercent = safeEnteredNextDiscount;
+        await pet.save();
+      }
+    }
+
+    const appointment = new Appointment({
+      ...body,
+      appliedDiscountPercent,
+      nextVisitDiscountPercent: safeEnteredNextDiscount,
+      petVisitNumber
+    });
     await appointment.save();
     res.status(201).json({ success: true, data: appointment });
   } catch (error) {
