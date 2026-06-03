@@ -97,8 +97,8 @@ const labReportSchema = new mongoose.Schema({
 });
 
 // Indexes for faster queries
-labReportSchema.index({ id: 1 });
-labReportSchema.index({ reportNumber: 1 });
+// id already indexed by unique: true
+// reportNumber already indexed by unique: true
 labReportSchema.index({ petId: 1 });
 labReportSchema.index({ status: 1 });
 labReportSchema.index({ reportDate: -1 });

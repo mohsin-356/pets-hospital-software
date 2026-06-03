@@ -84,7 +84,7 @@ const appointmentSchema = new mongoose.Schema({
 });
 
 // Indexes for faster queries
-appointmentSchema.index({ id: 1 });
+// id already indexed by unique: true
 appointmentSchema.index({ petId: 1 });
 appointmentSchema.index({ date: 1, time: 1 });
 appointmentSchema.index({ status: 1 });

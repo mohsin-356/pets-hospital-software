@@ -37,7 +37,7 @@ const medicineSchema = new mongoose.Schema({
 });
 
 // Indexes for faster queries
-medicineSchema.index({ id: 1 });
+// id already indexed by unique: true
 medicineSchema.index({ condition: 1 });
 
 const Medicine = mongoose.model('Medicine', medicineSchema);

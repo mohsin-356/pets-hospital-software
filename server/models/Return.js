@@ -46,8 +46,7 @@ const returnSchema = new mongoose.Schema({
   },
   originalSaleId: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   invoiceNumber: {
     type: String,
@@ -132,8 +131,7 @@ const returnSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Index for querying
-returnSchema.index({ returnNumber: 1 });
+// Index for querying (returnNumber already indexed by unique: true)
 returnSchema.index({ originalSaleId: 1 });
 returnSchema.index({ status: 1 });
 returnSchema.index({ createdAt: -1 });

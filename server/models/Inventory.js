@@ -78,8 +78,7 @@ const inventorySchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Indexes for faster queries
-inventorySchema.index({ id: 1 });
+// Indexes for faster queries (id already indexed by unique: true)
 inventorySchema.index({ department: 1, company: 1, barcode: 1 });
 inventorySchema.index({ department: 1, barcode: 1 });
 inventorySchema.index({ itemName: 1 });

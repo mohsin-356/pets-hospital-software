@@ -4,8 +4,7 @@ const activityLogSchema = new mongoose.Schema({
   id: {
     type: Number,
     required: true,
-    unique: true,
-    index: true
+    unique: true
   },
   when: {
     type: String,
@@ -13,8 +12,7 @@ const activityLogSchema = new mongoose.Schema({
   },
   user: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   text: {
     type: String,

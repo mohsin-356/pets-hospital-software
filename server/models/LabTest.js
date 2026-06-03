@@ -60,7 +60,7 @@ const labTestSchema = new mongoose.Schema({
 });
 
 // Indexes for faster queries
-labTestSchema.index({ id: 1 });
+// id already indexed by unique: true
 labTestSchema.index({ category: 1 });
 labTestSchema.index({ testName: 1 });
 

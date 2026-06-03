@@ -9,12 +9,10 @@ const stockMovementSchema = new mongoose.Schema({
   // Reference to the item
   inventoryItemId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Inventory',
-    index: true
+    ref: 'Inventory'
   },
   productId: {
-    type: String,
-    index: true
+    type: String
   },
   // Item details (snapshot)
   itemName: {
@@ -69,8 +67,7 @@ const stockMovementSchema = new mongoose.Schema({
     required: true
   },
   referenceId: {
-    type: String,
-    index: true
+    type: String
   },
   referenceNumber: {
     type: String

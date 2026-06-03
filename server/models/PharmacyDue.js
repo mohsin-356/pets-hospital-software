@@ -7,7 +7,7 @@ const pharmacyDueSchema = new mongoose.Schema({
   previousDue: { type: Number, default: 0, min: 0 }
 }, { timestamps: true });
 
-pharmacyDueSchema.index({ clientId: 1 });
+// clientId already indexed by unique: true
 
 const PharmacyDue = mongoose.model('PharmacyDue', pharmacyDueSchema);
 export default PharmacyDue;

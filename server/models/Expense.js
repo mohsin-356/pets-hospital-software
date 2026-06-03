@@ -42,7 +42,7 @@ const expenseSchema = new mongoose.Schema({
   timestamps: true
 });
 
-expenseSchema.index({ id: 1 });
+// id already indexed by unique: true
 expenseSchema.index({ portal: 1 });
 expenseSchema.index({ date: -1 });
 

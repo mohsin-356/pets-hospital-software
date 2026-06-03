@@ -63,7 +63,7 @@ const prescriptionSchema = new mongoose.Schema({
 });
 
 // Indexes for faster queries
-prescriptionSchema.index({ id: 1 });
+// id already indexed by unique: true
 prescriptionSchema.index({ 'patient.id': 1 });
 prescriptionSchema.index({ when: -1 });
 prescriptionSchema.index({ 'doctor.username': 1 });

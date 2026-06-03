@@ -28,7 +28,7 @@ const labRequestSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-labRequestSchema.index({ id: 1 }, { unique: true });
+// id already indexed by unique: true in schema
 labRequestSchema.index({ testId: 1 });
 labRequestSchema.index({ patientId: 1 });
 

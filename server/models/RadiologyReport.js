@@ -64,8 +64,8 @@ const radiologyReportSchema = new mongoose.Schema({
   timestamps: true
 });
 
-radiologyReportSchema.index({ id: 1 });
-radiologyReportSchema.index({ reportNumber: 1 });
+// id already indexed by unique: true
+// reportNumber already indexed by unique: true
 radiologyReportSchema.index({ petId: 1 });
 radiologyReportSchema.index({ reportDate: -1 });
 

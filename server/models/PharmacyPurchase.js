@@ -103,11 +103,9 @@ const pharmacyPurchaseSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Indexes for faster queries
-pharmacyPurchaseSchema.index({ purchaseOrderNo: 1 });
+// Indexes for faster queries (purchaseOrderNo already indexed by unique: true)
 pharmacyPurchaseSchema.index({ supplierName: 1 });
 pharmacyPurchaseSchema.index({ purchaseDate: -1 });
-pharmacyPurchaseSchema.index({ invoiceNo: 1 });
 
 const PharmacyPurchase = mongoose.model('PharmacyPurchase', pharmacyPurchaseSchema);
 

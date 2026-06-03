@@ -166,8 +166,8 @@ petSchema.virtual('computedAge').get(function() {
 });
 
 // Indexes for faster queries
-petSchema.index({ id: 1 });
-petSchema.index({ clientId: 1 });
+// id already indexed by unique: true
+// clientId index defined in field
 petSchema.index({ petName: 1 });
 petSchema.index({ ownerName: 1 });
 petSchema.index({ 'details.pet.petId': 1 });

@@ -58,7 +58,7 @@ const financialSchema = new mongoose.Schema({
 });
 
 // Indexes for faster queries
-financialSchema.index({ id: 1 });
+// id already indexed by unique: true
 financialSchema.index({ type: 1 });
 financialSchema.index({ category: 1 });
 financialSchema.index({ date: -1 });

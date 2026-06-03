@@ -34,7 +34,7 @@ const accountSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-accountSchema.index({ code: 1 }, { unique: true });
+// code already indexed by unique: true in schema
 accountSchema.index({ type: 1 });
 accountSchema.index({ portal: 1 });
 

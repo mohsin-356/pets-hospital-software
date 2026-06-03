@@ -30,7 +30,7 @@ const licenseStateSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-licenseStateSchema.index({ key: 1 });
+// key already indexed by unique: true
 
 const LicenseState = mongoose.model('LicenseState', licenseStateSchema);
 

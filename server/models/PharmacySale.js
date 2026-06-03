@@ -145,8 +145,7 @@ const pharmacySaleSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Indexes for faster queries
-pharmacySaleSchema.index({ invoiceNumber: 1 });
+// Indexes for faster queries (invoiceNumber already indexed by unique: true)
 pharmacySaleSchema.index({ createdAt: -1 });
 pharmacySaleSchema.index({ prescriptionId: 1 });
 pharmacySaleSchema.index({ customerContact: 1 });
