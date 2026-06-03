@@ -32,10 +32,13 @@ export default function ReceptionLayout() {
       if (p.startsWith('/reception/pets')) return 'pets'
       if (p.startsWith('/reception/clients')) return 'clients'
       if (p.startsWith('/reception/appointments')) return 'appointments'
+      if (p.startsWith('/reception/vaccination-reminders')) return 'vaccination-reminders'
       if (p.startsWith('/reception/visits')) return 'visits'
       if (p.startsWith('/reception/reports')) return 'reports'
       if (p.startsWith('/reception/forms')) return 'forms'
       if (p.startsWith('/reception/procedures')) return 'procedures'
+      if (p.startsWith('/reception/pos')) return 'pos'
+      if (p.startsWith('/reception/returns')) return 'returns'
       if (p.startsWith('/reception/settings')) return 'settings'
       return 'dashboard'
     }

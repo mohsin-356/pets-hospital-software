@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   FiHome, FiPackage, FiShoppingCart, FiTruck, FiBarChart2, 
-  FiMenu, FiX, FiLogOut, FiSettings, FiArrowLeft 
+  FiMenu, FiX, FiLogOut, FiSettings, FiArrowLeft, FiRotateCcw
 } from 'react-icons/fi';
 import { useSettings } from '../context/SettingsContext';
 import DaySessionBanner from '../components/DaySessionBanner';
@@ -23,6 +23,7 @@ export default function ShopLayout() {
       { path: '/shop/pos', icon: FiShoppingCart, label: 'Point of Sale', key: 'pos' },
       { path: '/shop/suppliers', icon: FiTruck, label: 'Suppliers', key: 'suppliers' },
       { path: '/shop/distributors', icon: FiTruck, label: 'Distributors', key: 'distributors' },
+      { path: '/shop/returns', icon: FiRotateCcw, label: 'Returns', key: 'returns' },
       { path: '/shop/reports', icon: FiBarChart2, label: 'Sales Reports', key: 'reports' },
       { path: '/shop/settings', icon: FiSettings, label: 'Settings', key: 'settings' },
     ]
@@ -42,6 +43,7 @@ export default function ShopLayout() {
       if (p.startsWith('/shop/pos')) return 'pos';
       if (p.startsWith('/shop/suppliers')) return 'suppliers';
       if (p.startsWith('/shop/distributors')) return 'distributors';
+      if (p.startsWith('/shop/returns')) return 'returns';
       if (p.startsWith('/shop/reports')) return 'reports';
       if (p.startsWith('/shop/settings')) return 'settings';
       return 'dashboard';

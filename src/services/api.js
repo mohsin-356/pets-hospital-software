@@ -598,6 +598,65 @@ export const licenseAPI = {
   deactivate: (payload) => apiCall('/license/deactivate', 'POST', payload),
 };
 
+// Vaccination Reminders API
+export const vaccinationReminderAPI = {
+  getAll: (filters = {}) => {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) params.append(key, value);
+    });
+    const qs = params.toString() ? `?${params.toString()}` : '';
+    return apiCall(`/vaccination-reminders${qs}`);
+  },
+  getUpcoming: () => apiCall('/vaccination-reminders/upcoming'),
+  getById: (id) => apiCall(`/vaccination-reminders/${id}`),
+  create: (data) => apiCall('/vaccination-reminders', 'POST', data),
+  update: (id, data) => apiCall(`/vaccination-reminders/${id}`, 'PUT', data),
+  delete: (id) => apiCall(`/vaccination-reminders/${id}`, 'DELETE'),
+  markSent: (id, data) => apiCall(`/vaccination-reminders/${id}/send`, 'POST', data),
+  syncFromPets: (clinicName) => apiCall('/vaccination-reminders/sync-from-pets', 'POST', { clinicName }),
+  getWhatsAppLink: (id) => apiCall(`/vaccination-reminders/${id}/whatsapp-link`),
+};
+
+// Returns API
+export const returnsAPI = {
+  getAll: (filters = {}) => {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) params.append(key, value);
+    });
+    const qs = params.toString() ? `?${params.toString()}` : '';
+    return apiCall(`/returns${qs}`);
+  },
+  getById: (id) => apiCall(`/returns/${id}`),
+  getBySale: (saleId) => apiCall(`/returns/by-sale/${saleId}`),
+  create: (data) => apiCall('/returns', 'POST', data),
+  update: (id, data) => apiCall(`/returns/${id}`, 'PUT', data),
+  process: (id, data) => apiCall(`/returns/${id}/process`, 'PUT', data),
+  delete: (id) => apiCall(`/returns/${id}`, 'DELETE'),
+  getStats: (portal) => apiCall(`/returns/stats/summary${portal ? `?portal=${portal}` : ''}`),
+};
+
+// Stock Movements API
+export const stockMovementsAPI = {
+  getAll: (filters = {}) => {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) params.append(key, value);
+    });
+    const qs = params.toString() ? `?${params.toString()}` : '';
+    return apiCall(`/stock-movements${qs}`);
+  },
+  getById: (id) => apiCall(`/stock-movements/${id}`),
+  getByReference: (referenceType, referenceId) => apiCall(`/stock-movements/by-reference/${referenceType}/${referenceId}`),
+  create: (data) => apiCall('/stock-movements', 'POST', data),
+  getStats: (department) => apiCall(`/stock-movements/stats/summary${department ? `?department=${department}` : ''}`),
+  getStockLevels: (department) => apiCall(`/stock-movements/stock-levels${department ? `?department=${department}` : ''}`),
+  getLowStockAlerts: (department) => apiCall(`/stock-movements/alerts/low-stock${department ? `?department=${department}` : ''}`),
+  getOutOfStock: (department) => apiCall(`/stock-movements/alerts/out-of-stock${department ? `?department=${department}` : ''}`),
+  reconcile: (data) => apiCall('/stock-movements/reconcile', 'POST', data),
+};
+
 export default {
   users: usersAPI,
   pets: petsAPI,
@@ -632,5 +691,8 @@ export default {
   fullRecord: fullRecordAPI,
   financialSummary: financialSummaryAPI,
   backup: backupAPI,
+  vaccinationReminder: vaccinationReminderAPI,
+  returns: returnsAPI,
+  stockMovements: stockMovementsAPI,
   healthCheck,
 };

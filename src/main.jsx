@@ -46,6 +46,9 @@ import ReceptionReports from './pages/reception/Reports.jsx'
 import ReceptionForms from './pages/reception/Forms.jsx'
 import ReceptionProcedures from './pages/reception/Procedures.jsx'
 import ReceptionSettings from './pages/reception/Settings.jsx'
+import ReceptionVaccinationReminders from './pages/reception/VaccinationReminders.jsx'
+import ReceptionPOS from './pages/reception/POS.jsx'
+import ReceptionReturns from './pages/reception/Returns.jsx'
 import Dashboard from './pages/admin/Dashboard'
 import Users from './pages/admin/Users'
 import Doctors from './pages/admin/Doctors'
@@ -80,6 +83,7 @@ import Products from './pages/shop/Products'
 import POS from './pages/shop/POS'
 import ShopSuppliers from './pages/shop/Suppliers'
 import ShopDistributors from './pages/shop/Distributors'
+import ShopReturns from './pages/shop/Returns'
 import SalesReports from './pages/shop/SalesReports'
 import ShopSettings from './pages/shop/Settings'
 import PharmacyLayout from './layouts/PharmacyLayout'
@@ -258,6 +262,9 @@ const router = createHashRouter([
           { path: 'reports', element: <ReceptionReports /> },
           { path: 'forms', element: <ReceptionForms /> },
           { path: 'procedures', element: <ReceptionProcedures /> },
+          { path: 'vaccination-reminders', element: <ReceptionVaccinationReminders /> },
+          { path: 'pos', element: <ReceptionPOS /> },
+          { path: 'returns', element: <ReceptionReturns /> },
           { path: 'settings', element: <ReceptionSettings /> },
         ],
       },
@@ -300,6 +307,7 @@ const router = createHashRouter([
           { path: 'pos', element: <POS /> },
           { path: 'suppliers', element: <ShopSuppliers /> },
           { path: 'distributors', element: <ShopDistributors /> },
+          { path: 'returns', element: <ShopReturns /> },
           { path: 'reports', element: <SalesReports /> },
           { path: 'settings', element: <ShopSettings /> },
         ],

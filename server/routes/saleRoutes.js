@@ -2,6 +2,7 @@ import express from 'express';
 import Sale from '../models/Sale.js';
 import Product from '../models/Product.js';
 import ShopCustomer from '../models/ShopCustomer.js';
+import StockMovement from '../models/StockMovement.js';
 import { postShopSale } from '../utils/accountingService.js';
 import dayGuard from '../middleware/dayGuard.js';
 import Receivable from '../models/Receivable.js';
@@ -141,13 +142,41 @@ router.post('/', dayGuard('shop'), async (req, res) => {
       console.error('Accounting posting failed for Sale', e && e.message ? e.message : e);
     }
 
-    // Update product stock
+    // Update product stock and create stock movements
     for (const item of items) {
+      const product = await Product.findById(item.productId);
+      if (!product) continue;
+      
+      const prevQty = product.quantity;
       const updated = await Product.findByIdAndUpdate(
         item.productId,
         { $inc: { quantity: -item.quantity } },
         { new: true }
       );
+      
+      // Create stock movement record
+      const stockMovement = new StockMovement({
+        id: `sm-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        productId: item.productId,
+        itemName: item.itemName,
+        barcode: product.barcode,
+        company: product.company,
+        category: product.category,
+        type: 'Sale',
+        quantity: item.quantity,
+        previousQuantity: prevQty,
+        newQuantity: prevQty - item.quantity,
+        department: 'shop',
+        referenceType: 'Sale',
+        referenceId: String(sale._id),
+        referenceNumber: sale.invoiceNumber,
+        unitCost: product.purchasePrice || 0,
+        totalCost: (product.purchasePrice || 0) * item.quantity,
+        performedBy: sale.soldBy || 'Shop',
+        performedByRole: 'Shop'
+      });
+      await stockMovement.save();
+      
       try {
         const inv = await upsertInventoryForProduct(updated?.toObject ? updated.toObject() : updated);
         if (inv && inv._id) {

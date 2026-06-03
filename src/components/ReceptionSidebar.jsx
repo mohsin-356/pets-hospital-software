@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { FiGrid, FiUserPlus, FiCalendar, FiFileText, FiLogOut, FiClipboard, FiUsers, FiSettings } from 'react-icons/fi'
+import { FiGrid, FiUserPlus, FiCalendar, FiFileText, FiLogOut, FiClipboard, FiUsers, FiSettings, FiBell, FiShoppingCart, FiRotateCcw } from 'react-icons/fi'
 import { useModuleAccess } from '../context/ModuleAccessContext'
 import { useAccessRoles } from '../context/AccessRoleContext'
 
@@ -42,6 +42,11 @@ export default function ReceptionSidebar({ open = false, onClose = () => { }, co
           <FiCalendar size={collapsed ? 19 : 18} className={collapsed ? 'transition-transform hover:scale-110' : ''} /> {!collapsed && <span>Appointments</span>}
         </NavLink>
       )}
+      {isSubmoduleEnabled('reception', 'vaccination-reminders') && canAccess('reception', 'vaccination-reminders') && (
+        <NavLink to="/reception/vaccination-reminders" className={({ isActive }) => `${linkClass({ isActive })} ${collapsed ? 'justify-center px-2' : ''}`} onClick={onClose}>
+          <FiBell size={collapsed ? 19 : 18} className={collapsed ? 'transition-transform hover:scale-110' : ''} /> {!collapsed && <span>Vaccination Reminders</span>}
+        </NavLink>
+      )}
       {isSubmoduleEnabled('reception', 'visits') && canAccess('reception', 'visits') && (
         <NavLink to="/reception/visits" className={({ isActive }) => `${linkClass({ isActive })} ${collapsed ? 'justify-center px-2' : ''}`} onClick={onClose}>
           <FiFileText size={collapsed ? 19 : 18} className={collapsed ? 'transition-transform hover:scale-110' : ''} /> {!collapsed && <span>Visit Records</span>}
@@ -55,6 +60,16 @@ export default function ReceptionSidebar({ open = false, onClose = () => { }, co
       {isSubmoduleEnabled('reception', 'procedures') && canAccess('reception', 'procedures') && (
         <NavLink to="/reception/procedures" className={({ isActive }) => `${linkClass({ isActive })} ${collapsed ? 'justify-center px-2' : ''}`} onClick={onClose}>
           <FiClipboard size={collapsed ? 19 : 18} className={collapsed ? 'transition-transform hover:scale-110' : ''} /> {!collapsed && <span>Procedures</span>}
+        </NavLink>
+      )}
+      {isSubmoduleEnabled('reception', 'pos') && canAccess('reception', 'pos') && (
+        <NavLink to="/reception/pos" className={({ isActive }) => `${linkClass({ isActive })} ${collapsed ? 'justify-center px-2' : ''}`} onClick={onClose}>
+          <FiShoppingCart size={collapsed ? 19 : 18} className={collapsed ? 'transition-transform hover:scale-110' : ''} /> {!collapsed && <span>Point of Sale</span>}
+        </NavLink>
+      )}
+      {isSubmoduleEnabled('reception', 'returns') && canAccess('reception', 'returns') && (
+        <NavLink to="/reception/returns" className={({ isActive }) => `${linkClass({ isActive })} ${collapsed ? 'justify-center px-2' : ''}`} onClick={onClose}>
+          <FiRotateCcw size={collapsed ? 19 : 18} className={collapsed ? 'transition-transform hover:scale-110' : ''} /> {!collapsed && <span>Returns</span>}
         </NavLink>
       )}
       {isSubmoduleEnabled('reception', 'settings') && canAccess('reception', 'settings') && (

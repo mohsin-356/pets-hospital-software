@@ -45,6 +45,9 @@ import staffAdvanceRoutes from './routes/staffAdvanceRoutes.js';
 import licenseRoutes from './routes/licenseRoutes.js';
 import moduleAccessRoutes from './routes/moduleAccessRoutes.js';
 import accessRoleRoutes from './routes/accessRoleRoutes.js';
+import vaccinationReminderRoutes from './routes/vaccinationReminderRoutes.js';
+import returnRoutes from './routes/returnRoutes.js';
+import stockMovementRoutes from './routes/stockMovementRoutes.js';
 
 dotenv.config();
 
@@ -269,6 +272,9 @@ app.use('/api/staff-advances', staffAdvanceRoutes);
 app.use('/api/license', licenseRoutes);
 app.use('/api/module-access', moduleAccessRoutes);
 app.use('/api/access-roles', accessRoleRoutes);
+app.use('/api/vaccination-reminders', vaccinationReminderRoutes);
+app.use('/api/returns', returnRoutes);
+app.use('/api/stock-movements', stockMovementRoutes);
 
 // 404 handler
 app.use((req, res) => {
