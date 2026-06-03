@@ -11,7 +11,7 @@
     "dev": "npm run dev:electron",
     "dev:frontend": "vite",
     "dev:backend": "cross-env PORT=3001 npm --prefix server run dev",
-    "build": "cross-env NODE_ENV=production VITE_API_URL=/api vite build",
+    "build": "cross-env NODE_ENV=production VITE_API_URL=http://localhost:3001/api vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -20,7 +20,7 @@
     "dist:win": "npm run build && npm run build:server && electron-builder --win nsis --x64 --publish=never",
     "dist:win:portable": "npm run build && npm run build:server && electron-builder --win portable --x64 --publish=never",
     "build:electron": "npm run dist:win",
-    "build:server": "cross-env PUPPETEER_SKIP_DOWNLOAD=1 npm --prefix server ci --omit=dev"
+    "build:server": "cross-env PUPPETEER_SKIP_DOWNLOAD=1 npm --prefix server install --omit=dev --ignore-scripts"
   },
   "build": {
     "appId": "com.petshospital.management",
@@ -39,7 +39,11 @@
       {
         "from": "server",
         "to": "server",
-        "filter": ["**/*"]
+        "filter": ["**/*", "!node_modules"]
+      },
+      {
+        "from": "server/node_modules",
+        "to": "server/node_modules"
       }
     ],
     "win": {

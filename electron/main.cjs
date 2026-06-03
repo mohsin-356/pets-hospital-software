@@ -1,10 +1,9 @@
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
-const { spawn } = require('child_process');
+const { pathToFileURL } = require('url');
 
 // Keep a global reference of the window object
 let mainWindow;
-let serverProcess;
 
 const isDev = process.env.NODE_ENV === 'development';
 const isPackaged = app.isPackaged;
@@ -32,10 +31,9 @@ function createWindow() {
     mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
     mainWindow.webContents.openDevTools();
   } else {
-    // Production mode - load built files
-    const indexPath = isPackaged
-      ? path.join(process.resourcesPath, 'app/dist/index.html')
-      : path.join(__dirname, '../dist/index.html');
+    // Production mode - __dirname inside ASAR = app.asar/electron/
+    // so ../dist/index.html resolves correctly inside the archive
+    const indexPath = path.join(__dirname, '../dist/index.html');
     mainWindow.loadFile(indexPath);
   }
 
@@ -59,59 +57,73 @@ function createWindow() {
   });
 }
 
-// Start the backend server
-function startServer() {
-  if (isPackaged) {
-    // In packaged app, server is in resources/server
-    const serverPath = path.join(process.resourcesPath, 'server');
-    const serverFile = path.join(serverPath, 'server.js');
-    
-    serverProcess = spawn('node', [serverFile], {
-      cwd: serverPath,
-      env: { ...process.env, PORT: '3001', NODE_ENV: 'production' },
-      stdio: 'pipe',
-    });
-  } else {
-    // In development, server is in ./server
-    const serverPath = path.join(__dirname, '../server');
-    const serverFile = path.join(serverPath, 'server.js');
-    
-    serverProcess = spawn('node', [serverFile], {
-      cwd: serverPath,
-      env: { ...process.env, PORT: '3001', NODE_ENV: 'development' },
-      stdio: 'pipe',
-    });
-  }
-
-  serverProcess.stdout.on('data', (data) => {
-    console.log(`[Server]: ${data}`);
-  });
-
-  serverProcess.stderr.on('data', (data) => {
-    console.error(`[Server Error]: ${data}`);
-  });
-
-  serverProcess.on('close', (code) => {
-    console.log(`Server process exited with code ${code}`);
+// Poll until the server is ready on port 3001
+function waitForServer(maxWaitMs = 15000) {
+  return new Promise((resolve) => {
+    const http = require('http');
+    const start = Date.now();
+    const check = () => {
+      const req = http.get('http://localhost:3001/api/license/status', (res) => {
+        resolve(true);
+      });
+      req.on('error', () => {
+        if (Date.now() - start >= maxWaitMs) {
+          console.error('[Electron] Server did not start in time');
+          resolve(false);
+        } else {
+          setTimeout(check, 500);
+        }
+      });
+      req.end();
+    };
+    check();
   });
 }
 
+// Start backend server via dynamic ESM import (in-process, no subprocess needed)
+async function startServer() {
+  const serverPath = isPackaged
+    ? path.join(process.resourcesPath, 'server')
+    : path.join(__dirname, '../server');
+
+  const serverFile = path.join(serverPath, 'server.js');
+  const serverUrl = pathToFileURL(serverFile).href;
+
+  // Set env vars before the import so dotenv picks them up
+  process.env.PORT = '3001';
+  process.env.NODE_ENV = 'production';
+  process.env.PUPPETEER_SKIP_DOWNLOAD = '1';
+  process.env.PUPPETEER_EXECUTABLE_PATH = '';
+  // Point dotenv to the server's .env file explicitly
+  process.env.DOTENV_CONFIG_PATH = path.join(serverPath, '.env');
+
+  console.log('[Electron] Importing server from:', serverFile);
+
+  try {
+    await import(serverUrl);
+    console.log('[Electron] Server module loaded OK');
+  } catch (err) {
+    console.error('[Electron] Server import failed:', err);
+    // Show a visible dialog so the error is not silent
+    dialog.showErrorBox(
+      'Backend Server Error',
+      `Server failed to start.\n\nFile: ${serverFile}\n\nError: ${err.message || err}`
+    );
+  }
+}
+
 // App event handlers
-app.whenReady().then(() => {
-  startServer();
-  
-  // Wait a bit for server to start
-  setTimeout(() => {
-    createWindow();
-  }, 2000);
+app.whenReady().then(async () => {
+  // In dev mode the server is already started by concurrently
+  if (!isDev) {
+    await startServer();          // import runs top-level code (calls app.listen)
+    await waitForServer(20000);   // then wait for port 3001 to actually be bound
+  }
+
+  createWindow();
 });
 
 app.on('window-all-closed', () => {
-  // Kill server process
-  if (serverProcess) {
-    serverProcess.kill();
-  }
-  
   if (process.platform !== 'darwin') {
     app.quit();
   }
