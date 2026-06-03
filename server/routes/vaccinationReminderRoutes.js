@@ -1,7 +1,6 @@
 import express from 'express';
 import VaccinationReminder from '../models/VaccinationReminder.js';
 import Pet from '../models/Pet.js';
-import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
 
