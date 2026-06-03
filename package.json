@@ -1,9 +1,12 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "pets-hospital",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Pets Hospital Management System - Complete veterinary practice management software",
+  "author": "Pets Hospital <support@petshospital.com>",
   "type": "module",
-  "main": "electron/main.js",
+  "main": "electron/main.cjs",
+  "productName": "Pets Hospital",
   "scripts": {
     "dev": "npm run dev:electron",
     "dev:frontend": "vite",
@@ -12,56 +15,48 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "dev:electron": "concurrently -k -n FRONT,API,APP -c cyan,magenta,green \"vite --port 5173 --host 127.0.0.1\" \"cross-env PORT=3001 npm --prefix server run dev\" \"wait-on http://127.0.0.1:5173 && cross-env NODE_ENV=development PORT=3001 VITE_DEV_SERVER_URL=http://127.0.0.1:5173 electron .\"",
+    "dev:electron": "concurrently -k -n FRONT,API,APP -c cyan,magenta,green \"vite --port 5173 --host 127.0.0.1\" \"cross-env PORT=3001 npm --prefix server run dev\" \"wait-on http://127.0.0.1:5173 && cross-env NODE_ENV=development PORT=3001 electron electron/main.cjs\"",
     "pack": "npm run build && electron-builder --dir",
-    "dist:win": "npm run build && cross-env PUPPETEER_SKIP_DOWNLOAD=1 npm --prefix server ci --omit=dev && cross-env ELECTRON_BUILDER_COMPRESSION_LEVEL=0 CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win nsis --x64 --publish=never",
-    "build:electron": "npm run dist:win"
+    "dist:win": "npm run build && npm run build:server && electron-builder --win nsis --x64 --publish=never",
+    "dist:win:portable": "npm run build && npm run build:server && electron-builder --win portable --x64 --publish=never",
+    "build:electron": "npm run dist:win",
+    "build:server": "cross-env PUPPETEER_SKIP_DOWNLOAD=1 npm --prefix server ci --omit=dev"
   },
   "build": {
-    "appId": "com.example.hms",
-    "productName": "Hospital Management Suite",
+    "appId": "com.petshospital.management",
+    "productName": "Pets Hospital",
+    "copyright": "Copyright © 2026 Pets Hospital. All rights reserved.",
     "directories": {
       "output": "release"
     },
-    "artifactName": "HMS-Setup-${version}-${arch}.exe",
-    "compression": "store",
     "files": [
       "dist/**/*",
       "electron/**/*",
       "public/**/*",
-      "!server/node_modules/puppeteer/.local-chromium/**",
       "!**/*.map"
     ],
-    "extraMetadata": {
-      "main": "electron/main.js"
-    },
-    "asar": true,
     "extraResources": [
       {
         "from": "server",
         "to": "server",
-        "filter": [
-          "**/*"
-        ]
+        "filter": ["**/*"]
       }
     ],
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": [
-            "x64"
-          ]
+          "arch": ["x64"]
         }
-      ]
+      ],
+      "icon": "public/icon.ico"
     },
     "nsis": {
       "oneClick": false,
-      "perMachine": false,
+      "perMachine": true,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "Hospital Management Suite"
+      "createStartMenuShortcut": true
     }
   },
   "dependencies": {
